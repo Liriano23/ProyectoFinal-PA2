@@ -59,6 +59,8 @@ namespace ProyectoFinal_PA2.Models
         [Required(ErrorMessage = "Debe ingresar la contraseña del usuario")]
         public string Contrasena { get; set; }
 
+        public ICollection<Clientes> Clientes { get; set; }
+
         public Usuarios()
         {
             UsuarioId = 0;

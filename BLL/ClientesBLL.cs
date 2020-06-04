@@ -1,36 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using ProyectoFinal_PA2.BLL;
 using ProyectoFinal_PA2.DAL;
 using ProyectoFinal_PA2.Models;
 
 namespace ProyectoFinal_PA2.BLL
 {
-    public class UsuariosBLL
+    public class ClientesBLL
     {
-        public static bool Guardar(Usuarios usuarios)
+        public static bool Guardar(Clientes clientes)
         {
-            if (!Existe(usuarios.UsuarioId))
-                return Insertar(usuarios);
+            if (!Existe(clientes.ClienteId))
+                return Insertar(clientes);
             else
-                return Modificar(usuarios);
+                return  Modificar(clientes);
         }
 
         public static bool Existe(int id)
         {
-            bool encontrado = false;
+            var encontrado = false;
             Contexto db = new Contexto();
-
             try
             {
-                encontrado = db.Usuarios.Any(x => x.UsuarioId == id);
+                encontrado = db.Clientes.Any(x => x.ClienteId == id);
             }
             catch (Exception)
             {
+
                 throw;
             }
             finally
@@ -39,15 +40,14 @@ namespace ProyectoFinal_PA2.BLL
             }
             return encontrado;
         }
-
-        public static bool Insertar(Usuarios usuarios)
+        public static bool Insertar(Clientes clientes)
         {
             bool paso = false;
             Contexto db = new Contexto();
             
             try
             {
-                db.Usuarios.Add(usuarios);
+                db.Clientes.Add(clientes);
                 paso = (db.SaveChanges() > 0);
             }
             catch (Exception)
@@ -62,14 +62,14 @@ namespace ProyectoFinal_PA2.BLL
             return paso;
         }
 
-        public static bool Modificar(Usuarios usuarios)
+        public static bool Modificar(Clientes clientes)
         {
             bool paso = false;
             Contexto db = new Contexto();
-
+            
             try
             {
-                db.Entry(usuarios).State = EntityState.Modified;
+                db.Entry(clientes).State = EntityState.Modified;
                 paso = (db.SaveChanges() > 0);
             }
             catch (Exception)
@@ -88,36 +88,16 @@ namespace ProyectoFinal_PA2.BLL
         {
             bool paso = false;
             Contexto db = new Contexto();
-
+            
             try
             {
-                var usuario = db.Usuarios.Find(id);
-                if(usuario != null)
+                var cliente = db.Clientes.Find(id);
+
+                if(cliente != null)
                 {
-                    db.Usuarios.Remove(usuario);
-                    paso = (db.SaveChanges() >0);
+                    db.Clientes.Remove(cliente);
+                    paso = (db.SaveChanges() > 0);
                 }
-            }
-            catch (Exception) 
-            {
-
-                throw;
-            }
-            finally
-            {
-                db.Dispose();
-            }
-            return paso;
-        }
-
-        public static Usuarios Buscar(int id)
-        {
-            Usuarios usuarios = new Usuarios();
-            Contexto db = new Contexto();
-
-            try
-            {
-                usuarios = db.Usuarios.Find(id);
             }
             catch (Exception)
             {
@@ -128,38 +108,61 @@ namespace ProyectoFinal_PA2.BLL
             {
                 db.Dispose();
             }
-            return usuarios;
+
+            return paso;
         }
 
-        public static List<Usuarios> GetList(Expression<Func<Usuarios,bool>> criterio)
+        public static Clientes Buscar(int id)
         {
-            List<Usuarios> listas = new List<Usuarios>();
+            Clientes cliente = new Clientes();
+            Contexto db = new Contexto();
+
+            try
+            {
+                cliente = db.Clientes.Find(id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+
+            return cliente;
+        }
+
+        public static List<Clientes> GetList(Expression<Func<Clientes, bool>> criterio)
+        {
+            List<Clientes> lista = new List<Clientes>();
             Contexto db = new Contexto();
             
             try
             {
-                listas = db.Usuarios.Where(criterio).ToList();
+                lista = db.Clientes.Where(criterio).ToList();
             }
             catch (Exception)
             {
-
                 throw;
             }
             finally
             {
                 db.Dispose();
             }
-            return listas;
+
+            return lista;
         }
 
-        public static List<Usuarios> GetUsuarios()
+        public static List<Clientes> GetClientes()
         {
-            List<Usuarios> lista = new List<Usuarios>();
+            List<Clientes> lista = new List<Clientes>();
             Contexto db = new Contexto();
 
             try
             {
-                lista = db.Usuarios.ToList();
+                lista = db.Clientes.ToList();
             }
             catch (Exception)
             {
@@ -173,5 +176,28 @@ namespace ProyectoFinal_PA2.BLL
 
             return lista;
         }
+
+        public static bool ExistenciaUsuario(int usuarioId)
+        {
+            bool existe = false;
+            Contexto db = new Contexto();
+            try
+            {
+                var usuario = db.Usuarios.Find(usuarioId);
+                if (usuario != null)
+                    existe = true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+            return existe;
+        }
+
     }
 }

@@ -186,7 +186,7 @@ namespace ProyectoFinal_PA2.Migrations
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Productos", b =>
                 {
                     b.HasOne("ProyectoFinal_PA2.Models.Usuarios", "Usuarios")
-                        .WithMany()
+                        .WithMany("Productos")
                         .HasForeignKey("UsuariosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

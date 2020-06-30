@@ -60,6 +60,7 @@ namespace ProyectoFinal_PA2.Models
         public string Contrasena { get; set; }
 
         public ICollection<Clientes> Clientes { get; set; }
+        public ICollection<Productos> Productos { get; set; }
 
         public Usuarios()
         {

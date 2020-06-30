@@ -9,8 +9,8 @@ using ProyectoFinal_PA2.DAL;
 namespace ProyectoFinal_PA2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200604205628_Second")]
-    partial class Second
+    [Migration("20200629211728_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -188,7 +188,7 @@ namespace ProyectoFinal_PA2.Migrations
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Productos", b =>
                 {
                     b.HasOne("ProyectoFinal_PA2.Models.Usuarios", "Usuarios")
-                        .WithMany()
+                        .WithMany("Productos")
                         .HasForeignKey("UsuariosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

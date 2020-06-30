@@ -173,5 +173,27 @@ namespace ProyectoFinal_PA2.BLL
 
             return lista;
         }
+
+        public static bool ExistenciaUsuario(int usuarioId)
+        {
+            bool existe = false;
+            Contexto db = new Contexto();
+            try
+            {
+                var usuario = db.Usuarios.Find(usuarioId);
+                if (usuario != null)
+                    existe = true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+            return existe;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,9 +39,10 @@ namespace ProyectoFinal_PA2.Models
         //[ForeignKey("Categorias")]
         public int CategoriaId { get; set; }
 
-        //[ForeignKey("Usuarios")]
+
+        [Required(ErrorMessage = "Debe ingresar el usuario que esta agregando al cliente")]
         public int UsuariosId { get; set; }
-        public Usuarios Usuarios { get; set; }
+        public virtual Usuarios Usuarios { get; set; }
 
         public Productos()
         {

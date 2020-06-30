@@ -1,37 +1,34 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using ProyectoFinal_PA2.BLL;
 using ProyectoFinal_PA2.DAL;
 using ProyectoFinal_PA2.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProyectoFinal_PA2.BLL
 {
-    public class ClientesBLL
+    public class ProductosBLL
     {
-        public static bool Guardar(Clientes clientes)
+        public static bool Guardar(Productos productos)
         {
-            if (!Existe(clientes.ClienteId))
-                return Insertar(clientes);
+            if(!Existe(productos.ProductoId))
+                return Insertar(productos);
             else
-                return  Modificar(clientes);
+                return Modificar(productos);
         }
 
         public static bool Existe(int id)
         {
-            var encontrado = false;
-            Contexto db = new Contexto();
+            bool encontrado = false;
+            Contexto db= new Contexto();
+            
             try
             {
-                encontrado = db.Clientes.Any(x => x.ClienteId == id);
+                encontrado = db.Productos.Any(x=> x.ProductoId == id);   
             }
-            catch (Exception)
+            catch(Exception)
             {
-
                 throw;
             }
             finally
@@ -40,41 +37,38 @@ namespace ProyectoFinal_PA2.BLL
             }
             return encontrado;
         }
-        public static bool Insertar(Clientes clientes)
+
+        public static bool Insertar(Productos productos)
         {
             bool paso = false;
             Contexto db = new Contexto();
-            
-            try
-            {
-                db.Clientes.Add(clientes);
-                paso = (db.SaveChanges() > 0);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            finally
-            {
-                db.Dispose();
-            }
-            return paso;
+           try
+           {
+               db.Productos.Add(productos);
+               paso = (db.SaveChanges() > 0);
+           }
+           catch(Exception)
+           {
+               throw;
+           }
+           finally
+           {
+               db.Dispose();
+           }
+           return paso;
         }
 
-        public static bool Modificar(Clientes clientes)
+        public static bool Modificar(Productos productos)
         {
             bool paso = false;
             Contexto db = new Contexto();
-            
             try
             {
-                db.Entry(clientes).State = EntityState.Modified;
+                db.Entry(productos).State = EntityState.Modified;
                 paso = (db.SaveChanges() > 0);
             }
-            catch (Exception)
+            catch(Exception)
             {
-
                 throw;
             }
             finally
@@ -88,38 +82,35 @@ namespace ProyectoFinal_PA2.BLL
         {
             bool paso = false;
             Contexto db = new Contexto();
-            
             try
             {
-                var cliente = db.Clientes.Find(id);
+                var productos = db.Productos.Find(id);
 
-                if(cliente != null)
+                if(productos != null)
                 {
-                    db.Clientes.Remove(cliente);
+                    db.Productos.Remove(productos);
                     paso = (db.SaveChanges() > 0);
                 }
             }
-            catch (Exception)
+            catch(Exception)
             {
-
                 throw;
             }
             finally
             {
                 db.Dispose();
             }
-
             return paso;
         }
 
-        public static Clientes Buscar(int id)
+        public static Productos Buscar(int id)
         {
-            Clientes cliente = new Clientes();
+            Productos productos = new Productos();
             Contexto db = new Contexto();
 
             try
             {
-                cliente = db.Clientes.Find(id);
+                productos = db.Productos.Find(id);
             }
             catch (Exception)
             {
@@ -131,17 +122,17 @@ namespace ProyectoFinal_PA2.BLL
                 db.Dispose();
             }
 
-            return cliente;
+            return productos;
         }
 
-        public static List<Clientes> GetList(Expression<Func<Clientes, bool>> criterio)
+        public static List<Productos> GetList(Expression<Func<Productos, bool>> criterio)
         {
-            List<Clientes> lista = new List<Clientes>();
+            List<Productos> lista = new List<Productos>();
             Contexto db = new Contexto();
             
             try
             {
-                lista = db.Clientes.Where(criterio).ToList();
+                lista = db.Productos.Where(criterio).ToList();
             }
             catch (Exception)
             {
@@ -155,14 +146,14 @@ namespace ProyectoFinal_PA2.BLL
             return lista;
         }
 
-        public static List<Clientes> GetClientes()
+        public static List<Productos> GetProductos()
         {
-            List<Clientes> lista = new List<Clientes>();
+            List<Productos> lista = new List<Productos>();
             Contexto db = new Contexto();
 
             try
             {
-                lista = db.Clientes.ToList();
+                lista = db.Productos.ToList();
             }
             catch (Exception)
             {
@@ -176,6 +167,7 @@ namespace ProyectoFinal_PA2.BLL
 
             return lista;
         }
+
         
     }
 }

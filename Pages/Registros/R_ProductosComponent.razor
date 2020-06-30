@@ -1,0 +1,269 @@
+﻿@page "/RegistroProductos"
+@page "/RegistroProductos/{ProductoId:int}"
+
+@using ProyectoFinal_PA2.Models;
+@using ProyectoFinal_PA2.BLL; 
+
+@inject IToastService toast
+
+
+    <EditForm Model="productos" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+
+        <div id="ContenedorPrincipal" class="card">
+
+            <div class="card-header">
+                <div class="form-group">
+                    <img src="css/Images/ProductsImage.png" title="LogoProductos" alt="Logo del regsitro de productos" />
+                    <h3 id="Titulo">Registro Productos</h3>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <form>
+                    @*ProdcutosId*@
+                    <div class="form-row aling-items-center">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="ProductosIdPicker">ProductosId</label>
+                                <div class="input-group">
+                                    <InputNumber @bind-Value="productos.ProductoId" autoComplete="off" id="ProductoIdPicker" class="form-control col-4" />
+                                    <div class="form-group-append">
+                                        <button style="margin-left: 5px;" type="button" class="btn btn-primary input-group-text" @onclick="Buscar">
+                                            <span class="oi oi-zoom-in"></span> Buscar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Nombre Producto*@
+                    <div class="form-group">
+                        <label for="NombreTextBox">Nombre Producto</label>
+                        <InputText @bind-Value="productos.NombreProducto" id="NombreTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="@(() => productos.NombreProducto)" />
+                        <small id="NameInLineHelper">
+                            Ingresar el nombre del producto
+                        </small>
+                    </div>
+
+                    @*Marca del producto*@
+                    <div class="form-group">
+                        <label for="MarcaDelProductoTextBox">Marca del producto</label>
+                        <InputText @bind-Value="productos.MarcaProducto" id="MarcaDelProductoTextBox" class="form-control" autocomplete="off" />
+                        <ValidationMessage For="(() => productos.MarcaProducto)" />
+                        <small id="BrandNameInlineHelper">
+                            Ingresar el nombre de la marca
+                        </small>
+                    </div>
+
+                    @*Inventario*@
+                    <div class="form-group">
+                        <label for="InventoryTextBox">Inventario</label>
+                        <InputNumber @bind-Value="productos.Inventario" id="InventoryTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => productos.Inventario)" />
+                        <small id="InventoryInlineHelper">
+                            Ingresar la cantidad del producto en inventario
+                        </small>
+                    </div>
+
+                    @*Precio Venta*@
+                    <div class="form-group">
+                        <label>Precio de venta</label>
+                        <InputNumber @bind-Value="@productos.PrecioDeVenta" class="form-control" />
+                        <ValidationMessage For="(() => productos.PrecioDeVenta)" />
+                        <small id="SellPriceInlineHelper">
+                            Ingrese el precio de venta del producto
+                        </small>
+                    </div>
+
+                    @*Precio Compra*@
+                    <div class="form-group">
+                        <label>Precio de compra</label>
+                        <InputNumber @bind-Value="@productos.PrecioDeCompra" class="form-control" />
+                        <ValidationMessage For="(() => productos.PrecioDeCompra)" />
+                        <small id="SellPriceInlineHelper">
+                            Ingrese el precio de compra del producto
+                        </small>
+                    </div>
+
+                    @*Fecha ingreso*@
+                    <div class="form-group">
+                        <label for="FechaIngresoDatePicker">Fecha ingreso</label>
+                        <InputDate @bind-Value="productos.FechaIngreso" id="FechaIngresoDatePicker" class="form-control" />
+                        <ValidationMessage For="(()=> productos.FechaIngreso)" />
+                        <small id="EntryDateInlineHelper">
+                            Ingresar fecha de ingreso del producto
+                        </small>
+                    </div>
+
+                    @*SuplidorId*@
+                    <div class="form-group">
+                        <label for="UsuarioIdSelect">SuplidorId</label>
+                        <InputSelect @bind-Value="@suplidorId" class="form-control">
+                            <option value="0">Elige el usuario</option>
+                            <option value="1">DEFECTO</option>
+                        </InputSelect>
+                        <ValidationMessage For="(()=> productos.SuplidorId)" />
+                        <small id="SupplierIdInlineHelper">
+                            Ingresar el suplidor del producto
+                        </small>
+                    </div>
+
+                    @*CategoriaId*@
+                    <div class="form-group">
+                        <label for="CategoriaIdSelect">CategoriaId</label>
+                        <InputSelect @bind-Value="@categoriaId" id="CategoriaIdSelect" class="form-control">
+                            <option value="0">Elige el usuario</option>
+                            <option value="1">DEFECTO</option>
+                        </InputSelect>
+                        <ValidationMessage For="(()=> productos.CategoriaId)" />
+                        <small id="SupplierIdInlineHelper">
+                            Ingresar la categoria del productos
+                        </small>
+                    </div>
+
+                    @*UsuarioId*@
+                    <div class="form-group">
+                        <label for="UsuarioIdSelect">UsuarioId</label>
+                        <InputSelect @bind-Value="@usuarioId" class="form-control">
+                            <option value="0">Elige el usuario</option>
+                            @foreach (var item in listaUsuarios)
+                            {
+                                <option value="@item.UsuarioId">@item.Nombres</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="(()=> productos.UsuariosId)" />
+                        <small id="UserIdInlineHelper">
+                            Ingresar el usuario que esta insertando el producto
+                        </small>
+                    </div>
+
+                </form>
+
+            </div>
+
+            @*Buttons*@
+            <div class="card-footer">
+
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">
+                        <span class="oi oi-plus" aria-hidden="true"></span> Nuevo
+                    </button>
+
+                    <button type="submit" class="btn btn-lg btn-success">
+                        <span class="oi oi-clipboard" aria-hidden="true"></span> Guardar
+                    </button>
+
+                    <button class="btn btn-lg btn-danger" @onclick="Eliminar">
+                        <span class="oi oi-trash" aria-hidden="true"></span> Eliminar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </EditForm>
+
+@code {
+
+    [Parameter]
+    public int ProductoId { get; set; }
+    Productos productos = new Productos();
+
+    private string usuarioId;
+    private string suplidorId;
+    private string categoriaId;
+    List<Usuarios> listaUsuarios = new List<Usuarios>();
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        Buscar();
+        listaUsuarios = UsuariosBLL.GetList(x => true);
+    }
+
+    private void Nuevo()
+    {
+        productos = new Productos();
+        listaUsuarios = UsuariosBLL.GetList(x => true);
+        usuarioId = "";
+    }
+
+    private void Guardar()
+    {
+        bool guardo = false;
+        productos.UsuariosId = Convert.ToInt32(usuarioId);
+        productos.SuplidorId = Convert.ToInt32(suplidorId);
+        productos.CategoriaId = Convert.ToInt32(categoriaId);
+
+        try
+        {
+            if (UsuariosBLL.ExistenciaUsuario(productos.UsuariosId))
+            {
+                guardo = ProductosBLL.Guardar(productos);
+            }
+
+            if (guardo)
+            {
+                Nuevo();
+                toast.ShowSuccess("Guardado correctamente");
+            }
+            else
+                toast.ShowError("No guardo");
+        }
+        catch (Exception e)
+        {
+
+            toast.ShowError($"Ha ocurrido un error {e.Message}, Intentelo nuevamente");
+        }
+    }
+
+    private void Buscar()
+    {
+        try
+        {
+            if (productos.ProductoId > 0)
+            {
+
+                var encontrado = ProductosBLL.Buscar(productos.ProductoId);
+                if (encontrado != null)
+                {
+                    this.productos = encontrado;
+
+                    categoriaId = this.productos.CategoriaId.ToString();
+                    suplidorId = this.productos.SuplidorId.ToString();
+                    usuarioId = this.productos.UsuariosId.ToString();
+                }
+                else
+                    toast.ShowWarning("No se encontrado");
+            }
+        }
+        catch (Exception e)
+        {
+
+            toast.ShowError($"Ha ocurrido un error con la base de datos {e.Message}, Intentelo nuevamente");
+        }
+    }
+
+    private void Eliminar()
+    {
+        bool eliminar = false;
+        try
+        {
+            eliminar = ProductosBLL.Eliminar(productos.ProductoId);
+            if (eliminar)
+            {
+                Nuevo();
+                toast.ShowSuccess("Elimino correctamente");
+            }
+            else
+                toast.ShowError("No fue posible eliminar el procucto intentelo nuevamente");
+        }
+        catch (Exception e)
+        {
+
+            toast.ShowError($"Ha ocurrido un error con la base de datos {e.Message}, Intentelo nuevamente");
+        }
+    }
+}

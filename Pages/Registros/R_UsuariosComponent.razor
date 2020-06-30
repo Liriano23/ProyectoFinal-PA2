@@ -4,15 +4,7 @@
 @using ProyectoFinal_PA2.BLL;
 @inject IToastService toast
 
-<style type="text/css">
 
-    #Logo { height: 120px; width: 100px; margin-left: 390px;}
-    #Titulo { float: left; margin-left: 350px; font-family: "Times New Roman, Arial, sans-serif"; font-weight: bold;}
-    #PrincipalContainer { background-color: rgb(188,191,197); }
-    label{ font-size: 23px; font-family: "Times New Roman, Arial, sans-serif"; }
-    small { color: rgb(0,0,0); font-size: 20px; font-family: "Times New Roman, Arial, sans-serif";}
-
-</style>
 <EditForm Model="usuario" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
     
@@ -244,14 +236,22 @@
     {
         bool eliminar;
 
-        eliminar = UsuariosBLL.Eliminar(usuario.UsuarioId);
-        if (eliminar)
+        try
         {
-            Nuevo();
-            toast.ShowSuccess("Elimino correctamente");
+            eliminar = UsuariosBLL.Eliminar(usuario.UsuarioId);
+            if (eliminar)
+            {
+                Nuevo();
+                toast.ShowSuccess("Elimino correctamente");
+            }
+            else
+                toast.ShowError("No fue posible eliminar");
         }
-        else
-            toast.ShowError("No fue posible eliminar");
+        catch (Exception)
+        {
+            toast.ShowError("Ha ocurrido un error con la base de datos, intente nuevamente");
+        }
+
     }
 
 }

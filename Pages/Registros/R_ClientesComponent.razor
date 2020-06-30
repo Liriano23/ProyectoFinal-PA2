@@ -24,7 +24,7 @@
                         <div class="form-group">
                             <label for="ClienteIdPicker">ClienteId</label>
                             <div class="input-group">
-                                <InputNumber @bind-Value="cliente.ClienteId" autoComplete="off" id="UsuarioIdTextBox" class="form-control col-4" />
+                                <InputNumber @bind-Value="cliente.ClienteId" autoComplete="off" id="ClienteIdPicker" class="form-control col-4" />
                                 <div class="form-group-append">
                                     <button style="margin-left: 5px;" type="button" class="btn btn-primary input-group-text" @onclick="Buscar">
                                         <span class="oi oi-zoom-in"></span> Buscar
@@ -207,7 +207,7 @@
         bool guardo = false;
         cliente.UsuariosId = Convert.ToInt32(usuarioId);
 
-        if (ClientesBLL.ExistenciaUsuario(cliente.UsuariosId))
+        if (UsuariosBLL.ExistenciaUsuario(cliente.UsuariosId))
         {
             guardo = ClientesBLL.Guardar(cliente);
         }

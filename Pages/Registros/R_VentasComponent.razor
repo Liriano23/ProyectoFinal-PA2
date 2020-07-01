@@ -1,0 +1,97 @@
+﻿@page "/RegistroVentas"
+@page "/RegistroVentas/{VentaId:int}"
+
+@using ProyectoFinal_PA2.BLL;
+@using ProyectoFinal_PA2.Models;
+@inject IToastService toast 
+
+<EditForm Model="ventas" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator/>
+
+    <div class="card">
+        <div class="card-header">
+            <img id="Logo" src="css/Images/ProductsImage.png" title="LogoVentas" alt="Logo para el formulario de ventas" />
+            <h3 id="Titulo">Registro ventas</h3>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <form>
+            @*VentaId*@
+            <div class="form-row align-items-center">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="VentaIdPicker">Venta Id</label>
+                        <div class="input-group">
+                            <InputNumber @bind-Value="ventas.VentaId" id="VentaIdPicker" min="0" class="form-group col-4"/>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary" @onclick="Buscar">
+                                    <span class="oi oi-zoom-in"/> Buscar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*ClienteID*@
+            <div class="form-group">
+                <label for="VentaIdPicker"> Cliente Id </label>
+                <InputSelect @bind-Value="ClienteID" class="form-control">
+                    <option value="0">Elige usuario</option>
+                    @foreach(var clients in ListaClientes)
+                    {
+                        <option value="@clients.ClienteId">@clients.Nombres</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="(() => ventas.ClienteId)" />
+                <small id="ClientIdLineHelper" class="text-muted"> 
+                    Seleccione el cliente 
+                </small>
+            </div>
+
+            @*EmpleadoId*@
+            <div class="form-group">
+                <label for="EmployeerIdPicker">Empleado Id</label>
+                
+            </div>
+
+        </form>
+    </div>
+
+</EditForm>
+
+ 
+@code {
+
+    public int VentaId { get; set; }
+    Ventas ventas = new Ventas();
+
+    public string ClienteID { get; set; }
+    public List<Clientes> ListaClientes { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        Buscar();
+        ListaClientes = ClientesBLL.GetClientes();
+    }
+
+    private void Nuevo()
+    {
+
+    }
+
+    private void Guardar()
+    {
+
+    }
+
+    private void Buscar()
+    {
+
+    }
+
+
+
+}

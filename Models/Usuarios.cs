@@ -61,6 +61,7 @@ namespace ProyectoFinal_PA2.Models
 
         public ICollection<Clientes> Clientes { get; set; }
         public ICollection<Productos> Productos { get; set; }
+        public ICollection<Ventas> Ventas { get; set; }
 
         public Usuarios()
         {

@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProyectoFinal-PA2", "ProyectoFinal-PA2.csproj", "{9B8239C8-C052-41AC-A671-B168D4E8162B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProyectoFinal-PA2Tests", "..\ProyectoFinal-PA2Tests\ProyectoFinal-PA2Tests.csproj", "{1DA108BF-54BE-4604-B49A-6E00286768A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProyectoFinal-PA2Tests", "..\ProyectoFinal-PA2Tests\ProyectoFinal-PA2Tests.csproj", "{1DA108BF-54BE-4604-B49A-6E00286768A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{1F09252A-E494-4215-986E-BB79BBE5A7D3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project", "Project", "{0E609AFB-2CAF-4B91-9E41-118F9DCAEBDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +28,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9B8239C8-C052-41AC-A671-B168D4E8162B} = {0E609AFB-2CAF-4B91-9E41-118F9DCAEBDB}
+		{1DA108BF-54BE-4604-B49A-6E00286768A8} = {1F09252A-E494-4215-986E-BB79BBE5A7D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6566B011-87D7-4596-994F-E829684E4208}

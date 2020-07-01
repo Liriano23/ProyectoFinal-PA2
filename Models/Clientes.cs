@@ -54,7 +54,7 @@ namespace ProyectoFinal_PA2.Models
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}",ApplyFormatInEditMode =true)]
         public DateTime FechaIngreso { get; set; }
 
-        [Required(ErrorMessage = "Debe ingresar el usuario que esta agregando al cliente")]
+        [Required(ErrorMessage = "Debe seleccionar el usuario que esta agregando al cliente")]
         public int UsuariosId { get; set; }
         public Usuarios Usuarios { get; set; }
 

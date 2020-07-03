@@ -146,41 +146,16 @@ namespace ProyectoFinal_PA2.BLL
             return lista;
         }
 
-        public static List<Productos> GetProductos()
-        {
-            List<Productos> lista = new List<Productos>();
-            Contexto db = new Contexto();
-
-            try
-            {
-                lista = db.Productos.ToList();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            finally
-            {
-                db.Dispose();
-            }
-
-            return lista;
-        }
-
-        public static bool ExistenciaProductos(int productoId)
+        public static bool ExistenciaProductos(int id)
         {
             bool existe = false;
             Contexto db = new Contexto();
             try
             {
-                var productos = db.Productos.Find(productoId);
-                if (productos != null)
-                    existe = true;
+                existe = db.Productos.Any(x => x.ProductoId == id);
             }
             catch (Exception)
             {
-
                 throw;
             }
             finally

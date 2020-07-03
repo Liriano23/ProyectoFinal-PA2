@@ -152,28 +152,6 @@ namespace ProyectoFinal_PA2.BLL
             return lista;
         }
 
-        public static List<Clientes> GetClientes()
-        {
-            List<Clientes> lista = new List<Clientes>();
-            Contexto db = new Contexto();
-
-            try
-            {
-                lista = db.Clientes.ToList();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            finally
-            {
-                db.Dispose();
-            }
-
-            return lista;
-        }
-
         public static bool ExistenciaClientes(int id)
         {
             bool existe = false;

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ProyectoFinal_PA2.DAL;
 using ProyectoFinal_PA2.Models;
@@ -97,7 +96,6 @@ namespace ProyectoFinal_PA2.BLL
                     db.Remove(ventas);
                     paso = (db.SaveChanges() > 0);
                 }
-
             }
             catch (Exception)
             {
@@ -153,26 +151,5 @@ namespace ProyectoFinal_PA2.BLL
             }
             return lista;
         }
-
-        public static List<Ventas> GetVentas()
-        {
-            List<Ventas> lista = new List<Ventas>();
-            Contexto db = new Contexto();
-            try
-            {
-                lista = db.Ventas.ToList();
-
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                db.Dispose();
-            }
-            return lista;
-        }
-
     }
 }

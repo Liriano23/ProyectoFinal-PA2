@@ -4,11 +4,12 @@
 <EditForm Model="ventas" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
 
-    <div class="card">
+    <div id="PrincipalContainer" class="card">
         <div class="card-header">
             <img id="Logo" src="css/Images/ProductsImage.png" title="LogoVentas" alt="Logo para el formulario de ventas" />
             <h3 id="Titulo">Registro ventas</h3>
         </div>
+
         <div class="card-body">
             <form>
                 @*VentaId*@
@@ -39,7 +40,7 @@
                         }
                     </InputSelect>
                     <ValidationMessage For="(() => ventas.ClienteId)" />
-                    <small id="ClientIdLineHelper" class="text-muted">
+                    <small id="ClientIdLineHelper">
                         Seleccione el cliente
                     </small>
                 </div>
@@ -49,17 +50,17 @@
                     <label for="EmployeerIdPicker">Empleado Id</label>
                     <InputNumber @bind-Value="ventas.EmpleadoId" class="form-control" />
                     <ValidationMessage For="(() => ventas.EmpleadoId)" />
-                    <small id="EmployeerIdLineHelper" class="text-muted">
+                    <small id="EmployeerIdLineHelper">
                         Seleccione el empleado
                     </small>
 
                     @* <InputSelect @bind-Value="ventas.EmpleadoId" class="form-control">
-                <option value="0">seleccione empleado</option>
-                @foreach(var employeer in ListaEmpleados)
-                {
-                    <option value="@employeer.empleadoID">@employeer.Nombres</option>
-                }
-            </InputSelect>*@
+                            <option value="0">seleccione empleado</option>
+                            @foreach(var employeer in ListaEmpleados)
+                            {
+                                <option value="@employeer.empleadoID">@employeer.Nombres</option>
+                            }
+                        </InputSelect>*@
                 </div>
 
                 @*FechaEmision*@
@@ -88,6 +89,14 @@
                     </small>
                 </div>
 
+                @*ITBIS*@
+                <div class="form-group" id="ITBISContainer">
+                    <label for="SubTotalInputNumber">ITBIS</label>
+                    <InputNumber @bind-Value="ventas.ITBIS" id="ITBISInputNumber" class="form-control" />
+                    <ValidationMessage For="(() => ventas.ITBIS)" />
+                    <small id="TotalInLineHelper">Valor del itbis </small>
+                </div>
+
                 @*Datos del detalle*@
                 <div class="row">
                     <div class="form-group col">
@@ -95,9 +104,10 @@
                         <InputNumber @bind-Value="DetalleId" class="form-control" readOnly="true" />
                     </div>
 
+                    @*Producto Id*@
                     <div class="form-group col">
                         <label>Producto Id</label>
-                        <InputSelect @bind-Value="ProductoID" class="form-control">
+                        <InputSelect @bind-Value="ProductoID" class="form-control" @onfocusout="DeterminarPrecioProducto">
                             <option value="0">Elige usuario</option>
                             @foreach (var products in ListaProductos)
                             {
@@ -105,7 +115,7 @@
                             }
                         </InputSelect>
                         <ValidationMessage For="(() => ventasDetalle.ProductoId)" />
-                        <small id="ProductsIdLineHelper" class="text-muted">
+                        <small id="ProductsIdLineHelper">
                             Seleccione el id del producto
                         </small>
                     </div>
@@ -114,10 +124,10 @@
                     <div class="form-group col">
                         <label>Precio</label>
                         <div class="input-group">
-                            <InputNumber @bind-Value="precio" class="form-control" />
+                            <InputNumber @bind-Value="precio" class="form-control" ReadOnly="true"/>
                             <ValidationMessage For="(() => ventasDetalle.Precio)" />
                         </div>
-                        <small id="QuantityIdInLineHelper" class="text-muted">
+                        <small id="PriceIdInLineHelper">
                             Precio del producto
                         </small>
                     </div>
@@ -134,7 +144,7 @@
                                 </button>
                             </div>
                         </div>
-                        <small id="QuantityIdInLineHelper" class="text-muted"> Cantidad del producto </small>
+                        <small id="QuantityIdInLineHelper"> Cantidad del producto </small>
                     </div>
                 </div>
 
@@ -166,37 +176,30 @@
                     </tbody>
                 </table>
 
-                @*ITBIS*@
-                <div class="form-group">
-                    <label for="SubTotalInputNumber">ITBIS</label>
-                    <InputNumber @bind-Value="ventas.ITBIS" id="ITBISInputNumber" class="form-control" />
-                    <ValidationMessage For="(() => ventas.ITBIS)" />
-                    <small id="TotalInLineHelper" class="text-muted">Valor del itbis </small>
-                </div>
-
                 @*Descuento*@
-                <div class="form-group">
+                <div class="form-group" id="DescuentoContainer">
                     <label for="SubTotalInputNumber">Descuento</label>
                     <InputNumber @bind-Value="ventas.Descuento" id="ITBISInputNumber" class="form-control" />
                     <ValidationMessage For="(() => ventas.Descuento)" />
-                    <small id="TotalInLineHelper" class="text-muted">Valor del descuento </small>
+                    <small id="DiscountInLineHelper">Valor del descuento </small>
                 </div>
 
                 @*SubTotal*@
-                <div class="form-group" >
+                <div class="form-group" id="SubTotalContainer">
                     <label for="SubTotalInputNumber">SubTotalTotal</label>
                     <InputNumber @bind-Value="ventas.SubTotal" id="SubTotalInputNumber" readOnly="true" class="form-control" />
                     <ValidationMessage For="(() => ventas.SubTotal)" />
-                    <small id="TotalInLineHelper" class="text-muted">Valor total de la venta </small>
+                    <small id="SubtotalTotalInLineHelper">Valor Subtotal de la venta </small>
                 </div>
 
                 @*Total*@
-                <div class="form-group">
+                <div class="form-group" id="TotalContainer">
                     <label for="TotalInputNumber">Total</label>
                     <InputNumber @bind-Value="ventas.Total" id="TotalInputNumber" readOnly="true" class="form-control" />
                     <ValidationMessage For="(() => ventas.Total)" />
-                    <small id="TotalInLineHelper" class="text-muted">Valor total de la venta </small>
+                    <small id="TotalInLineHelper">Valor total de la venta </small>
                 </div>
+
             </form>
         </div>
 
@@ -250,7 +253,7 @@
         Nuevo();
         Buscar();
 
-        ListaClientes = ClientesBLL.GetList(x=> true);
+        ListaClientes = ClientesBLL.GetList(x => true);
         ListaUsuarios = UsuariosBLL.GetList(x => true);
         ListaProductos = ProductosBLL.GetList(x => true);
     }
@@ -265,6 +268,7 @@
         ClienteID = "0";
         //EmpleadoID = "0";
         ProductoID = "0";
+        precio = 0;
     }
 
     private void Buscar()
@@ -294,6 +298,7 @@
             toast.ShowError($"Ha ocurrido un error {e.Message}, Intentelo nuevamente");
         }
     }
+
     private void Guardar()
     {
         bool guardo = false;
@@ -303,7 +308,7 @@
             ventas.ClienteId = Convert.ToInt32(ClienteID);
             ventas.UsuariosId = Convert.ToInt32(UsuarioID);
 
-            if (UsuariosBLL.ExistenciaUsuario(ventas.UsuariosId)==true && ClientesBLL.ExistenciaClientes(ventas.ClienteId)==true )
+            if (UsuariosBLL.ExistenciaUsuario(ventas.UsuariosId) == true && ClientesBLL.ExistenciaClientes(ventas.ClienteId) == true)
             {
                 guardo = VentasBLL.Guardar(ventas);
             }
@@ -341,7 +346,6 @@
         {
             toast.ShowError($"Ha ocurrido un error {e.Message}, Intentelo nuevamente");
         }
-
     }
 
     private void AgregarAlDetalle()
@@ -355,13 +359,13 @@
             Precio = precio
         });
 
+        CalcularTotal();
+
         DetalleId = 0;
         ProductoID = "0";
         //EmpleadoID = "0";
         cantidad = 0;
         precio = 0;
-
-        CalcularTotal();
     }
 
     private void EliminarDetalle(VentasDetalle detalle)
@@ -371,22 +375,53 @@
             ventas.Detalle.Remove(detalle);
             CalcularTotal();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-
+            toast.ShowError($"Ha ocurrido un error {e.Message}, Intetelo nuevamente");
         }
     }
 
     private void CalcularTotal()
     {
-        decimal subtotal = 0;
-
-        foreach (var item in ventas.Detalle)
+        try
         {
-            subtotal += item.Precio;
-        }
+            decimal subtotal = 0;
+            double itbis = 0;
 
-        ventas.SubTotal = subtotal;
-        ventas.Total = subtotal;
+            foreach (var item in ventas.Detalle)
+            {
+                subtotal = ((subtotal) + (item.Precio * item.Cantidad));
+            }
+
+            ventas.SubTotal = subtotal;
+            itbis = ((ventas.ITBIS / 100) * Convert.ToDouble(subtotal));
+
+            ventas.Total = ((subtotal + Convert.ToDecimal(itbis)) - (ventas.Descuento));
+        }
+        catch (Exception e)
+        {
+            toast.ShowError($"Ha ocurrido un error {e.Message}, Intetelo nuevamente");
+        }
     }
+
+    private void DeterminarPrecioProducto()
+    {
+        try
+        {
+            int id = Convert.ToInt32(ProductoID);
+
+            if (ProductosBLL.Existe(id))
+            {
+                var productos = ProductosBLL.Buscar(id);
+                precio = productos.PrecioDeVenta;
+            }
+            else
+                toast.ShowWarning("El producto no exite");
+        }
+        catch (Exception e)
+        {
+            toast.ShowError($"Ha ocurrido un error {e.Message}, Intetelo nuevamente");
+        }
+    }
+
 }

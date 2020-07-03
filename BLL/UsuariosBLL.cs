@@ -152,27 +152,6 @@ namespace ProyectoFinal_PA2.BLL
             return listas;
         }
 
-        public static List<Usuarios> GetUsuarios()
-        {
-            List<Usuarios> lista = new List<Usuarios>();
-            Contexto db = new Contexto();
-
-            try
-            {
-                lista = db.Usuarios.ToList();
-            }
-            catch (Exception)
-            {
-                throw ;
-            }
-            finally
-            {
-                db.Dispose();
-            }
-
-            return lista;
-        }
-
         public static bool ExistenciaUsuario(int id)
         {
             bool existe = false;

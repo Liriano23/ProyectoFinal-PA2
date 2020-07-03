@@ -168,6 +168,26 @@ namespace ProyectoFinal_PA2.BLL
             return lista;
         }
 
-        
+        public static bool ExistenciaProductos(int productoId)
+        {
+            bool existe = false;
+            Contexto db = new Contexto();
+            try
+            {
+                var productos = db.Productos.Find(productoId);
+                if (productos != null)
+                    existe = true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+            return existe;
+        }
     }
 }

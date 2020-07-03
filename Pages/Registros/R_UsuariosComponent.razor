@@ -1,9 +1,5 @@
 ﻿@page "/RegistroUsuarios"
 @page "/RegistroUsuarios/{UsuarioId:int}"
-@using ProyectoFinal_PA2.Models;
-@using ProyectoFinal_PA2.BLL;
-@inject IToastService toast
-
 
 <EditForm Model="usuario" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />

@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using ProyectoFinal_PA2.BLL;
 using ProyectoFinal_PA2.DAL;
 using ProyectoFinal_PA2.Models;
 
@@ -176,6 +173,25 @@ namespace ProyectoFinal_PA2.BLL
 
             return lista;
         }
-        
+
+        public static bool ExistenciaClientes(int id)
+        {
+            bool existe = false;
+            Contexto db = new Contexto();
+            try
+            {
+                existe= db.Clientes.Any( x=> x.ClienteId == id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+            return existe;
+        }
     }
 }

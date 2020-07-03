@@ -1,97 +1,392 @@
 ﻿@page "/RegistroVentas"
 @page "/RegistroVentas/{VentaId:int}"
 
-@using ProyectoFinal_PA2.BLL;
-@using ProyectoFinal_PA2.Models;
-@inject IToastService toast 
-
 <EditForm Model="ventas" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator/>
+    <DataAnnotationsValidator />
 
     <div class="card">
         <div class="card-header">
             <img id="Logo" src="css/Images/ProductsImage.png" title="LogoVentas" alt="Logo para el formulario de ventas" />
             <h3 id="Titulo">Registro ventas</h3>
         </div>
-    </div>
-
-    <div class="card-body">
-        <form>
-            @*VentaId*@
-            <div class="form-row align-items-center">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="VentaIdPicker">Venta Id</label>
-                        <div class="input-group">
-                            <InputNumber @bind-Value="ventas.VentaId" id="VentaIdPicker" min="0" class="form-group col-4"/>
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-primary" @onclick="Buscar">
-                                    <span class="oi oi-zoom-in"/> Buscar
-                                </button>
+        <div class="card-body">
+            <form>
+                @*VentaId*@
+                <div class="form-row align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="VentaIdPicker">Venta Id</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="ventas.VentaId" id="VentaIdPicker" min="0" class="form-control col-4" />
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="Buscar">
+                                        <span class="oi oi-zoom-in" /> Buscar
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            @*ClienteID*@
-            <div class="form-group">
-                <label for="VentaIdPicker"> Cliente Id </label>
-                <InputSelect @bind-Value="ClienteID" class="form-control">
-                    <option value="0">Elige usuario</option>
-                    @foreach(var clients in ListaClientes)
-                    {
-                        <option value="@clients.ClienteId">@clients.Nombres</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="(() => ventas.ClienteId)" />
-                <small id="ClientIdLineHelper" class="text-muted"> 
-                    Seleccione el cliente 
-                </small>
-            </div>
+                @*ClienteID*@
+                <div class="form-group">
+                    <label for="ClientIdPicker"> Cliente Id </label>
+                    <InputSelect @bind-Value="ClienteID" id="ClientIdPicker" class="form-control">
+                        <option value="0">Elige usuario</option>
+                        @foreach (var clients in ListaClientes)
+                        {
+                            <option value="@clients.ClienteId">@clients.Nombres</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="(() => ventas.ClienteId)" />
+                    <small id="ClientIdLineHelper" class="text-muted">
+                        Seleccione el cliente
+                    </small>
+                </div>
 
-            @*EmpleadoId*@
-            <div class="form-group">
-                <label for="EmployeerIdPicker">Empleado Id</label>
-                
-            </div>
+                @*EmpleadoId*@
+                <div class="form-group">
+                    <label for="EmployeerIdPicker">Empleado Id</label>
+                    <InputNumber @bind-Value="ventas.EmpleadoId" class="form-control" />
+                    <ValidationMessage For="(() => ventas.EmpleadoId)" />
+                    <small id="EmployeerIdLineHelper" class="text-muted">
+                        Seleccione el empleado
+                    </small>
 
-        </form>
+                    @* <InputSelect @bind-Value="ventas.EmpleadoId" class="form-control">
+                <option value="0">seleccione empleado</option>
+                @foreach(var employeer in ListaEmpleados)
+                {
+                    <option value="@employeer.empleadoID">@employeer.Nombres</option>
+                }
+            </InputSelect>*@
+                </div>
+
+                @*FechaEmision*@
+                <div class="form-group">
+                    <label for="DatePicker">Fecha emision</label>
+                    <InputDate @bind-Value="ventas.FechaEmision" id="DatePicker" class="form-control" readonly="true" />
+                    <ValidationMessage For="(() => ventas.FechaEmision)" />
+                    <small id="EntryDateInlineHelper">
+                        Fecha de emision de la factura
+                    </small>
+                </div>
+
+                @*UsuarioId*@
+                <div class="form-group">
+                    <label for="UsuarioIdSelect">Usuario Id</label>
+                    <InputSelect @bind-Value="@UsuarioID" class="form-control">
+                        <option value="0">Elige el usuario</option>
+                        @foreach (var item in ListaUsuarios)
+                        {
+                            <option value="@item.UsuarioId">@item.Nombres</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="(()=> ventas.UsuariosId)" />
+                    <small id="UserIdInlineHelper">
+                        Ingresar el usuario que esta insertando la venta
+                    </small>
+                </div>
+
+                @*Datos del detalle*@
+                <div class="row">
+                    <div class="form-group col">
+                        <label>Id</label>
+                        <InputNumber @bind-Value="DetalleId" class="form-control" readOnly="true" />
+                    </div>
+
+                    <div class="form-group col">
+                        <label>Producto Id</label>
+                        <InputSelect @bind-Value="ProductoID" class="form-control">
+                            <option value="0">Elige usuario</option>
+                            @foreach (var products in ListaProductos)
+                            {
+                                <option value="@products.ProductoId">@products.NombreProducto</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="(() => ventasDetalle.ProductoId)" />
+                        <small id="ProductsIdLineHelper" class="text-muted">
+                            Seleccione el id del producto
+                        </small>
+                    </div>
+
+                    @*Precio*@
+                    <div class="form-group col">
+                        <label>Precio</label>
+                        <div class="input-group">
+                            <InputNumber @bind-Value="precio" class="form-control" />
+                            <ValidationMessage For="(() => ventasDetalle.Precio)" />
+                        </div>
+                        <small id="QuantityIdInLineHelper" class="text-muted">
+                            Precio del producto
+                        </small>
+                    </div>
+
+                    @*Cantidad*@
+                    <div class="form-group col">
+                        <label>Cantidad</label>
+                        <div class="input-group">
+                            <InputNumber @bind-Value="cantidad" class="form-control" />
+                            <ValidationMessage For="(() => ventasDetalle.Cantidad)" />
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary" @onclick="AgregarAlDetalle">
+                                    <i class="oi oi-plus" aria-hidden="true" /> Agregar
+                                </button>
+                            </div>
+                        </div>
+                        <small id="QuantityIdInLineHelper" class="text-muted"> Cantidad del producto </small>
+                    </div>
+                </div>
+
+
+
+                @*Detallle*@
+                <table class="table" style="border-bottom: 1px groove;">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">ProductoId</th>
+                            <th scope="col">VentaId</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ventas.Detalle)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.ProductoId</td>
+                                <td>@item.VentaId</td>
+                                <td>@item.Cantidad</td>
+                                <td>@item.Precio</td>
+                                <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                @*ITBIS*@
+                <div class="form-group">
+                    <label for="SubTotalInputNumber">ITBIS</label>
+                    <InputNumber @bind-Value="ventas.ITBIS" id="ITBISInputNumber" class="form-control" />
+                    <ValidationMessage For="(() => ventas.ITBIS)" />
+                    <small id="TotalInLineHelper" class="text-muted">Valor del itbis </small>
+                </div>
+
+                @*Descuento*@
+                <div class="form-group">
+                    <label for="SubTotalInputNumber">Descuento</label>
+                    <InputNumber @bind-Value="ventas.Descuento" id="ITBISInputNumber" class="form-control" />
+                    <ValidationMessage For="(() => ventas.Descuento)" />
+                    <small id="TotalInLineHelper" class="text-muted">Valor del descuento </small>
+                </div>
+
+                @*SubTotal*@
+                <div class="form-group" >
+                    <label for="SubTotalInputNumber">SubTotalTotal</label>
+                    <InputNumber @bind-Value="ventas.SubTotal" id="SubTotalInputNumber" readOnly="true" class="form-control" />
+                    <ValidationMessage For="(() => ventas.SubTotal)" />
+                    <small id="TotalInLineHelper" class="text-muted">Valor total de la venta </small>
+                </div>
+
+                @*Total*@
+                <div class="form-group">
+                    <label for="TotalInputNumber">Total</label>
+                    <InputNumber @bind-Value="ventas.Total" id="TotalInputNumber" readOnly="true" class="form-control" />
+                    <ValidationMessage For="(() => ventas.Total)" />
+                    <small id="TotalInLineHelper" class="text-muted">Valor total de la venta </small>
+                </div>
+            </form>
+        </div>
+
+
+        @*Buttons*@
+        <div class="card-footer">
+            <div class="form-group text-center" display: inline-block>
+                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">
+                    <span class="oi oi-plus"></span> Nuevo
+                </button>
+
+                <button type="submit" class="btn btn-lg btn-success">
+                    <span class="oi oi-clipboard" aria-hidden="true"></span> Guardar
+                </button>
+
+                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">
+                    <span class="oi oi-trash"></span>   Eliminar
+                </button>
+            </div>
+        </div>
+
     </div>
-
 </EditForm>
 
- 
 @code {
-
+    [Parameter]
     public int VentaId { get; set; }
     Ventas ventas = new Ventas();
 
-    public string ClienteID { get; set; }
+    VentasDetalle ventasDetalle = new VentasDetalle();
+
+    public string ClienteID = "0";
+    //public string EmpleadoID = "0";
+    public string ProductoID = "0";
+    public string UsuarioID = "0";
+
+
+    public int DetalleId = 0;
+    public int cantidad = 0;
+    public decimal precio = 0;
+
     public List<Clientes> ListaClientes { get; set; }
+    //public List<Empleados> ListaEmpleados { get; set; }
+    public List<Productos> ListaProductos { get; set; }
+    public List<Usuarios> ListaUsuarios { get; set; }
+
+
 
     protected override void OnInitialized()
     {
         Nuevo();
         Buscar();
-        ListaClientes = ClientesBLL.GetClientes();
+
+        ListaClientes = ClientesBLL.GetList(x=> true);
+        ListaUsuarios = UsuariosBLL.GetList(x => true);
+        ListaProductos = ProductosBLL.GetList(x => true);
     }
 
     private void Nuevo()
     {
+        ventas = new Ventas();
+        ListaUsuarios = UsuariosBLL.GetList(x => true);
+        ListaProductos = ProductosBLL.GetList(x => true);
 
-    }
-
-    private void Guardar()
-    {
-
+        UsuarioID = "0";
+        ClienteID = "0";
+        //EmpleadoID = "0";
+        ProductoID = "0";
     }
 
     private void Buscar()
     {
+        try
+        {
+            if (ventas.VentaId > 0)
+            {
+                var encontrado = VentasBLL.Buscar(ventas.VentaId);
+
+                if (encontrado != null)
+                {
+                    this.ventas = encontrado;
+                    UsuarioID = this.ventas.UsuariosId.ToString();
+                    ClienteID = this.ventas.ClienteId.ToString();
+                    //ProductosID = this.ventas..ToString();
+                    CalcularTotal();
+                }
+                else
+                {
+                    toast.ShowWarning("No encontrado");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            toast.ShowError($"Ha ocurrido un error {e.Message}, Intentelo nuevamente");
+        }
+    }
+    private void Guardar()
+    {
+        bool guardo = false;
+
+        try
+        {
+            ventas.ClienteId = Convert.ToInt32(ClienteID);
+            ventas.UsuariosId = Convert.ToInt32(UsuarioID);
+
+            if (UsuariosBLL.ExistenciaUsuario(ventas.UsuariosId)==true && ClientesBLL.ExistenciaClientes(ventas.ClienteId)==true )
+            {
+                guardo = VentasBLL.Guardar(ventas);
+            }
+
+            if (guardo)
+            {
+                Nuevo();
+                toast.ShowSuccess("Guardado correctamente");
+            }
+            else
+                toast.ShowError("No guardo");
+        }
+        catch (Exception e)
+        {
+            toast.ShowError($"Ha ocurrido un error {e.Message}, Intentelo nuevamente");
+        }
+    }
+
+    private void Eliminar()
+    {
+        try
+        {
+            bool elimino;
+            elimino = VentasBLL.Eliminar(ventas.VentaId);
+
+            if (elimino)
+            {
+                Nuevo();
+                toast.ShowSuccess("Elimino Correctamente");
+            }
+            else
+                toast.ShowError("No elimino");
+        }
+        catch (Exception e)
+        {
+            toast.ShowError($"Ha ocurrido un error {e.Message}, Intentelo nuevamente");
+        }
 
     }
 
+    private void AgregarAlDetalle()
+    {
+        ventas.Detalle.Add(new VentasDetalle
+        {
+            Id = 0,
+            ProductoId = Convert.ToInt32(ProductoID),
+            VentaId = ventas.VentaId,
+            Cantidad = cantidad,
+            Precio = precio
+        });
 
+        DetalleId = 0;
+        ProductoID = "0";
+        //EmpleadoID = "0";
+        cantidad = 0;
+        precio = 0;
 
+        CalcularTotal();
+    }
+
+    private void EliminarDetalle(VentasDetalle detalle)
+    {
+        try
+        {
+            ventas.Detalle.Remove(detalle);
+            CalcularTotal();
+        }
+        catch (Exception)
+        {
+
+        }
+    }
+
+    private void CalcularTotal()
+    {
+        decimal subtotal = 0;
+
+        foreach (var item in ventas.Detalle)
+        {
+            subtotal += item.Precio;
+        }
+
+        ventas.SubTotal = subtotal;
+        ventas.Total = subtotal;
+    }
 }

@@ -179,7 +179,7 @@
                 @*Descuento*@
                 <div class="form-group" id="DescuentoContainer">
                     <label for="SubTotalInputNumber">Descuento</label>
-                    <InputNumber @bind-Value="ventas.Descuento" id="ITBISInputNumber" class="form-control" />
+                    <InputNumber @bind-Value="ventas.Descuento" id="ITBISInputNumber" class="form-control" @onfocusout="CalcularTotalVenta"/>
                     <ValidationMessage For="(() => ventas.Descuento)" />
                     <small id="DiscountInLineHelper">Valor del descuento </small>
                 </div>
@@ -202,7 +202,6 @@
 
             </form>
         </div>
-
 
         @*Buttons*@
         <div class="card-footer">
@@ -227,8 +226,8 @@
 @code {
     [Parameter]
     public int VentaId { get; set; }
-    Ventas ventas = new Ventas();
 
+    Ventas ventas = new Ventas();
     VentasDetalle ventasDetalle = new VentasDetalle();
 
     public string ClienteID = "0";
@@ -284,8 +283,8 @@
                     this.ventas = encontrado;
                     UsuarioID = this.ventas.UsuariosId.ToString();
                     ClienteID = this.ventas.ClienteId.ToString();
-                    //ProductosID = this.ventas..ToString();
-                    CalcularTotal();
+                    //ProductosID = this.ventas.ToString();
+                    CalcularTotalVenta();
                 }
                 else
                 {
@@ -307,6 +306,7 @@
         {
             ventas.ClienteId = Convert.ToInt32(ClienteID);
             ventas.UsuariosId = Convert.ToInt32(UsuarioID);
+            int id = Convert.ToInt32(ProductoID);
 
             if (UsuariosBLL.ExistenciaUsuario(ventas.UsuariosId) == true && ClientesBLL.ExistenciaClientes(ventas.ClienteId) == true)
             {
@@ -359,7 +359,8 @@
             Precio = precio
         });
 
-        CalcularTotal();
+        AumentarCantidadInventario();
+        CalcularTotalVenta();
 
         DetalleId = 0;
         ProductoID = "0";
@@ -373,7 +374,7 @@
         try
         {
             ventas.Detalle.Remove(detalle);
-            CalcularTotal();
+            CalcularTotalVenta();
         }
         catch (Exception e)
         {
@@ -381,7 +382,7 @@
         }
     }
 
-    private void CalcularTotal()
+    private void CalcularTotalVenta()
     {
         try
         {
@@ -422,6 +423,21 @@
         {
             toast.ShowError($"Ha ocurrido un error {e.Message}, Intetelo nuevamente");
         }
+    }
+
+    private void AumentarCantidadInventario()
+    {
+        int cantidadEnLista = 0;
+        int productoId = Convert.ToInt32(ProductoID);
+
+        foreach(var items in ventas.Detalle)
+        {
+            cantidadEnLista += items.Cantidad;
+        }
+
+        ProductosBLL.ActualizarInventario(productoId,cantidadEnLista);
+        //Console.WriteLine(cantidadEnLista);
+        //Console.WriteLine("");
     }
 
 }

@@ -8,11 +8,15 @@
 
   <ItemGroup>
     <PackageReference Include="Blazored.Toast" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqLite" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.5" />
   </ItemGroup>
 
   <ItemGroup>

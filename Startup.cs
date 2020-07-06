@@ -11,6 +11,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProyectoFinal_PA2.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http;
+
 
 namespace ProyectoFinal_PA2
 {
@@ -27,6 +31,21 @@ namespace ProyectoFinal_PA2
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+
+            //Blazor Services
+            services.AddHttpContextAccessor();
+            services.AddScoped<HttpContextAccessor>();
+
+            services.AddHttpClient();
+            services.AddScoped<HttpClient>();
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
@@ -49,6 +68,8 @@ namespace ProyectoFinal_PA2
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseRouting();
 

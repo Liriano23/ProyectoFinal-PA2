@@ -9,8 +9,12 @@
 @using ProyectoFinal_PA2.Shared
 @using Blazored.Toast
 @using Blazored.Toast.Services
-
+@using System.Web
 @using ProyectoFinal_PA2.BLL;
 @using ProyectoFinal_PA2.Models;
+
 @inject IToastService toast
 @inject AuthenticationStateProvider AuthenticationStateProvider
+
+@inject NavigationManager NavigationManager
+@inject IToastService toastService

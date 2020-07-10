@@ -26,61 +26,48 @@ namespace ProyectoFinal_PA2.Pages
 
         public async Task<ActionResult> OnGetAsync(string paramUsername, string paramPassword)
         {
-            string ReturnUrl = Url.Content("~/");
-            bool paso = false;
+            string returnUrl = Url.Content("~/");
             try
             {
-
+                // Clear the existing external cookie
                 await HttpContext
                     .SignOutAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme);
             }
+            catch { }
+            // *** !!! This is where you would validate the user !!! ***
+            // In this example we just log the user in
+            // (Always log the user in for this demo)
 
-            catch
-            { }
-            var claims = new List<Claim>
+            if (UsuariosBLL.GetExistenciaYClaveUsuario(paramUsername, paramPassword))
             {
-                new Claim(ClaimTypes.Name, paramUsername),
-                new Claim(ClaimTypes.Role,UsuariosBLL.GetTipoUsuario(paramUsername)),
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, paramUsername),
+                    new Claim(ClaimTypes.Role, UsuariosBLL.GetTipoUsuario(paramUsername))
 
-            };
-
-            if (paramUsername == null || paramPassword == null)
-            {
-                return LocalRedirect(ReturnUrl);
-            }
-
-            string User = paramUsername;
-            string Pass = paramPassword;
-
-            paso = UsuariosBLL.GetExistenciaYClaveUsuario(User, Pass);
-
-            if (!paso)
-            {
-                return LocalRedirect(ReturnUrl);
-
-            }
-
-
-            var claimsIdentity = new ClaimsIdentity(
+                };
+                var claimsIdentity = new ClaimsIdentity(
                 claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = true,
-                RedirectUri = this.Request.Host.Value
-            };
-            try
-            {
-                await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                    RedirectUri = this.Request.Host.Value
+                };
+                try
+                {
+                    await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+                }
+                catch (Exception ex)
+                {
+                    string error = ex.Message;
+                }
             }
-            catch (Exception ex)
-            {
-                string error = ex.Message;
-            }
-            return LocalRedirect(ReturnUrl);
+            return LocalRedirect(returnUrl);
         }
     }
 }

@@ -1,10 +1,6 @@
 ﻿@page "/loginControl"
-@inject NavigationManager navigator
-@using System.Web;
 
 <CascadingAuthenticationState>
-
-
 
     <AuthorizeView>
         <Authorized>
@@ -19,16 +15,21 @@
     </AuthorizeView>
 
 </CascadingAuthenticationState>
+
 @code {
-    string Username = "";
-    string Password = "";
-
-    //public string User { get; set; }
-    //public string Pass { get; set; }
-
-    private string encode(string param)
+   
+    private string Encode(string param)
     {
+        string encode = "";
+        try
+        {
+            encode= HttpUtility.UrlEncode(param);
+        }
+        catch(Exception)
+        {
+            toast.ShowError("Debe iniciar con un usuario valido");
+        }
+        return encode;
 
-        return HttpUtility.UrlEncode(param);
     }
 }

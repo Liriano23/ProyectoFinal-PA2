@@ -1,19 +1,13 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-
 <AuthorizeView>
     <Authorized>
-        <p>Welcome!, @context.User.Identity.Name</p>
+        <h1>Hola!, @context.User.Identity.Name</h1>
     </Authorized>
 
     <NotAuthorized>
-        <p>You are sign out!!!</p>
+        <h1>Inicie Sesion</h1>
     </NotAuthorized>
-
 </AuthorizeView>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<img src="css/Images/Logo.jpg" title="LogoEmpresa" alt="Logo del Login" />

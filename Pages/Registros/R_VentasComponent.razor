@@ -1,227 +1,254 @@
 ﻿@page "/RegistroVentas"
 @page "/RegistroVentas/{VentaId:int}"
 
-<EditForm Model="ventas" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator />
+<CascadingAuthenticationState>
+    
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado!
+                </div>
+                <div class="card-body">
+                    <h5>Atención</h5>
+                    <p>Debe iniciar sesion para poder acceder a estas opciones</p>
+                    <a href="MenuRegistros" class="btn btn-primary">Volver al Menú anterior</a>
+                </div>
+            </div>
+        </NotAuthorized>
 
-    <div id="PrincipalContainer" class="card">
-        <div class="card-header">
-            <img id="Logo" src="css/Images/ProductsImage.png" title="LogoVentas" alt="Logo para el formulario de ventas" />
-            <h3 id="Titulo">Registro ventas</h3>
-        </div>
+        <Authorized>
+           
+        </Authorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
 
-        <div class="card-body">
-            <form>
-                @*VentaId*@
-                <div class="form-row align-items-center">
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="VentaIdPicker">Venta Id</label>
-                            <div class="input-group">
-                                <InputNumber @bind-Value="ventas.VentaId" id="VentaIdPicker" min="0" class="form-control col-4" />
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary" @onclick="Buscar">
-                                        <span class="oi oi-zoom-in" /> Buscar
-                                    </button>
+
+
+@if (TipoUsuario)
+{
+    <EditForm Model="ventas" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+
+        <div id="PrincipalContainer" class="card">
+            <div class="card-header">
+                <img id="Logo" src="css/Images/ProductsImage.png" title="LogoVentas" alt="Logo para el formulario de ventas" />
+                <h3 id="Titulo">Registro ventas</h3>
+            </div>
+
+            <div class="card-body">
+                <form>
+                    @*VentaId*@
+                    <div class="form-row align-items-center">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="VentaIdPicker">Venta Id</label>
+                                <div class="input-group">
+                                    <InputNumber @bind-Value="ventas.VentaId" id="VentaIdPicker" min="0" class="form-control col-4" />
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary" @onclick="Buscar">
+                                            <span class="oi oi-zoom-in" /> Buscar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                @*ClienteID*@
-                <div class="form-group">
-                    <label for="ClientIdPicker"> Cliente Id </label>
-                    <InputSelect @bind-Value="ClienteID" id="ClientIdPicker" class="form-control">
-                        <option value="0">Elige usuario</option>
-                        @foreach (var clients in ListaClientes)
-                        {
-                            <option value="@clients.ClienteId">@clients.Nombres</option>
-                        }
-                    </InputSelect>
-                    <ValidationMessage For="(() => ventas.ClienteId)" />
-                    <small id="ClientIdLineHelper">
-                        Seleccione el cliente
-                    </small>
-                </div>
-
-                @*EmpleadoId*@
-                <div class="form-group">
-                    <label for="EmployeerIdPicker">Empleado Id</label>
-                    <InputNumber @bind-Value="ventas.EmpleadoId" class="form-control" />
-                    <ValidationMessage For="(() => ventas.EmpleadoId)" />
-                    <small id="EmployeerIdLineHelper">
-                        Seleccione el empleado
-                    </small>
-
-                    @* <InputSelect @bind-Value="ventas.EmpleadoId" class="form-control">
-                            <option value="0">seleccione empleado</option>
-                            @foreach(var employeer in ListaEmpleados)
-                            {
-                                <option value="@employeer.empleadoID">@employeer.Nombres</option>
-                            }
-                        </InputSelect>*@
-                </div>
-
-                @*FechaEmision*@
-                <div class="form-group">
-                    <label for="DatePicker">Fecha emision</label>
-                    <InputDate @bind-Value="ventas.FechaEmision" id="DatePicker" class="form-control" readonly="true" />
-                    <ValidationMessage For="(() => ventas.FechaEmision)" />
-                    <small id="EntryDateInlineHelper">
-                        Fecha de emision de la factura
-                    </small>
-                </div>
-
-                @*UsuarioId*@
-                <div class="form-group">
-                    <label for="UsuarioIdSelect">Usuario Id</label>
-                    <InputSelect @bind-Value="@UsuarioID" class="form-control">
-                        <option value="0">Elige el usuario</option>
-                        @foreach (var item in ListaUsuarios)
-                        {
-                            <option value="@item.UsuarioId">@item.Nombres</option>
-                        }
-                    </InputSelect>
-                    <ValidationMessage For="(()=> ventas.UsuariosId)" />
-                    <small id="UserIdInlineHelper">
-                        Ingresar el usuario que esta insertando la venta
-                    </small>
-                </div>
-
-                @*ITBIS*@
-                <div class="form-group" id="ITBISContainer">
-                    <label for="SubTotalInputNumber">ITBIS</label>
-                    <InputNumber @bind-Value="ventas.ITBIS" id="ITBISInputNumber" class="form-control" />
-                    <ValidationMessage For="(() => ventas.ITBIS)" />
-                    <small id="TotalInLineHelper">Valor del itbis </small>
-                </div>
-
-                @*Datos del detalle*@
-                <div class="row">
-                    <div class="form-group col">
-                        <label>Id</label>
-                        <InputNumber @bind-Value="DetalleId" class="form-control" readOnly="true" />
-                    </div>
-
-                    @*Producto Id*@
-                    <div class="form-group col">
-                        <label>Producto Id</label>
-                        <InputSelect @bind-Value="ProductoID" class="form-control" @onfocusout="DeterminarPrecioProducto">
+                    @*ClienteID*@
+                    <div class="form-group">
+                        <label for="ClientIdPicker"> Cliente Id </label>
+                        <InputSelect @bind-Value="ClienteID" id="ClientIdPicker" class="form-control">
                             <option value="0">Elige usuario</option>
-                            @foreach (var products in ListaProductos)
+                            @foreach (var clients in ListaClientes)
                             {
-                                <option value="@products.ProductoId">@products.NombreProducto</option>
+                                <option value="@clients.ClienteId">@clients.Nombres</option>
                             }
                         </InputSelect>
-                        <ValidationMessage For="(() => ventasDetalle.ProductoId)" />
-                        <small id="ProductsIdLineHelper">
-                            Seleccione el id del producto
+                        <ValidationMessage For="(() => ventas.ClienteId)" />
+                        <small id="ClientIdLineHelper">
+                            Seleccione el cliente
                         </small>
                     </div>
 
-                    @*Precio*@
-                    <div class="form-group col">
-                        <label>Precio</label>
-                        <div class="input-group">
-                            <InputNumber @bind-Value="precio" class="form-control" ReadOnly="true"/>
-                            <ValidationMessage For="(() => ventasDetalle.Precio)" />
+                    @*EmpleadoId*@
+                    <div class="form-group">
+                        <label for="EmployeerIdPicker">Empleado Id</label>
+                        <InputNumber @bind-Value="ventas.EmpleadoId" class="form-control" />
+                        <ValidationMessage For="(() => ventas.EmpleadoId)" />
+                        <small id="EmployeerIdLineHelper">
+                            Seleccione el empleado
+                        </small>
+
+                        @* <InputSelect @bind-Value="ventas.EmpleadoId" class="form-control">
+                                <option value="0">seleccione empleado</option>
+                                @foreach(var employeer in ListaEmpleados)
+                                {
+                                    <option value="@employeer.empleadoID">@employeer.Nombres</option>
+                                }
+                            </InputSelect>*@
+                    </div>
+
+                    @*FechaEmision*@
+                    <div class="form-group">
+                        <label for="DatePicker">Fecha emision</label>
+                        <InputDate @bind-Value="ventas.FechaEmision" id="DatePicker" class="form-control" readonly="true" />
+                        <ValidationMessage For="(() => ventas.FechaEmision)" />
+                        <small id="EntryDateInlineHelper">
+                            Fecha de emision de la factura
+                        </small>
+                    </div>
+
+                    @*UsuarioId*@
+                    <div class="form-group">
+                        <label for="UsuarioIdSelect">Usuario Id</label>
+                        <InputSelect @bind-Value="@UsuarioID" class="form-control">
+                            <option value="0">Elige el usuario</option>
+                            @foreach (var item in ListaUsuarios)
+                            {
+                                <option value="@item.UsuarioId">@item.Nombres</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="(() => ventas.UsuariosId)" />
+                        <small id="UserIdInlineHelper">
+                            Ingresar el usuario que esta insertando la venta
+                        </small>
+                    </div>
+
+                    @*ITBIS*@
+                    <div class="form-group" id="ITBISContainer">
+                        <label for="SubTotalInputNumber">ITBIS</label>
+                        <InputNumber @bind-Value="ventas.ITBIS" id="ITBISInputNumber" class="form-control" />
+                        <ValidationMessage For="(() => ventas.ITBIS)" />
+                        <small id="TotalInLineHelper">Valor del itbis </small>
+                    </div>
+
+                    @*Datos del detalle*@
+                    <div class="row">
+                        <div class="form-group col">
+                            <label>Id</label>
+                            <InputNumber @bind-Value="DetalleId" class="form-control" readOnly="true" />
                         </div>
-                        <small id="PriceIdInLineHelper">
-                            Precio del producto
-                        </small>
-                    </div>
 
-                    @*Cantidad*@
-                    <div class="form-group col">
-                        <label>Cantidad</label>
-                        <div class="input-group">
-                            <InputNumber @bind-Value="cantidad" class="form-control" />
-                            <ValidationMessage For="(() => ventasDetalle.Cantidad)" />
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-primary" @onclick="AgregarAlDetalle">
-                                    <i class="oi oi-plus" aria-hidden="true" /> Agregar
-                                </button>
+                        @*Producto Id*@
+                        <div class="form-group col">
+                            <label>Producto Id</label>
+                            <InputSelect @bind-Value="ProductoID" class="form-control" @onfocusout="DeterminarPrecioProducto">
+                                <option value="0">Elige usuario</option>
+                                @foreach (var products in ListaProductos)
+                                {
+                                    <option value="@products.ProductoId">@products.NombreProducto</option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="(() => ventasDetalle.ProductoId)" />
+                            <small id="ProductsIdLineHelper">
+                                Seleccione el id del producto
+                            </small>
+                        </div>
+
+                        @*Precio*@
+                        <div class="form-group col">
+                            <label>Precio</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="precio" class="form-control" ReadOnly="true" />
+                                <ValidationMessage For="(() => ventasDetalle.Precio)" />
                             </div>
+                            <small id="PriceIdInLineHelper">
+                                Precio del producto
+                            </small>
                         </div>
-                        <small id="QuantityIdInLineHelper"> Cantidad del producto </small>
+
+                        @*Cantidad*@
+                        <div class="form-group col">
+                            <label>Cantidad</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="cantidad" class="form-control" />
+                                <ValidationMessage For="(() => ventasDetalle.Cantidad)" />
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="AgregarAlDetalle">
+                                        <i class="oi oi-plus" aria-hidden="true" /> Agregar
+                                    </button>
+                                </div>
+                            </div>
+                            <small id="QuantityIdInLineHelper"> Cantidad del producto </small>
+                        </div>
                     </div>
-                </div>
 
 
 
-                @*Detallle*@
-                <table class="table" style="border-bottom: 1px groove;">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">ProductoId</th>
-                            <th scope="col">VentaId</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Precio</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in ventas.Detalle)
-                        {
+                    @*Detallle*@
+                    <table class="table" style="border-bottom: 1px groove;">
+                        <thead class="thead-dark">
                             <tr>
-                                <td>@item.Id</td>
-                                <td>@item.ProductoId</td>
-                                <td>@item.VentaId</td>
-                                <td>@item.Cantidad</td>
-                                <td>@item.Precio</td>
-                                <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
+                                <th scope="col">Id</th>
+                                <th scope="col">ProductoId</th>
+                                <th scope="col">VentaId</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Precio</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ventas.Detalle)
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.ProductoId</td>
+                                    <td>@item.VentaId</td>
+                                    <td>@item.Cantidad</td>
+                                    <td>@item.Precio</td>
+                                    <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
 
-                @*Descuento*@
-                <div class="form-group" id="DescuentoContainer">
-                    <label for="SubTotalInputNumber">Descuento</label>
-                    <InputNumber @bind-Value="ventas.Descuento" id="ITBISInputNumber" class="form-control" @onfocusout="CalcularTotalVenta"/>
-                    <ValidationMessage For="(() => ventas.Descuento)" />
-                    <small id="DiscountInLineHelper">Valor del descuento </small>
-                </div>
+                    @*Descuento*@
+                    <div class="form-group" id="DescuentoContainer">
+                        <label for="SubTotalInputNumber">Descuento</label>
+                        <InputNumber @bind-Value="ventas.Descuento" id="ITBISInputNumber" class="form-control" @onfocusout="CalcularTotalVenta" />
+                        <ValidationMessage For="(() => ventas.Descuento)" />
+                        <small id="DiscountInLineHelper">Valor del descuento </small>
+                    </div>
 
-                @*SubTotal*@
-                <div class="form-group" id="SubTotalContainer">
-                    <label for="SubTotalInputNumber">SubTotalTotal</label>
-                    <InputNumber @bind-Value="ventas.SubTotal" id="SubTotalInputNumber" readOnly="true" class="form-control" />
-                    <ValidationMessage For="(() => ventas.SubTotal)" />
-                    <small id="SubtotalTotalInLineHelper">Valor Subtotal de la venta </small>
-                </div>
+                    @*SubTotal*@
+                    <div class="form-group" id="SubTotalContainer">
+                        <label for="SubTotalInputNumber">SubTotalTotal</label>
+                        <InputNumber @bind-Value="ventas.SubTotal" id="SubTotalInputNumber" readOnly="true" class="form-control" />
+                        <ValidationMessage For="(() => ventas.SubTotal)" />
+                        <small id="SubtotalTotalInLineHelper">Valor Subtotal de la venta </small>
+                    </div>
 
-                @*Total*@
-                <div class="form-group" id="TotalContainer">
-                    <label for="TotalInputNumber">Total</label>
-                    <InputNumber @bind-Value="ventas.Total" id="TotalInputNumber" readOnly="true" class="form-control" />
-                    <ValidationMessage For="(() => ventas.Total)" />
-                    <small id="TotalInLineHelper">Valor total de la venta </small>
-                </div>
+                    @*Total*@
+                    <div class="form-group" id="TotalContainer">
+                        <label for="TotalInputNumber">Total</label>
+                        <InputNumber @bind-Value="ventas.Total" id="TotalInputNumber" readOnly="true" class="form-control" />
+                        <ValidationMessage For="(() => ventas.Total)" />
+                        <small id="TotalInLineHelper">Valor total de la venta </small>
+                    </div>
 
-            </form>
-        </div>
-
-        @*Buttons*@
-        <div class="card-footer">
-            <div class="form-group text-center" display: inline-block>
-                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">
-                    <span class="oi oi-plus"></span> Nuevo
-                </button>
-
-                <button type="submit" class="btn btn-lg btn-success">
-                    <span class="oi oi-clipboard" aria-hidden="true"></span> Guardar
-                </button>
-
-                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">
-                    <span class="oi oi-trash"></span>   Eliminar
-                </button>
+                </form>
             </div>
-        </div>
 
-    </div>
-</EditForm>
+            @*Buttons*@
+            <div class="card-footer">
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">
+                        <span class="oi oi-plus"></span> Nuevo
+                    </button>
+
+                    <button type="submit" class="btn btn-lg btn-success">
+                        <span class="oi oi-clipboard" aria-hidden="true"></span> Guardar
+                    </button>
+
+                    <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">
+                        <span class="oi oi-trash"></span>   Eliminar
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </EditForm>
+}
 
 @code {
     [Parameter]
@@ -234,6 +261,7 @@
     //public string EmpleadoID = "0";
     public string ProductoID = "0";
     public string UsuarioID = "0";
+    private bool TipoUsuario;
 
 
     public int DetalleId = 0;
@@ -251,6 +279,7 @@
     {
         Nuevo();
         Buscar();
+        TipoUsuario = GetAuthorization();
 
         ListaClientes = ClientesBLL.GetList(x => true);
         ListaUsuarios = UsuariosBLL.GetList(x => true);
@@ -430,14 +459,27 @@
         int cantidadEnLista = 0;
         int productoId = Convert.ToInt32(ProductoID);
 
-        foreach(var items in ventas.Detalle)
+        foreach (var items in ventas.Detalle)
         {
             cantidadEnLista += items.Cantidad;
         }
 
-        ProductosBLL.ActualizarInventario(productoId,cantidadEnLista);
+        ProductosBLL.ActualizarInventario(productoId, cantidadEnLista);
         //Console.WriteLine(cantidadEnLista);
         //Console.WriteLine("");
+    }
+
+    private bool GetAuthorization()
+    {
+        bool acceso;
+
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
+            || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
+            acceso = true;
+        else
+            acceso = false;
+
+        return acceso;
     }
 
 }

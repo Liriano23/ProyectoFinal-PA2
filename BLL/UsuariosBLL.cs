@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using ProyectoFinal_PA2.DAL;
@@ -171,5 +169,40 @@ namespace ProyectoFinal_PA2.BLL
             }
             return existe;
         }
+
+        public static bool GetExistenciaYClaveUsuario(string NombreUsuario, string clave)
+        {
+            bool paso = false;
+            Contexto db = new Contexto();
+
+            try
+            {
+                paso = db.Usuarios.Any(A => A.NombreUsuario == NombreUsuario && A.Contrasena == clave);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return paso;
+
+        }
+
+        public static string GetTipoUsuario(string Usuario)
+        {
+
+            string nivel = "";
+            Contexto db = new Contexto();
+
+            try
+            {
+                nivel = db.Usuarios.Where(A => A.NombreUsuario.Equals(Usuario)).Select(A => A.TipoUsuario).FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return nivel;
+        }
+
     }
 }

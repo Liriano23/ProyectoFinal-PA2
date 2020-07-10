@@ -1,199 +1,239 @@
 ﻿@page "/RegistroUsuarios"
 @page "/RegistroUsuarios/{UsuarioId:int}"
 
-<EditForm Model="usuario" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator />
-    
-    <div id="PrincipalContainer" class="card">
-        <div class="card-header">
-            <div class="form-group">
-                <img id="Logo" src="css/Images/UserLogo2.png" title="LogoUsuario" alt="Logo para el formulario de usuarios" />
-                <h3 id="Titulo">Registro usuarios</h3>
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Atención</h5>
+                    <p>Debe iniciar sesion para poder acceder a estas opciones</p>
+                    <a href="MenuRegistros" class="btn btn-primary">Ir al Menú</a>
+                </div>
+                <div class="card-footer text-muted">
+                </div>
             </div>
-        </div>
+        </NotAuthorized>
 
-        <div class="card-body">
-            <form>
-                @*UsuariosId*@
-                <div class="form-row align-items-center">
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="UsuarioIdTextBox">UsuarioId</label>
-                            <div class="input-group">
-                                <InputNumber @bind-Value="usuario.UsuarioId" id="UsuarioIdTextBox" class="form-control col-4"></InputNumber>
-                                <div class="input-group-append">
-                                    <button style="margin-left: 5px;" type="button" class="btn btn-primary input-group-text" @onclick="Buscar">
-                                        <span class="oi oi-zoom-in"></span> Buscar
-                                    </button>
+        <Authorized>
+            @if (!TipoUsuario)
+            {
+                <div class="card text-center">
+                    <div class="card-header">
+                        No Autorizado
+                    </div>
+                    <div class="card-body">
+                        <h5>Atención</h5>
+                        <p>Debe tener acceso de administrador para poder acceder a estas opciones.</p>
+                        <a href="MenuRegistros" class="btn btn-primary">Volver al Menú anterior</a>
+                    </div>
+                </div>
+            }
+        </Authorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && TipoUsuario)
+{
+    <EditForm Model="usuario" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+
+        <div id="PrincipalContainer" class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <img id="Logo" src="css/Images/UserLogo2.png" title="LogoUsuario" alt="Logo para el formulario de usuarios" />
+                    <h3 id="Titulo">Registro usuarios</h3>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <form>
+                    @*UsuariosId*@
+                    <div class="form-row align-items-center">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="UsuarioIdTextBox">UsuarioId</label>
+                                <div class="input-group">
+                                    <InputNumber @bind-Value="usuario.UsuarioId" id="UsuarioIdTextBox" class="form-control col-4"></InputNumber>
+                                    <div class="input-group-append">
+                                        <button style="margin-left: 5px;" type="button" class="btn btn-primary input-group-text" @onclick="Buscar">
+                                            <span class="oi oi-zoom-in"></span> Buscar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    @*Nombres*@
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <InputText @bind-Value="usuario.Nombres" id="NombreTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="@(() => usuario.Nombres)" />
+                        <small id="NameInLineHelper">
+                            Ingresar el(os) nombres del usuario
+                        </small>
+                    </div>
+
+                    @*Apellidos*@
+                    <div class="form-group">
+                        <label>Apellidos</label>
+                        <InputText @bind-Value="usuario.Apellidos" class="form-control" autocomplete="off" />
+                        <ValidationMessage For="(() => usuario.Apellidos)" />
+                        <small id="LastNameInlineHelper">
+                            Ingresar el apellido del usuario
+                        </small>
+                    </div>
+
+                    @*Cédula*@
+                    <div class="form-group">
+                        <label>Cedula</label>
+                        <InputText @bind-Value="usuario.Cedula" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => usuario.Cedula)" />
+                        <small id="CedulaInlineHelper">
+                            Ingresar la cedula del usuario
+                        </small>
+                    </div>
+
+                    @*Sexo*@
+                    <div class="form-group">
+                        <label>Sexo</label>
+                        <InputSelect @bind-Value="@usuario.Sexo" class="form-control">
+                            <option></option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                        </InputSelect>
+                        <ValidationMessage For="(() => usuario.Sexo)" />
+                        <small id="SexInlineHelper">
+                            Seleccione el sexo del usuario
+                        </small>
+                    </div>
+
+                    @*Telefono*@
+                    <div class="form-group">
+                        <label>Telefono</label>
+                        <InputText @bind-Value="usuario.Telefono" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => usuario.Telefono)" />
+                        <small id="PhoneInlineHelper">
+                            Ingresar telefono del usuario
+                        </small>
+                    </div>
+
+                    @*Celular*@
+                    <div class="form-group">
+                        <label>Celular</label>
+                        <InputText @bind-Value="usuario.Celular" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => usuario.Celular) " />
+                        <small id="CellPhoneInlineHelper">
+                            Ingresar celular del usuario
+                        </small>
+                    </div>
+
+                    @*Dirección*@
+                    <div class="form-group">
+                        <label>Direccion</label>
+                        <InputText @bind-Value="usuario.Direccion" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => usuario.Direccion)" />
+                        <small id="AddressInlineHelper">
+                            Ingresar direccion del usuario
+                        </small>
+                    </div>
+
+                    @*Email*@
+                    <div class="form-group">
+                        <label>Email</label>
+                        <InputText @bind-Value="usuario.Email" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => usuario.Email)" />
+                        <small id="EmailInlineHelper" class="text-muted">
+                            Ingresar email del usuario
+                        </small>
+                    </div>
+
+                    @*Tipo usuario*@
+                    <div class="form-group">
+                        <label>Tipo usuario</label>
+                        <InputSelect @bind-Value="usuario.TipoUsuario" class="form-control">
+                            <option></option>
+                            <option>Administrador</option>
+                            <option>Empleado</option>
+                        </InputSelect>
+                        <ValidationMessage For="(() => usuario.TipoUsuario)" />
+                        <small id="UserTypeInlineHelper">Ingresar tipo de usuario del usuario </small>
+                    </div>
+
+                    @*Fecha ingreso*@
+                    <div class="form-group">
+                        <label>Fecha ingreso</label>
+                        <InputDate @bind-Value="usuario.FechaIngreso" class="form-control" ReadOnly />
+                        <ValidationMessage For="(() => usuario.FechaIngreso)" />
+                        <small id="EntryDateInlineHelper">
+                            Ingresar fecha de ingreso del usuario
+                        </small>
+                    </div>
+
+                    @*Nombre usuario*@
+                    <div class="form-group">
+                        <label>Nombre usuario</label>
+                        <InputText @bind-Value="usuario.NombreUsuario" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => usuario.NombreUsuario)" />
+                        <small id="UserNameInlineHelper">
+                            Ingresar el nombre de usuario para acceder al sistema
+                        </small>
+                    </div>
+
+                    @*Contraseña*@
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" @bind="usuario.Contrasena" Visible="false" autoComplete="off" class=" form-control" />
+                        <ValidationMessage For="(() => usuario.Contrasena)" />
+                        <small id="PaswordInlineHelper">
+                            Ingresar la contraseña del usuario.
+                        </small>
+                    </div>
+
+                </form>
+            </div>
+
+            @*Buttons*@
+            <div class="card-footer">
+
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">
+                        <span class="oi oi-plus" aria-hidden="true"></span> Nuevo
+                    </button>
+
+                    <button type="submit" class="btn btn-lg btn-success">
+                        <span class="oi oi-clipboard" aria-hidden="true"></span> Guardar
+                    </button>
+
+                    <button class="btn btn-lg btn-danger" @onclick="Eliminar">
+                        <span class="oi oi-trash" aria-hidden="true"></span> Eliminar
+                    </button>
                 </div>
 
-                @*Nombres*@
-                <div class="form-group">
-                    <label>Nombre</label>
-                    <InputText @bind-Value="usuario.Nombres" id="NombreTextBox" class="form-control" autoComplete="off" />
-                    <ValidationMessage For="@(() => usuario.Nombres)" />
-                    <small id="NameInLineHelper">
-                        Ingresar el(os) nombres del usuario
-                    </small>
-                </div>
-
-                @*Apellidos*@
-                <div class="form-group">
-                    <label>Apellidos</label>
-                    <InputText @bind-Value="usuario.Apellidos" class="form-control" autocomplete="off" />
-                    <ValidationMessage For="(() => usuario.Apellidos)" />
-                    <small id="LastNameInlineHelper">
-                        Ingresar el apellido del usuario
-                    </small>
-                </div>
-
-                @*Cédula*@
-                <div class="form-group">
-                    <label>Cedula</label>
-                    <InputText @bind-Value="usuario.Cedula" class="form-control" autoComplete="off" />
-                    <ValidationMessage For="(() => usuario.Cedula)" />
-                    <small id="CedulaInlineHelper">
-                        Ingresar la cedula del usuario
-                    </small>
-                </div>
-
-                @*Sexo*@
-                <div class="form-group">
-                    <label>Sexo</label>
-                    <InputSelect @bind-Value="@usuario.Sexo" class="form-control">
-                        <option></option>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Femenino">Femenino</option>
-                    </InputSelect>
-                    <ValidationMessage For="(() => usuario.Sexo)" />
-                    <small id="SexInlineHelper">
-                        Seleccione el sexo del usuario
-                    </small>
-                </div>
-
-                @*Telefono*@
-                <div class="form-group">
-                    <label>Telefono</label>
-                    <InputText @bind-Value="usuario.Telefono" class="form-control" autoComplete="off" />
-                    <ValidationMessage For="(() => usuario.Telefono)" />
-                    <small id="PhoneInlineHelper">
-                        Ingresar telefono del usuario
-                    </small>
-                </div>
-
-                @*Celular*@
-                <div class="form-group">
-                    <label>Celular</label>
-                    <InputText @bind-Value="usuario.Celular" class="form-control" autoComplete="off" />
-                    <ValidationMessage For="(() => usuario.Celular) " />
-                    <small id="CellPhoneInlineHelper">
-                        Ingresar celular del usuario
-                    </small>
-                </div>
-
-                @*Dirección*@
-                <div class="form-group">
-                    <label>Direccion</label>
-                    <InputText @bind-Value="usuario.Direccion" class="form-control" autoComplete="off" />
-                    <ValidationMessage For="(() => usuario.Direccion)" />
-                    <small id="AddressInlineHelper">
-                        Ingresar direccion del usuario
-                    </small>
-                </div>
-
-                @*Email*@
-                <div class="form-group">
-                    <label>Email</label>
-                    <InputText @bind-Value="usuario.Email" class="form-control" autoComplete="off" />
-                    <ValidationMessage For="(() => usuario.Email)" />
-                    <small id="EmailInlineHelper" class="text-muted">
-                        Ingresar email del usuario
-                    </small>
-                </div>
-
-                @*Tipo usuario*@
-                <div class="form-group">
-                    <label>Tipo usuario</label>
-                    <InputSelect @bind-Value="usuario.TipoUsuario" class="form-control">
-                        <option></option>
-                        <option>Administrador</option>
-                        <option>Empleado</option>
-                    </InputSelect>
-                    <ValidationMessage For="(() => usuario.TipoUsuario)" />
-                    <small id="UserTypeInlineHelper">Ingresar tipo de usuario del usuario </small>
-                </div>
-
-                @*Fecha ingreso*@
-                <div class="form-group">
-                    <label>Fecha ingreso</label>
-                    <InputDate @bind-Value="usuario.FechaIngreso" class="form-control" ReadOnly/>
-                    <ValidationMessage For="(()=> usuario.FechaIngreso)" />
-                    <small id="EntryDateInlineHelper">
-                        Ingresar fecha de ingreso del usuario
-                    </small>
-                </div>
-
-                @*Nombre usuario*@
-                <div class="form-group">
-                    <label>Nombre usuario</label>
-                    <InputText @bind-Value="usuario.NombreUsuario" class="form-control" autoComplete="off" />
-                    <ValidationMessage For="(() => usuario.NombreUsuario)" />
-                    <small id="UserNameInlineHelper">
-                        Ingresar el nombre de usuario para acceder al sistema
-                    </small>
-                </div>
-
-                @*Contraseña*@
-                <div class="form-group">
-                    <label>Contraseña</label>
-                    <input type="password" @bind="usuario.Contrasena" Visible="false" autoComplete="off" class=" form-control"/>
-                    <ValidationMessage For="(() => usuario.Contrasena)" />
-                    <small id="PaswordInlineHelper">
-                        Ingresar la contraseña del usuario.
-                    </small>
-                </div>
-
-            </form>
-        </div>
-
-        @*Buttons*@
-        <div class="card-footer">
-
-            <div class="form-group text-center" display: inline-block>
-                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">
-                    <span class="oi oi-plus" aria-hidden="true"></span> Nuevo
-                </button>
-
-                <button type="submit" class="btn btn-lg btn-success">
-                    <span class="oi oi-clipboard" aria-hidden="true"></span> Guardar
-                </button>
-
-                <button class="btn btn-lg btn-danger" @onclick="Eliminar">
-                    <span class="oi oi-trash" aria-hidden="true"></span> Eliminar
-                </button>
             </div>
 
         </div>
+    </EditForm>
+}
 
-    </div>
-</EditForm>
+    @code {
+        [Parameter]
+        public int UsuarioId { get; set; }
 
-
-@code {
-    [Parameter]
-    public int UsuarioId { get; set; }
-
-    Usuarios usuario = new Usuarios();
+        Usuarios usuario = new Usuarios();
+        private bool TipoUsuario;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         Nuevo();
         Buscar();
+
+        TipoUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador");
     }
 
     private void Nuevo()
@@ -203,7 +243,7 @@
 
     private void Buscar()
     {
-        if(usuario.UsuarioId > 0)
+        if (usuario.UsuarioId > 0)
         {
             var encontrado = UsuariosBLL.Buscar(usuario.UsuarioId);
 
@@ -250,4 +290,4 @@
 
     }
 
-}
+    }

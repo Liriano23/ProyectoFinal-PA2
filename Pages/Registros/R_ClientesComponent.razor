@@ -1,250 +1,291 @@
 ﻿@page "/RegistroClientes"
-@page "/RegistroClientes/{ClienteId:int}" 
+@page "/RegistroClientes/{ClienteId:int}"
+<CascadingAuthenticationState>
 
-<EditForm Model="cliente" OnValidSubmit="Guardar"> 
-    <DataAnnotationsValidator/>
-
-    <div id="ContenedorPrincipal" class="card">
-
-        <div id="PrincipalContainer" class="card-header">
-            <div class="form-group">
-                <img src="css/Images/UserLogo2.png" title="LogoClientes" alt="Logo del regsitro de clientes" />
-                <h3 id="Titulo">Registro clientes</h3>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado!
+                </div>
+                <div class="card-body">
+                    <h5>Atención</h5>
+                    <p>Debe iniciar sesion para poder acceder a estas opciones</p>
+                    <a href="MenuRegistros" class="btn btn-primary">Volver al Menú anterior</a>
+                </div>
             </div>
-        </div>
+        </NotAuthorized>
 
-        <div class="card-body">
-            <form>
-                @*ClientesId*@
-                <div class="form-row aling-items-center">
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="ClienteIdPicker">ClienteId</label>
-                            <div class="input-group">
-                                <InputNumber @bind-Value="cliente.ClienteId" autoComplete="off" id="ClienteIdPicker" class="form-control col-4" />
-                                <div class="form-group-append">
-                                    <button style="margin-left: 5px;" type="button" class="btn btn-primary input-group-text" @onclick="Buscar">
-                                        <span class="oi oi-zoom-in"></span> Buscar
-                                    </button>
+        <Authorized>
+
+        </Authorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@if (TipoUsuario)
+{
+    <EditForm Model="cliente" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+
+        <div id="ContenedorPrincipal" class="card">
+
+            <div id="PrincipalContainer" class="card-header">
+                <div class="form-group">
+                    <img src="css/Images/UserLogo2.png" title="LogoClientes" alt="Logo del regsitro de clientes" />
+                    <h3 id="Titulo">Registro clientes</h3>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <form>
+                    @*ClientesId*@
+                    <div class="form-row aling-items-center">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="ClienteIdPicker">ClienteId</label>
+                                <div class="input-group">
+                                    <InputNumber @bind-Value="cliente.ClienteId" autoComplete="off" id="ClienteIdPicker" class="form-control col-4" />
+                                    <div class="form-group-append">
+                                        <button style="margin-left: 5px;" type="button" class="btn btn-primary input-group-text" @onclick="Buscar">
+                                            <span class="oi oi-zoom-in"></span> Buscar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                @*Nombres*@
-                <div class="form-group">
-                    <label for="NombreTextBox">Nombre</label>
-                    <InputText @bind-Value="cliente.Nombres" id="NombreTextBox" class="form-control" autoComplete="off" />
-                    <ValidationMessage For="@(() => cliente.Nombres)" />
-                    <small id="NameInLineHelper">
-                        Ingresar el(os) nombres del cliente
-                    </small>
-                </div>
+                    @*Nombres*@
+                    <div class="form-group">
+                        <label for="NombreTextBox">Nombre</label>
+                        <InputText @bind-Value="cliente.Nombres" id="NombreTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="@(() => cliente.Nombres)" />
+                        <small id="NameInLineHelper">
+                            Ingresar el(os) nombres del cliente
+                        </small>
+                    </div>
 
-                @*Apellidos*@
-                <div class="form-group">
-                    <label for="ApellidoTextBox">Apellidos</label>
-                    <InputText @bind-Value="cliente.Apellidos" id="ApellidoIdTextBox" class="form-control" autocomplete="off" />
-                    <ValidationMessage For="(() => cliente.Apellidos)" />
-                    <small id="LastNameInlineHelper">
-                        Ingresar el apellido del cliente
-                    </small>
-                </div>
+                    @*Apellidos*@
+                    <div class="form-group">
+                        <label for="ApellidoTextBox">Apellidos</label>
+                        <InputText @bind-Value="cliente.Apellidos" id="ApellidoIdTextBox" class="form-control" autocomplete="off" />
+                        <ValidationMessage For="(() => cliente.Apellidos)" />
+                        <small id="LastNameInlineHelper">
+                            Ingresar el apellido del cliente
+                        </small>
+                    </div>
 
-                @*Cédula*@
-                <div class="form-group">
-                    <label for="CedulaTextBox">Cedula</label>
-                    <InputText @bind-Value="cliente.Cedula" id="CedulaTextBox" class="form-control" autoComplete="off" />
-                    <ValidationMessage For="(() => cliente.Cedula)" />
-                    <small id="CedulaInlineHelper">
-                        Ingresar la cedula del cliente
-                    </small>
-                </div>
+                    @*Cédula*@
+                    <div class="form-group">
+                        <label for="CedulaTextBox">Cedula</label>
+                        <InputText @bind-Value="cliente.Cedula" id="CedulaTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => cliente.Cedula)" />
+                        <small id="CedulaInlineHelper">
+                            Ingresar la cedula del cliente
+                        </small>
+                    </div>
 
-                @*Sexo*@
-                <div class="form-group">
-                    <label>Sexo</label>
-                    <InputSelect @bind-Value="@cliente.Sexo" class="form-control">
-                        <option></option>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Femenino">Femenino</option>
-                    </InputSelect>
-                    <ValidationMessage For="(() => cliente.Sexo)" />
-                    <small id="SexInlineHelper">
-                        Seleccione el sexo del cliente
-                    </small>
-                </div>
+                    @*Sexo*@
+                    <div class="form-group">
+                        <label>Sexo</label>
+                        <InputSelect @bind-Value="@cliente.Sexo" class="form-control">
+                            <option></option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                        </InputSelect>
+                        <ValidationMessage For="(() => cliente.Sexo)" />
+                        <small id="SexInlineHelper">
+                            Seleccione el sexo del cliente
+                        </small>
+                    </div>
 
-                @*Telefono*@
-                <div class="form-group">
-                    <label for="TelefonoTextBox">Telefono</label>
-                    <InputText @bind-Value="cliente.Telefono" id="TelefonoTextBox" class="form-control" autoComplete="off" />
-                    <ValidationMessage For="(() => cliente.Telefono)" />
-                    <small id="PhoneInlineHelper">
-                        Ingresar telefono del cliente
-                    </small>
-                </div>
+                    @*Telefono*@
+                    <div class="form-group">
+                        <label for="TelefonoTextBox">Telefono</label>
+                        <InputText @bind-Value="cliente.Telefono" id="TelefonoTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => cliente.Telefono)" />
+                        <small id="PhoneInlineHelper">
+                            Ingresar telefono del cliente
+                        </small>
+                    </div>
 
-                @*Celular*@
-                <div class="form-group">
-                    <label for="CelularTextBox">Celular</label>
-                    <InputText @bind-Value="cliente.Celular" id="CelularTextBox" class="form-control" autoComplete="off" />
-                    <ValidationMessage For="(() => cliente.Celular) " />
-                    <small id="CellPhoneInlineHelper">
-                        Ingresar celular del cliente
-                    </small>
-                </div>
+                    @*Celular*@
+                    <div class="form-group">
+                        <label for="CelularTextBox">Celular</label>
+                        <InputText @bind-Value="cliente.Celular" id="CelularTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => cliente.Celular) " />
+                        <small id="CellPhoneInlineHelper">
+                            Ingresar celular del cliente
+                        </small>
+                    </div>
 
-                @*Dirección*@
-                <div class="form-group">
-                    <label for="DireccionTextBox">Direccion</label>
-                    <InputText @bind-Value="cliente.Direccion" id="DireccionTextBox" class="form-control" autoComplete="off" />
-                    <ValidationMessage For="(() => cliente.Direccion)" />
-                    <small id="AddressInlineHelper">
-                        Ingresar direccion del cliente
-                    </small>
-                </div>
+                    @*Dirección*@
+                    <div class="form-group">
+                        <label for="DireccionTextBox">Direccion</label>
+                        <InputText @bind-Value="cliente.Direccion" id="DireccionTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => cliente.Direccion)" />
+                        <small id="AddressInlineHelper">
+                            Ingresar direccion del cliente
+                        </small>
+                    </div>
 
-                @*Email*@
-                <div class="form-group">
-                    <label for="EmailTextBox">Email</label>
-                    <InputText @bind-Value="cliente.Email" id="EmailTextBox" class="form-control" autoComplete="off" />
-                    <ValidationMessage For="(() => cliente.Email)" />
-                    <small id="EmailInlineHelper" class="text-muted">
-                        Ingresar email del cliente
-                    </small>
-                </div>
+                    @*Email*@
+                    <div class="form-group">
+                        <label for="EmailTextBox">Email</label>
+                        <InputText @bind-Value="cliente.Email" id="EmailTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => cliente.Email)" />
+                        <small id="EmailInlineHelper" class="text-muted">
+                            Ingresar email del cliente
+                        </small>
+                    </div>
 
-                @*Fecha nacimiento*@
-                <div class="form-group">
-                    <label for="FechaNacimientoDatePicker">Fecha ingreso</label>
-                    <InputDate @bind-Value="cliente.FechaNacimiento" id="FechaNacimientoDatePicker" class="form-control" />
-                    <ValidationMessage For="(()=> cliente.FechaNacimiento)" />
-                    <small id="EntryDateInlineHelper">
-                        Ingresar fecha de nacimeinto del cliente
-                    </small>
-                </div>
+                    @*Fecha nacimiento*@
+                    <div class="form-group">
+                        <label for="FechaNacimientoDatePicker">Fecha ingreso</label>
+                        <InputDate @bind-Value="cliente.FechaNacimiento" id="FechaNacimientoDatePicker" class="form-control" />
+                        <ValidationMessage For="(() => cliente.FechaNacimiento)" />
+                        <small id="EntryDateInlineHelper">
+                            Ingresar fecha de nacimeinto del cliente
+                        </small>
+                    </div>
 
-                @*Fecha ingreso*@
-                <div class="form-group">
-                    <label for="FechaIngresoDatePicker">Fecha ingreso</label>
-                    <InputDate @bind-Value="cliente.FechaIngreso" id="FechaIngresoDatePicker" class="form-control" ReadOnly />
-                    <ValidationMessage For="(()=> cliente.FechaIngreso)" />
-                    <small id="EntryDateInlineHelper">
-                        Ingresar fecha de ingreso del cliente
-                    </small>
-                </div>
+                    @*Fecha ingreso*@
+                    <div class="form-group">
+                        <label for="FechaIngresoDatePicker">Fecha ingreso</label>
+                        <InputDate @bind-Value="cliente.FechaIngreso" id="FechaIngresoDatePicker" class="form-control" ReadOnly />
+                        <ValidationMessage For="(() => cliente.FechaIngreso)" />
+                        <small id="EntryDateInlineHelper">
+                            Ingresar fecha de ingreso del cliente
+                        </small>
+                    </div>
 
-                @*UsuarioId*@
-                <div class="form-group">
-                    <label for="UsuarioIdSelect">UsuarioId</label>
-                    <InputSelect @bind-Value="@usuarioId" class="form-control">
-                        <option value="0">Elige el usuario</option>
-                        @foreach (var item in listaUsuarios)
-                        {
-                            <option value="@item.UsuarioId">@item.Nombres</option>
-                        }
-                    </InputSelect>
-                    <ValidationMessage For="(()=> cliente.UsuariosId)" />
-                    <small id="UserIdInlineHelper">
-                        Ingresar el usuario que esta insertando el cliente
-                    </small>
-                </div>
+                    @*UsuarioId*@
+                    <div class="form-group">
+                        <label for="UsuarioIdSelect">UsuarioId</label>
+                        <InputSelect @bind-Value="@usuarioId" class="form-control">
+                            <option value="0">Elige el usuario</option>
+                            @foreach (var item in listaUsuarios)
+                            {
+                                <option value="@item.UsuarioId">@item.Nombres</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="(() => cliente.UsuariosId)" />
+                        <small id="UserIdInlineHelper">
+                            Ingresar el usuario que esta insertando el cliente
+                        </small>
+                    </div>
 
 
-            </form>
+                </form>
 
-        </div>
-
-        @*Buttons*@
-        <div class="card-footer">
-
-            <div class="form-group text-center" display: inline-block>
-                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">
-                    <span class="oi oi-plus" aria-hidden="true"></span> Nuevo
-                </button>
-
-                <button type="submit" class="btn btn-lg btn-success">
-                    <span class="oi oi-clipboard" aria-hidden="true"></span> Guardar
-                </button>
-
-                <button class="btn btn-lg btn-danger" @onclick="ELiminar">
-                    <span class="oi oi-trash" aria-hidden="true"></span> Eliminar
-                </button>
             </div>
 
+            @*Buttons*@
+            <div class="card-footer">
+
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">
+                        <span class="oi oi-plus" aria-hidden="true"></span> Nuevo
+                    </button>
+
+                    <button type="submit" class="btn btn-lg btn-success">
+                        <span class="oi oi-clipboard" aria-hidden="true"></span> Guardar
+                    </button>
+
+                    <button class="btn btn-lg btn-danger" @onclick="ELiminar">
+                        <span class="oi oi-trash" aria-hidden="true"></span> Eliminar
+                    </button>
+                </div>
+
+            </div>
         </div>
-    </div>
-</EditForm>
+    </EditForm>
+
+}
 
 @code {
-    [Parameter]
-    public int ClienteId { get; set; }
-    Clientes cliente = new Clientes();
+        [Parameter]
+        public int ClienteId { get; set; }
+        Clientes cliente = new Clientes();
 
-    private string usuarioId;
-    List<Usuarios> listaUsuarios = new List<Usuarios>();
+        private string usuarioId;
+        private bool TipoUsuario = false;
+        List<Usuarios> listaUsuarios = new List<Usuarios>();
 
-    protected override void OnInitialized()
-    {
-        Nuevo();
-        Buscar();
-        listaUsuarios = UsuariosBLL.GetList(x=> true);
-    }
-
-    private void Nuevo()
-    {
-        cliente = new Clientes();
-        listaUsuarios = UsuariosBLL.GetList(x => true);
-        usuarioId = "";
-    }
-
-    private void Guardar()
-    {
-        bool guardo = false;
-        cliente.UsuariosId = Convert.ToInt32(usuarioId);
-
-        if (UsuariosBLL.ExistenciaUsuario(cliente.UsuariosId))
-        {
-            guardo = ClientesBLL.Guardar(cliente);
-        }
-
-        if (guardo)
+        protected override void OnInitialized()
         {
             Nuevo();
-            toast.ShowSuccess("Guardado correctamente");
+            Buscar();
+            TipoUsuario = GetAuthorization();
+
+            listaUsuarios = UsuariosBLL.GetList(x => true);
         }
-        else
-            toast.ShowError("No guardo");
-    }
 
-    private void Buscar()
-    {
-        if(cliente.ClienteId > 0)
+        private void Nuevo()
         {
+            cliente = new Clientes();
+            listaUsuarios = UsuariosBLL.GetList(x => true);
+            usuarioId = "";
+        }
 
-            var encontrado = ClientesBLL.Buscar(cliente.ClienteId);
-            if (encontrado != null)
+        private void Guardar()
+        {
+            bool guardo = false;
+            cliente.UsuariosId = Convert.ToInt32(usuarioId);
+
+            if (UsuariosBLL.ExistenciaUsuario(cliente.UsuariosId))
             {
-                this.cliente = encontrado;
-                usuarioId = this.cliente.UsuariosId.ToString();
+                guardo = ClientesBLL.Guardar(cliente);
+            }
+
+            if (guardo)
+            {
+                Nuevo();
+                toast.ShowSuccess("Guardado correctamente");
             }
             else
-                toast.ShowWarning("No se encontrado");
+                toast.ShowError("No guardo");
         }
-    }
 
-    private void ELiminar()
-    {
-        bool elimino;
-        elimino = ClientesBLL.Eliminar(cliente.ClienteId);
-        if (elimino)
+        private void Buscar()
         {
-            Nuevo();
-            toast.ShowSuccess("Elimino Correctamente");
+            if (cliente.ClienteId > 0)
+            {
+
+                var encontrado = ClientesBLL.Buscar(cliente.ClienteId);
+                if (encontrado != null)
+                {
+                    this.cliente = encontrado;
+                    usuarioId = this.cliente.UsuariosId.ToString();
+                }
+                else
+                    toast.ShowWarning("No se encontrado");
+            }
         }
+
+        private void ELiminar()
+        {
+            bool elimino;
+            elimino = ClientesBLL.Eliminar(cliente.ClienteId);
+            if (elimino)
+            {
+                Nuevo();
+                toast.ShowSuccess("Elimino Correctamente");
+            }
+            else
+                toast.ShowError("No elimino");
+        }
+
+        private bool GetAuthorization()
+        {
+            bool acceso;
+
+            if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
+                || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
+            acceso = true;
         else
-            toast.ShowError("No elimino");
+            acceso = false;
+
+        return acceso;
     }
 }

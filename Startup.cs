@@ -71,6 +71,8 @@ namespace ProyectoFinal_PA2
             app.UseCookiePolicy();
             app.UseAuthentication();
 
+            app.UseHttpsRedirection();
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

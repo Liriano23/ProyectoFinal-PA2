@@ -23,7 +23,7 @@
                     </div>
                     <div class="form-group">
                         <a class="btn btn-success btn-block"
-                           href="/login?paramUsername=@Encode(Usuario.NombreUsuario)&paramPassword=@Encode(Usuario.Contrasena)" target="_top">Login</a>
+                           href="/login?paramUsername=@Encode(Usuario.NombreUsuario)&paramPassword=@Encode(Usuario.Contrasena)" @onmouseover="ValidarCampos" target="_top">Login</a>
 
                         <a class="btn btn-danger btn-block" href="/">Volver al Home</a>
                     </div>
@@ -35,7 +35,7 @@
 
 @code {
 
-    public Usuarios Usuario { get; set; }
+    Usuarios Usuario = new Usuarios();
 
 
     protected override void OnInitialized()
@@ -49,5 +49,11 @@
         return HttpUtility.UrlEncode(param);
     }
 
-
+    private void ValidarCampos()
+    {
+        if(string.IsNullOrEmpty(Usuario.NombreUsuario) && string.IsNullOrEmpty(Usuario.NombreUsuario))
+        {
+            toast.ShowError("Los campos no pueden estar vacios");
+        }
+    }
 }

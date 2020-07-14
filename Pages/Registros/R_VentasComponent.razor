@@ -388,7 +388,7 @@
             Precio = precio
         });
 
-        AumentarCantidadInventario();
+        DisminuirCantidadInventario();
         CalcularTotalVenta();
 
         DetalleId = 0;
@@ -454,7 +454,7 @@
         }
     }
 
-    private void AumentarCantidadInventario()
+    private void DisminuirCantidadInventario()
     {
         int cantidadEnLista = 0;
         int productoId = Convert.ToInt32(ProductoID);

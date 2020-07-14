@@ -195,5 +195,36 @@ namespace ProyectoFinal_PA2.BLL
 
             return paso;
         }
+
+        public static bool AumentarInventario(int id, int cantidad)
+        {
+            bool paso = false;
+            Contexto db = new Contexto();
+            // Productos producto = new Productos();
+            var producto = db.Productos.Find(id);
+
+            if (producto != null)
+            {
+                try
+                {
+                    if (producto.Inventario > 0)
+                        producto.Inventario = (producto.Inventario + cantidad);
+
+
+                    db.Entry(producto).State = EntityState.Modified;
+                    paso = (db.SaveChanges() > 0);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    db.Dispose();
+                }
+            }
+
+            return paso;
+        }
     }
 }

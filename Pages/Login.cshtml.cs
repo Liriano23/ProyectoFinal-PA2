@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProyectoFinal_PA2.Models;
 using ProyectoFinal_PA2.BLL;
-using ProyectoFinal_PA2.DAL;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
@@ -16,28 +13,23 @@ namespace ProyectoFinal_PA2.Pages
 {
     public class LoginModel : PageModel
     {
-        ToastService ToastService = new ToastService();
-        public string ReturnUrl { get; set; }
-        Usuarios Usuarios = new Usuarios();
         
-        Contexto contexto = new Contexto();
+        Usuarios Usuarios = new Usuarios();
         List<Usuarios> ListaUsuarios = new List<Usuarios>();
 
 
         public async Task<ActionResult> OnGetAsync(string paramUsername, string paramPassword)
         {
-            string returnUrl = Url.Content("~/");
+            string returnUrl = Url.Content("/RedireccionLogin");
+            
             try
             {
-                // Clear the existing external cookie
-                await HttpContext
-                    .SignOutAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             }
-            catch { }
-            // *** !!! This is where you would validate the user !!! ***
-            // In this example we just log the user in
-            // (Always log the user in for this demo)
+            catch 
+            {
+                throw;
+            }
 
             if (UsuariosBLL.GetExistenciaYClaveUsuario(paramUsername, paramPassword))
             {
@@ -47,8 +39,8 @@ namespace ProyectoFinal_PA2.Pages
                     new Claim(ClaimTypes.Role, UsuariosBLL.GetTipoUsuario(paramUsername))
 
                 };
-                var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var authProperties = new AuthenticationProperties
                 {
@@ -57,17 +49,18 @@ namespace ProyectoFinal_PA2.Pages
                 };
                 try
                 {
-                    await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,new ClaimsPrincipal(claimsIdentity),authProperties);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    string error = ex.Message;
+                    throw;
                 }
+                return LocalRedirect("/");
             }
-            return LocalRedirect(returnUrl);
+            else
+            {
+                return LocalRedirect(returnUrl);
+            }
         }
     }
 }

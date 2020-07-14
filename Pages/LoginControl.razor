@@ -6,7 +6,7 @@
         <Authorized>
             <b>Hola, @context.User.Identity.Name!</b>
             <a class="ml-md-auto btn btn-primary"
-               href="/logout?returnUrl=/"
+               href="/logout?returnUrl=/LogInPage"
                target="_top">Logout</a>
         </Authorized>
         <NotAuthorized>
@@ -16,7 +16,7 @@
 
 </CascadingAuthenticationState>
 
-@code {
+@*@code {
    
     private string Encode(string param)
     {
@@ -32,4 +32,4 @@
         return encode;
 
     }
-}
+}*@

@@ -1,4 +1,4 @@
-﻿@page "/ConsultaUsuarios"
+﻿@page "/ConsultaClientes"
 
 <CascadingAuthenticationState>
     <AuthorizeView>
@@ -11,8 +11,6 @@
                     <h5 class="card-title">Atención</h5>
                     <p>Debe iniciar sesion para poder acceder a estas opciones</p>
                     <a href="MenuConsultas" class="btn btn-primary">Ir al Menú</a>
-                </div>
-                <div class="card-footer text-muted">
                 </div>
             </div>
         </NotAuthorized>
@@ -38,7 +36,7 @@
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && TipoUsuario)
 {
-    <h3>Consulta Usuarios</h3>
+    <h3>Consulta Clientes</h3>
     <div class="row">
         <div class="col-1">
             <label>Filtro</label>
@@ -46,8 +44,9 @@
 
         <div class="col-sm">
             <select @bind="opcion" class="form-control">
+
                 <option value="0">Todo</option>
-                <option value="1">Usuario Id</option>
+                <option value="1">Clientes Id</option>
                 <option value="2">Nombres</option>
                 <option value="3">Apellido</option>
                 <option value="4">Cedula</option>
@@ -56,9 +55,9 @@
                 <option value="7">Telefónio</option>
                 <option value="8">Celular</option>
                 <option value="9">Email</option>
-                <option value="10">Tipo Usuario</option>
-                <option value="11">Nombre usuario</option>
-                <option value="12">Fecha Ingreso</option>
+                <option value="10">Fecha Nacimiento</option>
+                <option value="11">Fecha Ingreso</option>
+                <option value="12">Usuario Id</option>
             </select>
         </div>
 
@@ -75,9 +74,6 @@
         </div>
     </div>
 
-
-
-
     @if (lista == null)
     {
         <h3>No existen usuarios en la base de datos</h3>
@@ -87,7 +83,7 @@
         <table class="table table-dark" style="margin-top: 5px;">
             <thead>
                 <tr>
-                    <th>Usuario Id</th>
+                    <th>Cliente Id</th>
                     <th>Nombres</th>
                     <th>Apellidos</th>
                     <th>Cedula</th>
@@ -96,9 +92,9 @@
                     <th>Telefóno</th>
                     <th>Celular</th>
                     <th>Email</th>
-                    <th>Tipo Usuario</th>
-                    <th>Nombre Usuario</th>
-                    <th>Fecha Ingreso</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>Fecha ingreso</th>
+                    <th>Usuario Id</th>
                 </tr>
             </thead>
 
@@ -106,7 +102,7 @@
                 @foreach (var list in lista)
                 {
                     <tr>
-                        <td>@list.UsuarioId</td>
+                        <td>@list.ClienteId</td>
                         <td>@list.Nombres</td>
                         <td>@list.Apellidos</td>
                         <td>@list.Cedula</td>
@@ -115,9 +111,9 @@
                         <td>@list.Telefono</td>
                         <td>@list.Celular</td>
                         <td>@list.Email</td>
-                        <td>@list.TipoUsuario</td>
-                        <td>@list.NombreUsuario</td>
+                        <td>@list.FechaNacimiento</td>
                         <td>@list.FechaIngreso</td>
+                        <td>@list.UsuariosId</td>
                     </tr>
                 }
             </tbody>
@@ -127,16 +123,15 @@
 
 @code {
 
-    List<Usuarios> lista = new List<Usuarios>();
-    private decimal total = 0;
+    List<Clientes> lista = new List<Clientes>();
     private string opcion = "0";
     private string criterio = "";
     private bool TipoUsuario;
 
     protected override void OnInitialized()
     {
-        lista = UsuariosBLL.GetList(x => true);
-        TipoUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador");
+        lista = ClientesBLL.GetList(x => true);
+        TipoUsuario = GetAuthorization();
 
     }
 
@@ -150,7 +145,7 @@
             {
                 case 0:
                     {
-                        lista = UsuariosBLL.GetList(x => true);
+                        lista = ClientesBLL.GetList(x => true);
                     }
                     break;
 
@@ -158,80 +153,100 @@
                     {
                         int id;
                         id = Convert.ToInt32(criterio);
-                        lista = UsuariosBLL.GetList(x => x.UsuarioId == id);
+                        lista = ClientesBLL.GetList(x => x.ClienteId == id);
                     }
                     break;
 
                 case 2:
                     {
-                        lista = UsuariosBLL.GetList(x => x.Nombres == criterio);
+                        lista = ClientesBLL.GetList(x => x.Nombres == criterio);
                     }
                     break;
 
                 case 3:
                     {
-                        lista = UsuariosBLL.GetList(x => x.Apellidos == criterio);
+                        lista = ClientesBLL.GetList(x => x.Apellidos == criterio);
                     }
                     break;
 
                 case 4:
                     {
-                        lista = UsuariosBLL.GetList(x => x.Cedula == criterio);
+                        lista = ClientesBLL.GetList(x => x.Cedula == criterio);
                     }
                     break;
 
                 case 5:
                     {
-                        lista = UsuariosBLL.GetList(x => x.Sexo == criterio);
+                        lista = ClientesBLL.GetList(x => x.Sexo == criterio);
                     }
                     break;
 
                 case 6:
                     {
-                        lista = UsuariosBLL.GetList(x => x.Direccion == criterio);
+                        lista = ClientesBLL.GetList(x => x.Direccion == criterio);
                     }
                     break;
 
                 case 7:
                     {
-                        lista = UsuariosBLL.GetList(x => x.Telefono == criterio);
+                        lista = ClientesBLL.GetList(x => x.Telefono == criterio);
                     }
                     break;
 
                 case 8:
                     {
-                        lista = UsuariosBLL.GetList(x => x.Celular == criterio);
+                        lista = ClientesBLL.GetList(x => x.Celular == criterio);
                     }
                     break;
 
                 case 9:
                     {
-                        lista = UsuariosBLL.GetList(x => x.Email == criterio);
+                        lista = ClientesBLL.GetList(x => x.Email == criterio);
                     }
                     break;
 
                 case 10:
                     {
-                        lista = UsuariosBLL.GetList(x => x.TipoUsuario == criterio);
+                        //lista = ClientesBLL.GetList(x => x.FechaNacimiento == criterio);
                     }
                     break;
 
                 case 11:
                     {
-                        lista = UsuariosBLL.GetList(x => x.TipoUsuario == criterio);
+                        //lista = ClientesBLL.GetList(x => x.FechaIngreso == criterio);
+                    }
+                    break;
+
+                case 12:
+                    {
+                        int id;
+                        id = Convert.ToInt32(criterio);
+                        lista = ClientesBLL.GetList(x => x.UsuariosId == id);
                     }
                     break;
             }
         }
         else if (criterio == "")
         {
-            total = 0;
-            lista = UsuariosBLL.GetList(x => true);
+            lista = ClientesBLL.GetList(x => true);
         }
         else
         {
-            total = 0;
-            lista = UsuariosBLL.GetList(x => true);
+            lista = ClientesBLL.GetList(x => true);
         }
     }
+
+    private bool GetAuthorization()
+    {
+        bool acceso;
+
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
+            || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
+            acceso = true;
+        else
+            acceso = false;
+
+        return acceso;
+    }
+
 }

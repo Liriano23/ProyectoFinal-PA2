@@ -379,6 +379,8 @@
 
     private void AgregarAlDetalle()
     {
+        int id = Convert.ToInt32(ProductoID);
+
         ventas.Detalle.Add(new VentasDetalle
         {
             Id = 0,
@@ -388,7 +390,7 @@
             Precio = precio
         });
 
-        DisminuirCantidadInventario();
+        ProductosBLL.DisminuirInventario(id,cantidad);
         CalcularTotalVenta();
 
         DetalleId = 0;
@@ -402,6 +404,11 @@
     {
         try
         {
+            int productoId = Convert.ToInt32(ProductoID);
+            int prueba = 0;
+
+            prueba += detalle.Cantidad;
+            ProductosBLL.AumentarInventario(detalle.ProductoId, prueba);
             ventas.Detalle.Remove(detalle);
             CalcularTotalVenta();
         }
@@ -452,21 +459,6 @@
         {
             toast.ShowError($"Ha ocurrido un error {e.Message}, Intetelo nuevamente");
         }
-    }
-
-    private void DisminuirCantidadInventario()
-    {
-        int cantidadEnLista = 0;
-        int productoId = Convert.ToInt32(ProductoID);
-
-        foreach (var items in ventas.Detalle)
-        {
-            cantidadEnLista += items.Cantidad;
-        }
-
-        ProductosBLL.ActualizarInventario(productoId, cantidadEnLista);
-        //Console.WriteLine(cantidadEnLista);
-        //Console.WriteLine("");
     }
 
     private bool GetAuthorization()

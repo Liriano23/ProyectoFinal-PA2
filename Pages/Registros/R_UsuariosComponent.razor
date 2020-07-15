@@ -219,13 +219,12 @@
         </div>
     </EditForm>
 }
+@code {
+    [Parameter]
+    public int UsuarioId { get; set; }
 
-    @code {
-        [Parameter]
-        public int UsuarioId { get; set; }
-
-        Usuarios usuario = new Usuarios();
-        private bool TipoUsuario;
+    Usuarios usuario = new Usuarios();
+    private bool TipoUsuario;
 
     protected override void OnInitialized()
     {

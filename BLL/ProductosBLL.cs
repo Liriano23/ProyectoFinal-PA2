@@ -165,11 +165,10 @@ namespace ProyectoFinal_PA2.BLL
             return existe;
         }
 
-        public static bool ActualizarInventario(int id, int cantidad)
+        public static bool DisminuirInventario(int id, int cantidad)
         {
             bool paso = false;
             Contexto db = new Contexto();
-           // Productos producto = new Productos();
             var producto = db.Productos.Find(id);
 
             if (producto != null)
@@ -178,7 +177,6 @@ namespace ProyectoFinal_PA2.BLL
                 {
                     if (producto.Inventario > 0)
                         producto.Inventario = (producto.Inventario - cantidad);
-
 
                     db.Entry(producto).State = EntityState.Modified;
                     paso = (db.SaveChanges() > 0);
@@ -200,7 +198,6 @@ namespace ProyectoFinal_PA2.BLL
         {
             bool paso = false;
             Contexto db = new Contexto();
-            // Productos producto = new Productos();
             var producto = db.Productos.Find(id);
 
             if (producto != null)

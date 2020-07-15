@@ -5,31 +5,12 @@
     <AuthorizeView>
         <Authorized>
             <b>Hola, @context.User.Identity.Name!</b>
-            <a class="ml-md-auto btn btn-primary"
-               href="/logout?returnUrl=/LogInPage"
-               target="_top">Logout</a>
+            <a class="ml-md-auto btn btn-primary" href="/logout?returnUrl=/LogInPage" target="_top">Logout</a>
         </Authorized>
+
         <NotAuthorized>
             <a class="ml-md-auto btn btn-primary" href="/LogInPage" target="_top">Login</a>
         </NotAuthorized>
     </AuthorizeView>
 
 </CascadingAuthenticationState>
-
-@*@code {
-   
-    private string Encode(string param)
-    {
-        string encode = "";
-        try
-        {
-            encode= HttpUtility.UrlEncode(param);
-        }
-        catch(Exception)
-        {
-            toast.ShowError("Debe iniciar con un usuario valido");
-        }
-        return encode;
-
-    }
-}*@

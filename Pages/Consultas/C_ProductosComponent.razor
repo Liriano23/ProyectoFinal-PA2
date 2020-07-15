@@ -1,0 +1,198 @@
+﻿@page "/ConsultaProductos"
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Atención</h5>
+                    <p>Debe iniciar sesion para poder acceder a estas opciones</p>
+                    <a href="MenuConsultas" class="btn btn-primary">Ir al Menú</a>
+                </div>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && TipoUsuario)
+{
+    <h3>Consulta Productos</h3>
+    <div class="row">
+        <div class="col-1">
+            <label>Filtro</label>
+        </div>
+
+        <div class="col-sm">
+            <select @bind="opcion" class="form-control">
+
+                <option value="0">TODO</option>         
+                <option value="1">ProductoId  </option>     
+                <option value="2">Nombre Productos </option>
+                <option value="3">Marca Productos </option> 
+                <option value="4">Fecha Ingreso </option>   
+                <option value="5">Categoria Id</option>    
+                <option value="6">Suplidor Id</option>    
+                <option value="7">Usuario Id</option>    
+            </select>
+        </div>
+
+        <div class="col-1">
+            <label>Criterio</label>
+        </div>
+
+        <div class="col">
+            <input type="text" @bind="criterio" class="form-control" />
+        </div>
+
+        <div class="col-lg">
+            <button class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
+        </div>
+    </div>
+
+    @if (lista == null)
+    {
+        <h3>No existen usuarios en la base de datos</h3>
+    }
+    else
+    {
+        <table class="table table-dark" style="margin-top: 5px;">
+            <thead>
+                <tr>
+                    <th>ProductoId</th>
+                    <th>Nombre Producto</th>
+                    <th>Marca Productos</th>
+                    <th>Cantidad en inventatario</th>
+                    <th>Fecha Ingreso</th>
+                    <th>Categoria Id/</th>
+                    <th>Suplidor Id/</th>
+                    <th>Usuario Id/</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var list in lista)
+                {
+                <tr>
+                    <td>@list.ProductoId </td>
+                    <td>@list.NombreProducto </td>
+                    <td>@list.MarcaProducto </td>
+                    <td>@list.Inventario </td>
+                    <td>@list.FechaIngreso</td>
+                    <td>@list.CategoriaId</td>
+                    <td>@list.SuplidorId</td>
+                    <td>@list.UsuariosId</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+@code {
+
+    List<Productos> lista = new List<Productos>();
+    private string opcion = "0";
+    private string criterio = "";
+    private bool TipoUsuario;
+
+    protected override void OnInitialized()
+    {
+        lista = ProductosBLL.GetList(x => true);
+        TipoUsuario = GetAuthorization();
+
+    }
+
+    private void MostrarDatos()
+    {
+        int elegido = Convert.ToInt32(opcion);
+
+        if (criterio.Trim().Length > 0 && criterio != "")
+        {
+            switch (elegido)
+            {
+                case 0:
+                    {
+                        lista = ProductosBLL.GetList(x => true);
+                    }
+                    break;
+
+                case 1:
+                    {
+                        int id;
+                        id = Convert.ToInt32(criterio);
+                        lista = ProductosBLL.GetList(x => x. ProductoId == id);
+                    }
+                    break;
+
+                case 2:
+                    {
+                        lista = ProductosBLL.GetList(x => x.NombreProducto == criterio);
+                    }
+                    break;
+
+                case 3:
+                    {
+                        lista = ProductosBLL.GetList(x => x.MarcaProducto == criterio);
+                    }
+                    break;
+
+                case 4:
+                    {
+                        //lista = ProductosBLL.GetList(x => x.FechaIngreso == criterio);
+                    }
+                    break;
+
+                case 5:
+                    {
+                        int id;
+                        id = Convert.ToInt32(criterio);
+                        lista = ProductosBLL.GetList(x => x.CategoriaId == id);
+                    }
+                    break;
+
+                case 6:
+                    {
+
+                        int id;
+                        id = Convert.ToInt32(criterio);
+                        lista = ProductosBLL.GetList(x => x.SuplidorId == id);
+                    }
+                    break;
+
+                case 7:
+                    {
+                        int id;
+                        id = Convert.ToInt32(criterio);
+                        lista = ProductosBLL.GetList(x => x.UsuariosId == id);
+                    }
+                    break;
+            }
+        }
+        else if (criterio == "")
+        {
+            lista = ProductosBLL.GetList(x => true);
+        }
+        else
+        {
+            lista = ProductosBLL.GetList(x => true);
+        }
+    }
+
+    private bool GetAuthorization()
+    {
+        bool acceso;
+
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
+            || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
+            acceso = true;
+        else
+            acceso = false;
+
+        return acceso;
+    }
+
+}

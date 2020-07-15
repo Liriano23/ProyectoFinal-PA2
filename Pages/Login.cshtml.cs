@@ -13,14 +13,12 @@ namespace ProyectoFinal_PA2.Pages
 {
     public class LoginModel : PageModel
     {
-        
         Usuarios Usuarios = new Usuarios();
         List<Usuarios> ListaUsuarios = new List<Usuarios>();
 
-
         public async Task<ActionResult> OnGetAsync(string paramUsername, string paramPassword)
         {
-            string returnUrl = Url.Content("/RedireccionLogin");
+            string returnUrl = Url.Content("/LogInPage");
             
             try
             {
@@ -56,6 +54,10 @@ namespace ProyectoFinal_PA2.Pages
                     throw;
                 }
                 return LocalRedirect("/");
+            }
+            else if (!UsuariosBLL.GetExistenciaYClaveUsuario(paramUsername, paramPassword))
+            {
+                return LocalRedirect("/UserNotExist");
             }
             else
             {

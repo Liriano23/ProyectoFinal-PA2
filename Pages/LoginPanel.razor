@@ -51,7 +51,7 @@
 
     private void ValidarCampos()
     {
-        if(string.IsNullOrEmpty(Usuario.NombreUsuario) && string.IsNullOrEmpty(Usuario.NombreUsuario))
+        if(string.IsNullOrEmpty(Usuario.NombreUsuario) || string.IsNullOrEmpty(Usuario.NombreUsuario))
         {
             toast.ShowError("Los campos no pueden estar vacios");
         }

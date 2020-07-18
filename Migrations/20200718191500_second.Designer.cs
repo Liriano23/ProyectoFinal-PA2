@@ -9,8 +9,8 @@ using ProyectoFinal_PA2.DAL;
 namespace ProyectoFinal_PA2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200717033038_iicial")]
-    partial class iicial
+    [Migration("20200718191500_second")]
+    partial class second
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -150,6 +150,9 @@ namespace ProyectoFinal_PA2.Migrations
 
                     b.Property<int>("ProductoId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -389,7 +392,7 @@ namespace ProyectoFinal_PA2.Migrations
                             Contrasena = "Admin",
                             Direccion = "SFM",
                             Email = "admin123@gmail.com",
-                            FechaIngreso = new DateTime(2020, 7, 16, 23, 30, 37, 752, DateTimeKind.Local).AddTicks(7651),
+                            FechaIngreso = new DateTime(2020, 7, 18, 15, 14, 59, 540, DateTimeKind.Local).AddTicks(4975),
                             NombreUsuario = "Admin",
                             Nombres = "Admin",
                             Sexo = "Femenino",
@@ -449,6 +452,9 @@ namespace ProyectoFinal_PA2.Migrations
 
                     b.Property<int>("ProductoId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("VentaId")
                         .HasColumnType("INTEGER");

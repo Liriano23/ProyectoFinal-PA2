@@ -1,0 +1,298 @@
+﻿@page "/RegistroEmpleados"
+@page "/RegistroEmpleados/{EmpleadoId:int}"
+<CascadingAuthenticationState>
+
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado!
+                </div>
+                <div class="card-body">
+                    <h5>Atención</h5>
+                    <p>Debe iniciar sesion para poder acceder a estas opciones</p>
+                    <a href="MenuRegistros" class="btn btn-primary">Volver al Menú anterior</a>
+                </div>
+            </div>
+        </NotAuthorized>
+
+        <Authorized>
+
+        </Authorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@if (TipoUsuario)
+{
+    <EditForm Model="empleados" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+
+        <div id="ContenedorPrincipal" class="card">
+
+            <div id="PrincipalContainer" class="card-header">
+                <div class="form-group">
+                    <img src="css/Images/UserLogo2.png" title="LogoEmpleados" alt="Logo del regsitro de Empleados" />
+                    <h3 id="Titulo">Registro Empleados</h3>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <form>
+                    @*EmpleadoId*@
+                    <div class="form-row aling-items-center">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="EmpleadoIdPicker">EmpleadoId</label>
+                                <div class="input-group">
+                                    <InputNumber @bind-Value="empleados.EmpleadoId" autoComplete="off" id="EmpleadoIdPicker" class="form-control col-4" />
+                                    <div class="form-group-append">
+                                        <button style="margin-left: 5px;" type="button" class="btn btn-primary input-group-text" @onclick="Buscar">
+                                            <span class="oi oi-zoom-in"></span> Buscar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Nombres*@
+                    <div class="form-group">
+                        <label for="NombreTextBox">Nombre</label>
+                        <InputText @bind-Value="empleados.Nombres" id="NombreTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="@(() => empleados.Nombres)" />
+                        <small id="NameInLineHelper">
+                            Ingresar el(os) nombres del Empleado
+                        </small>
+                    </div>
+
+                    @*Apellidos*@
+                    <div class="form-group">
+                        <label for="ApellidoTextBox">Apellidos</label>
+                        <InputText @bind-Value="empleados.Apellidos" id="ApellidoIdTextBox" class="form-control" autocomplete="off" />
+                        <ValidationMessage For="(() => empleados.Apellidos)" />
+                        <small id="LastNameInlineHelper">
+                            Ingresar el apellido del Empleado
+                        </small>
+                    </div>
+
+                    @*Cédula*@
+                    <div class="form-group">
+                        <label for="CedulaTextBox">Cedula</label>
+                        <InputText @bind-Value="empleados.Cedula" id="CedulaTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => empleados.Cedula)" />
+                        <small id="CedulaInlineHelper">
+                            Ingresar la cedula del Empleado
+                        </small>
+                    </div>
+
+
+                    @*Telefono*@
+                    <div class="form-group">
+                        <label for="TelefonoTextBox">Telefono</label>
+                        <InputText @bind-Value="empleados.Telefono" id="TelefonoTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => empleados.Telefono)" />
+                        <small id="PhoneInlineHelper">
+                            Ingresar telefono del Empleado
+                        </small>
+                    </div>
+
+                    @*Celular*@
+                    <div class="form-group">
+                        <label for="CelularTextBox">Celular</label>
+                        <InputText @bind-Value="empleados.Celular" id="CelularTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => empleados.Celular) " />
+                        <small id="CellPhoneInlineHelper">
+                            Ingresar celular del Empleado
+                        </small>
+                    </div>
+
+                    @*Dirección*@
+                    <div class="form-group">
+                        <label for="DireccionTextBox">Direccion</label>
+                        <InputText @bind-Value="empleados.Direccion" id="DireccionTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => empleados.Direccion)" />
+                        <small id="AddressInlineHelper">
+                            Ingresar direccion del Empleado
+                        </small>
+                    </div>
+
+                    @*Email*@
+                    <div class="form-group">
+                        <label for="EmailTextBox">Email</label>
+                        <InputText @bind-Value="empleados.Email" id="EmailTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => empleados.Email)" />
+                        <small id="EmailInlineHelper" class="text-muted">
+                            Ingresar email del Empleado
+                        </small>
+                    </div>
+
+                    @*Cargo*@
+                    <div class="form-group">
+                        <label for="EmailTextBox">Cargo</label>
+                        <InputText @bind-Value="empleados.Cargo" id="EmailTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => empleados.Cargo)" />
+                        <small id="EmailInlineHelper" class="text-muted">
+                            Ingresar cargo del Empleado
+                        </small>
+                    </div>
+
+                    @*Sueldo*@
+                    <div class="form-group" id="SueldoContainer">
+                        <label for="SueldoInputNumber">Sueldo</label>
+                        <InputNumber @bind-Value="empleados.Sueldo" id="SueldoInputNumber" class="form-control" />
+                        <ValidationMessage For="(() => empleados.Sueldo)" />
+                        <small id="SueldoInLineHelper">
+                            Ingresar sueldo del Empleado 
+                        </small>
+                    </div>
+
+                    @*Fecha nacimiento*@
+                    <div class="form-group">
+                        <label for="FechaNacimientoDatePicker">Fecha nacimeinto</label>
+                        <InputDate @bind-Value="empleados.FechaNacimiento" id="FechaNacimientoDatePicker" class="form-control" />
+                        <ValidationMessage For="(() => empleados.FechaNacimiento)" />
+                        <small id="EntryDateInlineHelper">
+                            Ingresar fecha de nacimeinto del Empleado
+                        </small>
+                    </div>
+
+                    @*Fecha ingreso*@
+                    <div class="form-group">
+                        <label for="FechaIngresoDatePicker">Fecha ingreso</label>
+                        <InputDate @bind-Value="empleados.FechaIngreso" id="FechaIngresoDatePicker" class="form-control" ReadOnly />
+                        <ValidationMessage For="(() => empleados.FechaIngreso)" />
+                        <small id="EntryDateInlineHelper">
+                            Ingresar fecha de ingreso del Empleado
+                        </small>
+                    </div>
+
+                    @*UsuarioId*@
+                    <div class="form-group">
+                        <label for="UsuarioIdSelect">UsuarioId</label>
+                        <InputSelect @bind-Value="@usuarioId" class="form-control">
+                            <option value="0">Elige el usuario</option>
+                            @foreach (var item in listaUsuarios)
+                                {
+                                <option value="@item.UsuarioId">@item.Nombres</option>
+                                }
+                        </InputSelect>
+                        <ValidationMessage For="(() => empleados.UsuariosId)" />
+                        <small id="UserIdInlineHelper">
+                            Ingresar el usuario que esta insertando el Empleado
+                        </small>
+                    </div>
+
+
+                </form>
+
+            </div>
+
+            @*Buttons*@
+            <div class="card-footer">
+
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">
+                        <span class="oi oi-plus" aria-hidden="true"></span> Nuevo
+                    </button>
+
+                    <button type="submit" class="btn btn-lg btn-success">
+                        <span class="oi oi-clipboard" aria-hidden="true"></span> Guardar
+                    </button>
+
+                    <button class="btn btn-lg btn-danger" @onclick="ELiminar">
+                        <span class="oi oi-trash" aria-hidden="true"></span> Eliminar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </EditForm>
+
+}
+
+@code {
+    [Parameter]
+    public int EmpleadoId { get; set; }
+    Empleados empleados = new Empleados();
+
+    private string usuarioId;
+    private bool TipoUsuario = false;
+    List<Usuarios> listaUsuarios = new List<Usuarios>();
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        Buscar();
+        TipoUsuario = GetAuthorization();
+
+        listaUsuarios = UsuariosBLL.GetList(x => true);
+    }
+
+    private void Nuevo()
+    {
+        empleados = new Empleados();
+        listaUsuarios = UsuariosBLL.GetList(x => true);
+        usuarioId = "";
+    }
+
+    private void Guardar()
+    {
+        bool guardo = false;
+        empleados.UsuariosId = Convert.ToInt32(usuarioId);
+
+        if (UsuariosBLL.ExistenciaUsuario(empleados.UsuariosId))
+        {
+            guardo = EmpleadosBLL.Guardar(empleados);
+        }
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No guardo");
+    }
+
+    private void Buscar()
+    {
+        if (empleados.EmpleadoId> 0)
+        {
+
+            var encontrado = EmpleadosBLL.Buscar(empleados.EmpleadoId);
+            if (encontrado != null)
+            {
+                this.empleados = encontrado;
+                usuarioId = this.empleados.UsuariosId.ToString();
+            }
+            else
+                toast.ShowWarning("No se encontrado");
+        }
+    }
+
+    private void ELiminar()
+    {
+        bool elimino;
+        elimino = EmpleadosBLL.Eliminar(empleados.EmpleadoId);
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Elimino Correctamente");
+        }
+        else
+            toast.ShowError("No elimino");
+    }
+
+    private bool GetAuthorization()
+    {
+        bool acceso;
+
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
+            || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
+            acceso = true;
+        else
+            acceso = false;
+
+        return acceso;
+    }
+}

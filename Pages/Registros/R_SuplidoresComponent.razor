@@ -1,0 +1,278 @@
+﻿@page "/RegistroSuplidores"
+@page "/RegistroSuplidores/{SuplidorId:int}"
+<CascadingAuthenticationState>
+
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado!
+                </div>
+                <div class="card-body">
+                    <h5>Atención</h5>
+                    <p>Debe iniciar sesion para poder acceder a estas opciones</p>
+                    <a href="MenuRegistros" class="btn btn-primary">Volver al Menú anterior</a>
+                </div>
+            </div>
+        </NotAuthorized>
+
+        <Authorized>
+
+        </Authorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@if (TipoUsuario)
+{
+    <EditForm Model="suplidores" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+
+        <div id="ContenedorPrincipal" class="card">
+
+            <div id="PrincipalContainer" class="card-header">
+                <div class="form-group">
+                    <img src="css/Images/UserLogo2.png" title="LogoEmpleados" alt="Logo del regsitro de Suplidores" />
+                    <h3 id="Titulo">Registro Suplidores</h3>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <form>
+                    @*suplidorId*@
+                    <div class="form-row aling-items-center">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="suplidorIdPicker">suplidorId</label>
+                                <div class="input-group">
+                                    <InputNumber @bind-Value="suplidores.SuplidorId" autoComplete="off" id="suplidorIdPicker" class="form-control col-4" />
+                                    <div class="form-group-append">
+                                        <button style="margin-left: 5px;" type="button" class="btn btn-primary input-group-text" @onclick="Buscar">
+                                            <span class="oi oi-zoom-in"></span> Buscar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Nombres*@
+                    <div class="form-group">
+                        <label for="NombreTextBox">Nombre del suplidor</label>
+                        <InputText @bind-Value="suplidores.NombreSuplidor" id="NombresuplidorTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="@(() => suplidores.NombreSuplidor)" />
+                        <small id="SuplidorNameInLineHelper">
+                            Ingresar el(os) nombres del suplidor
+                        </small>
+                    </div>
+
+                    @*Apellidos*@
+                    <div class="form-group">
+                        <label for="ApellidoTextBox">Apellidos</label>
+                        <InputText @bind-Value="suplidores.Apellidos" id="ApellidoIdTextBox" class="form-control" autocomplete="off" />
+                        <ValidationMessage For="(() => suplidores.Apellidos)" />
+                        <small id="LastNameInlineHelper">
+                            Ingresar el apellido del suplidor
+                        </small>
+                    </div>
+
+                    @*Nombres*@
+                    <div class="form-group">
+                        <label for="NombreTextBox">Nombre de la Compañia</label>
+                        <InputText @bind-Value="suplidores.NombreCompañia" id="NombreCompañiaTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="@(() => suplidores.NombreCompañia)" />
+                        <small id="CompaniNameInLineHelper">
+                            Ingresar el(os) nombres de la compañia
+                        </small>
+                    </div>
+
+
+                    @*Telefono*@
+                    <div class="form-group">
+                        <label for="TelefonoTextBox">Telefono</label>
+                        <InputText @bind-Value="suplidores.Telefono" id="TelefonoTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => suplidores.Telefono)" />
+                        <small id="PhoneInlineHelper">
+                            Ingresar telefono del suplidor
+                        </small>
+                    </div>
+
+                    @*Celular*@
+                    <div class="form-group">
+                        <label for="CelularTextBox">Celular</label>
+                        <InputText @bind-Value="suplidores.Celular" id="CelularTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => suplidores.Celular) " />
+                        <small id="CellPhoneInlineHelper">
+                            Ingresar celular del suplidor
+                        </small>
+                    </div>
+
+                    @*Dirección*@
+                    <div class="form-group">
+                        <label for="DireccionTextBox">Direccion Compañia </label>
+                        <InputText @bind-Value="suplidores.Direccion" id="DireccionTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => suplidores.Direccion)" />
+                        <small id="AddressInlineHelper">
+                            Ingresar Direccion de Compañia
+                        </small>
+                    </div>
+
+                    @*Ciudad*@
+                    <div class="form-group">
+                        <label for="CiudadTextBox">Ciudad de la compañia</label>
+                        <InputText @bind-Value="suplidores.Ciudad" id="CiudadTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => suplidores.Ciudad)" />
+                        <small id="AddressInlineHelper">
+                            Ingresar Ciudad de la compañia
+                        </small>
+                    </div>
+
+                    @*Email*@
+                    <div class="form-group">
+                        <label for="EmailTextBox">Email</label>
+                        <InputText @bind-Value="suplidores.Email" id="EmailTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="(() => suplidores.Email)" />
+                        <small id="EmailInlineHelper" class="text-muted">
+                            Ingresar email del suplidor
+                        </small>
+                    </div>
+
+                    @*Fecha ingreso*@
+                    <div class="form-group">
+                        <label for="FechaIngresoDatePicker">Fecha ingreso</label>
+                        <InputDate @bind-Value="suplidores.FechaIngreso" id="FechaIngresoDatePicker" class="form-control" ReadOnly />
+                        <ValidationMessage For="(() => suplidores.FechaIngreso)" />
+                        <small id="EntryDateInlineHelper">
+                            Ingresar fecha de ingreso del suplidor
+                        </small>
+                    </div>
+
+                    @*UsuarioId*@
+                    <div class="form-group">
+                        <label for="UsuarioIdSelect">UsuarioId</label>
+                        <InputSelect @bind-Value="@usuarioId" class="form-control">
+                            <option value="0">Elige el usuario</option>
+                            @foreach (var item in listaUsuarios)
+                                {
+                                <option value="@item.UsuarioId">@item.Nombres</option>
+                                }
+                        </InputSelect>
+                        <ValidationMessage For="(() => suplidores.UsuariosId)" />
+                        <small id="UserIdInlineHelper">
+                            Ingresar el usuario que esta insertando el suplidor
+                        </small>
+                    </div>
+
+
+                </form>
+
+            </div>
+
+            @*Buttons*@
+            <div class="card-footer">
+
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">
+                        <span class="oi oi-plus" aria-hidden="true"></span> Nuevo
+                    </button>
+
+                    <button type="submit" class="btn btn-lg btn-success">
+                        <span class="oi oi-clipboard" aria-hidden="true"></span> Guardar
+                    </button>
+
+                    <button class="btn btn-lg btn-danger" @onclick="ELiminar">
+                        <span class="oi oi-trash" aria-hidden="true"></span> Eliminar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </EditForm>
+
+}
+
+@code {
+    [Parameter]
+    public int SuplidorId { get; set; }
+    Suplidores suplidores = new Suplidores();
+
+    private string usuarioId;
+    private bool TipoUsuario = false;
+    List<Usuarios> listaUsuarios = new List<Usuarios>();
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        Buscar();
+        TipoUsuario = GetAuthorization();
+
+        listaUsuarios = UsuariosBLL.GetList(x => true);
+    }
+
+    private void Nuevo()
+    {
+        suplidores = new Suplidores();
+        listaUsuarios = UsuariosBLL.GetList(x => true);
+        usuarioId = "";
+    }
+
+    private void Guardar()
+    {
+        bool guardo = false;
+        suplidores.UsuariosId = Convert.ToInt32(usuarioId);
+
+        if (UsuariosBLL.ExistenciaUsuario(suplidores.UsuariosId))
+        {
+            guardo = SuplidoresBLL.Guardar(suplidores);
+        }
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No guardo");
+    }
+
+    private void Buscar()
+    {
+        if (suplidores.SuplidorId> 0)
+        {
+
+            var encontrado = SuplidoresBLL.Buscar(suplidores.SuplidorId);
+            if (encontrado != null)
+            {
+                this.suplidores = encontrado;
+                usuarioId = this.suplidores.UsuariosId.ToString();
+            }
+            else
+                toast.ShowWarning("No se encontrado");
+        }
+    }
+
+    private void ELiminar()
+    {
+        bool elimino;
+        elimino = SuplidoresBLL.Eliminar(suplidores.SuplidorId);
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Elimino Correctamente");
+        }
+        else
+            toast.ShowError("No elimino");
+    }
+
+    private bool GetAuthorization()
+    {
+        bool acceso;
+
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
+            || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
+            acceso = true;
+        else
+            acceso = false;
+
+        return acceso;
+    }
+}

@@ -24,6 +24,8 @@ namespace ProyectoFinal_PA2.Models
 
         [Required(ErrorMessage = "Debe ingresar el precio del Producto")]
         public decimal Precio { get; set; }
+        [Required(ErrorMessage = "Ingrese valor del producto")]
+        public decimal Valor { get; set; }
 
         public ComprasDetalle()
         {
@@ -32,6 +34,7 @@ namespace ProyectoFinal_PA2.Models
             ComprasId = 0;
             Cantidad = 0;
             Precio = 0;
+            Valor = 0;
         }
 
     }

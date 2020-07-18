@@ -1,8 +1,8 @@
-﻿@page "/RegistroVentas"
-@page "/RegistroVentas/{VentaId:int}"
+﻿@page "/RegistroCompras"
+@page "/RegistroCompras/{CompraId:int}"
 
 <CascadingAuthenticationState>
-    
+
     <AuthorizeView>
         <NotAuthorized>
             <div class="card text-center">
@@ -18,7 +18,7 @@
         </NotAuthorized>
 
         <Authorized>
-           
+
         </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
@@ -27,24 +27,24 @@
 
 @if (TipoUsuario)
 {
-    <EditForm Model="ventas" OnValidSubmit="Guardar">
+    <EditForm Model="compras" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
 
         <div id="PrincipalContainer" class="card">
             <div class="card-header">
-                <img id="Logo" src="css/Images/ProductsImage.png" title="LogoVentas" alt="Logo para el formulario de ventas" />
-                <h3 id="Titulo">Registro ventas</h3>
+                <img id="Logo" src="css/Images/ProductsImage.png" title="LogoCompras" alt="Logo para el formulario de Compras" />
+                <h3 id="Titulo">Registro Compras</h3>
             </div>
 
             <div class="card-body">
                 <form>
-                    @*VentaId*@
+                    @*CompraId*@
                     <div class="form-row align-items-center">
                         <div class="col">
                             <div class="form-group">
-                                <label for="VentaIdPicker">Venta Id</label>
+                                <label for="CompraIdPicker">Compra Id</label>
                                 <div class="input-group">
-                                    <InputNumber @bind-Value="ventas.VentaId" id="VentaIdPicker" min="0" class="form-control col-4" />
+                                    <InputNumber @bind-Value="compras.CompraId" id="CompraIdPicker" min="0" class="form-control col-4" />
                                     <div class="input-group-append">
                                         <button type="button" class="btn btn-primary" @onclick="Buscar">
                                             <span class="oi oi-zoom-in" /> Buscar
@@ -55,30 +55,30 @@
                         </div>
                     </div>
 
-                    @*ClienteID*@
+                    @*SuplidorID*@
                     <div class="form-group">
-                        <label for="ClientIdPicker"> Cliente Id </label>
-                        <InputSelect @bind-Value="ClienteID" id="ClientIdPicker" class="form-control">
-                            <option value="0">Elige usuario</option>
-                            @foreach (var clients in ListaClientes)
-                            {
-                                <option value="@clients.ClienteId">@clients.Nombres</option>
-                            }
+                        <label for="SuplidorIdPicker"> Suplidor Id </label>
+                        <InputSelect @bind-Value="SuplidorID" id="suplerIdPicker" class="form-control">
+                            <option value="0">Elige Suplidor</option>
+                            @foreach (var suplers in ListaSuplidores)
+                                {
+                                <option value="@suplers.SuplidorId">@suplers.NombreSuplidor</option>
+                                }
                         </InputSelect>
-                        <ValidationMessage For="(() => ventas.ClienteId)" />
-                        <small id="ClientIdLineHelper">
-                            Seleccione el cliente
+                        <ValidationMessage For="(() => compras.SuplidorId)" />
+                        <small id="SuplerIdLineHelper">
+                            Seleccione el Suplidor
                         </small>
                     </div>
 
                     @*EmpleadoId*@
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <label for="EmployeerIdPicker">Empleado Id</label>
                         <InputNumber @bind-Value="ventas.EmpleadoId" class="form-control" />
                         <ValidationMessage For="(() => ventas.EmpleadoId)" />
                         <small id="EmployeerIdLineHelper">
                             Seleccione el empleado
-                        </small>
+                        </small>*@
 
                         @* <InputSelect @bind-Value="ventas.EmpleadoId" class="form-control">
                                 <option value="0">seleccione empleado</option>
@@ -87,15 +87,15 @@
                                     <option value="@employeer.empleadoID">@employeer.Nombres</option>
                                 }
                             </InputSelect>*@
-                    </div>
+                   
 
                     @*FechaEmision*@
                     <div class="form-group">
-                        <label for="DatePicker">Fecha emision</label>
-                        <InputDate @bind-Value="ventas.FechaEmision" id="DatePicker" class="form-control" readonly="true" />
-                        <ValidationMessage For="(() => ventas.FechaEmision)" />
+                        <label for="DatePicker">Fecha Compra</label>
+                        <InputDate @bind-Value="compras.FechaDeCompra" id="DatePicker" class="form-control" readonly="true" />
+                        <ValidationMessage For="(() => compras.FechaDeCompra)" />
                         <small id="EntryDateInlineHelper">
-                            Fecha de emision de la factura
+                            Fecha de Compra
                         </small>
                     </div>
 
@@ -105,21 +105,21 @@
                         <InputSelect @bind-Value="@UsuarioID" class="form-control">
                             <option value="0">Elige el usuario</option>
                             @foreach (var item in ListaUsuarios)
-                            {
+                                {
                                 <option value="@item.UsuarioId">@item.Nombres</option>
-                            }
+                                }
                         </InputSelect>
-                        <ValidationMessage For="(() => ventas.UsuariosId)" />
+                        <ValidationMessage For="(() => compras.UsuariosId)" />
                         <small id="UserIdInlineHelper">
-                            Ingresar el usuario que esta insertando la venta
+                            Ingresar el usuario que esta insertando la Compra
                         </small>
                     </div>
 
                     @*ITBIS*@
                     <div class="form-group" id="ITBISContainer">
                         <label for="SubTotalInputNumber">ITBIS</label>
-                        <InputNumber @bind-Value="ventas.ITBIS" id="ITBISInputNumber" class="form-control" />
-                        <ValidationMessage For="(() => ventas.ITBIS)" />
+                        <InputNumber @bind-Value="compras.ITBIS" id="ITBISInputNumber" class="form-control" />
+                        <ValidationMessage For="(() => compras.ITBIS)" />
                         <small id="TotalInLineHelper">Valor del itbis </small>
                     </div>
 
@@ -136,11 +136,11 @@
                             <InputSelect @bind-Value="ProductoID" class="form-control" @onfocusout="DeterminarPrecioProducto">
                                 <option value="0">Elige usuario</option>
                                 @foreach (var products in ListaProductos)
-                                {
+                                    {
                                     <option value="@products.ProductoId">@products.NombreProducto</option>
-                                }
+                                    }
                             </InputSelect>
-                            <ValidationMessage For="(() => ventasDetalle.ProductoId)" />
+                            <ValidationMessage For="(() => comprasDetalle.ProductoId)" />
                             <small id="ProductsIdLineHelper">
                                 Seleccione el id del producto
                             </small>
@@ -151,7 +151,7 @@
                             <label>Precio</label>
                             <div class="input-group">
                                 <InputNumber @bind-Value="precio" class="form-control" ReadOnly="true" />
-                                <ValidationMessage For="(() => ventasDetalle.Precio)" />
+                                <ValidationMessage For="(() => comprasDetalle.Precio)" />
                             </div>
                             <small id="PriceIdInLineHelper">
                                 Precio del producto
@@ -163,7 +163,7 @@
                             <label>Cantidad</label>
                             <div class="input-group">
                                 <InputNumber @bind-Value="cantidad" class="form-control" />
-                                <ValidationMessage For="(() => ventasDetalle.Cantidad)" />
+                                <ValidationMessage For="(() => comprasDetalle.Cantidad)" />
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary" @onclick="AgregarAlDetalle">
                                         <i class="oi oi-plus" aria-hidden="true" /> Agregar
@@ -188,11 +188,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in ventas.Detalle)
+                            @foreach (var item in compras.Detalle)
                             {
                             <tr>
+                                
+                                <td>@item.Id</td>
                                 <td>@item.ProductoId</td>
-                                <td>@item.VentaId</td>
                                 <td>@item.Cantidad</td>
                                 <td>@item.Precio</td>
                                 <td>@item.Valor</td>
@@ -205,25 +206,25 @@
                     @*Descuento*@
                     <div class="form-group" id="DescuentoContainer">
                         <label for="SubTotalInputNumber">Descuento</label>
-                        <InputNumber @bind-Value="ventas.Descuento" id="ITBISInputNumber" class="form-control" @onfocusout="CalcularTotalVenta" />
-                        <ValidationMessage For="(() => ventas.Descuento)" />
+                        <InputNumber @bind-Value="compras.Descuento" id="ITBISInputNumber" class="form-control" @onfocusout="CalcularTotalCompra" />
+                        <ValidationMessage For="(() => compras.Descuento)" />
                         <small id="DiscountInLineHelper">Valor del descuento </small>
                     </div>
 
                     @*SubTotal*@
                     <div class="form-group" id="SubTotalContainer">
                         <label for="SubTotalInputNumber">SubTotalTotal</label>
-                        <InputNumber @bind-Value="ventas.SubTotal" id="SubTotalInputNumber" readOnly="true" class="form-control" />
-                        <ValidationMessage For="(() => ventas.SubTotal)" />
-                        <small id="SubtotalTotalInLineHelper">Valor Subtotal de la venta </small>
+                        <InputNumber @bind-Value="compras.SubTotal" id="SubTotalInputNumber" readOnly="true" class="form-control" />
+                        <ValidationMessage For="(() => compras.SubTotal)" />
+                        <small id="SubtotalTotalInLineHelper">Valor Subtotal de la Compra </small>
                     </div>
 
                     @*Total*@
                     <div class="form-group" id="TotalContainer">
                         <label for="TotalInputNumber">Total</label>
-                        <InputNumber @bind-Value="ventas.Total" id="TotalInputNumber" readOnly="true" class="form-control" />
-                        <ValidationMessage For="(() => ventas.Total)" />
-                        <small id="TotalInLineHelper">Valor total de la venta </small>
+                        <InputNumber @bind-Value="compras.Total" id="TotalInputNumber" readOnly="true" class="form-control" />
+                        <ValidationMessage For="(() => compras.Total)" />
+                        <small id="TotalInLineHelper">Valor total de la Compra </small>
                     </div>
 
                 </form>
@@ -252,12 +253,12 @@
 
 @code {
     [Parameter]
-    public int VentaId { get; set; }
+    public int CompraId { get; set; }
 
-    Ventas ventas = new Ventas();
-    VentasDetalle ventasDetalle = new VentasDetalle();
+    Compras compras = new Compras();
+    ComprasDetalle comprasDetalle = new ComprasDetalle();
 
-    public string ClienteID = "0";
+    public string SuplidorID = "0";
     //public string EmpleadoID = "0";
     public string ProductoID = "0";
     public string UsuarioID = "0";
@@ -269,7 +270,7 @@
     public decimal precio = 0;
     public decimal Valor = 0;
 
-    public List<Clientes> ListaClientes { get; set; }
+    public List<Suplidores> ListaSuplidores{ get; set; }
     //public List<Empleados> ListaEmpleados { get; set; }
     public List<Productos> ListaProductos { get; set; }
     public List<Usuarios> ListaUsuarios { get; set; }
@@ -282,19 +283,19 @@
         Buscar();
         TipoUsuario = GetAuthorization();
 
-        ListaClientes = ClientesBLL.GetList(x => true);
+        ListaSuplidores= SuplidoresBLL.GetList(x => true);
         ListaUsuarios = UsuariosBLL.GetList(x => true);
         ListaProductos = ProductosBLL.GetList(x => true);
     }
 
     private void Nuevo()
     {
-        ventas = new Ventas();
+        compras = new Compras();
         ListaUsuarios = UsuariosBLL.GetList(x => true);
         ListaProductos = ProductosBLL.GetList(x => true);
 
         UsuarioID = "0";
-        ClienteID = "0";
+        SuplidorID = "0";
         //EmpleadoID = "0";
         ProductoID = "0";
         precio = 0;
@@ -305,17 +306,17 @@
     {
         try
         {
-            if (ventas.VentaId > 0)
+            if (compras.CompraId > 0)
             {
-                var encontrado = VentasBLL.Buscar(ventas.VentaId);
+                var encontrado = ComprasBLL.Buscar(compras.CompraId);
 
                 if (encontrado != null)
                 {
-                    this.ventas = encontrado;
-                    UsuarioID = this.ventas.UsuariosId.ToString();
-                    ClienteID = this.ventas.ClienteId.ToString();
+                    this.compras = encontrado;
+                    UsuarioID = this.compras.UsuariosId.ToString();
+                    SuplidorID = this.compras.SuplidorId.ToString();
                     //ProductosID = this.ventas.ToString();
-                    CalcularTotalVenta();
+                    CalcularTotalCompra();
                 }
                 else
                 {
@@ -335,13 +336,13 @@
 
         try
         {
-            ventas.ClienteId = Convert.ToInt32(ClienteID);
-            ventas.UsuariosId = Convert.ToInt32(UsuarioID);
+            compras.SuplidorId = Convert.ToInt32(SuplidorID);
+            compras.UsuariosId = Convert.ToInt32(UsuarioID);
             int id = Convert.ToInt32(ProductoID);
 
-            if (UsuariosBLL.ExistenciaUsuario(ventas.UsuariosId) == true && ClientesBLL.ExistenciaClientes(ventas.ClienteId) == true)
+            if (UsuariosBLL.ExistenciaUsuario(compras.UsuariosId) == true && SuplidoresBLL.ExistenciaSuplidores(compras.SuplidorId) == true)
             {
-                guardo = VentasBLL.Guardar(ventas);
+                guardo = ComprasBLL.Guardar(compras);
             }
 
             if (guardo)
@@ -363,7 +364,7 @@
         try
         {
             bool elimino;
-            elimino = VentasBLL.Eliminar(ventas.VentaId);
+            elimino = ComprasBLL.Eliminar(compras.CompraId);
 
             if (elimino)
             {
@@ -383,27 +384,28 @@
     {
         int id = Convert.ToInt32(ProductoID);
 
-        ventas.Detalle.Add(new VentasDetalle
+        compras.Detalle.Add(new ComprasDetalle
         {
             Id = 0,
             ProductoId = Convert.ToInt32(ProductoID),
-            VentaId = ventas.VentaId,
+            ComprasId = compras.CompraId,
             Cantidad = cantidad,
             Precio = precio,
-            Valor = cantidad*precio
-        });
+            Valor = cantidad * precio
+        }) ;
 
-        ProductosBLL.DisminuirInventario(id,cantidad);
-        CalcularTotalVenta();
+        ProductosBLL.AumentarInventario(id, cantidad);
+        CalcularTotalCompra();
 
         DetalleId = 0;
         ProductoID = "0";
         //EmpleadoID = "0";
         cantidad = 0;
         precio = 0;
+        Valor = 0;
     }
 
-    private void EliminarDetalle(VentasDetalle detalle)
+    private void EliminarDetalle(ComprasDetalle detalle)
     {
         try
         {
@@ -412,8 +414,8 @@
 
             prueba += detalle.Cantidad;
             ProductosBLL.AumentarInventario(detalle.ProductoId, prueba);
-            ventas.Detalle.Remove(detalle);
-            CalcularTotalVenta();
+            compras.Detalle.Remove(detalle);
+            CalcularTotalCompra();
         }
         catch (Exception e)
         {
@@ -421,22 +423,22 @@
         }
     }
 
-    private void CalcularTotalVenta()
+    private void CalcularTotalCompra()
     {
         try
         {
             decimal subtotal = 0;
             double itbis = 0;
 
-            foreach (var item in ventas.Detalle)
+            foreach (var item in compras.Detalle)
             {
                 subtotal = ((subtotal) + (item.Precio * item.Cantidad));
             }
 
-            ventas.SubTotal = subtotal;
-            itbis = ((ventas.ITBIS / 100) * Convert.ToDouble(subtotal));
+            compras.SubTotal = subtotal;
+            itbis = ((compras.ITBIS / 100) * Convert.ToDouble(subtotal));
 
-            ventas.Total = ((subtotal + Convert.ToDecimal(itbis)) - (ventas.Descuento));
+            compras.Total = ((subtotal + Convert.ToDecimal(itbis)) - (compras.Descuento));
         }
         catch (Exception e)
         {

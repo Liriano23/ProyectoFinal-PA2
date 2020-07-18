@@ -1,0 +1,208 @@
+﻿@page "/RegistroCategorias"
+@page "/RegistroCategorias/{CategoriaId:int}"
+<CascadingAuthenticationState>
+
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado!
+                </div>
+                <div class="card-body">
+                    <h5>Atención</h5>
+                    <p>Debe iniciar sesion para poder acceder a estas opciones</p>
+                    <a href="MenuRegistros" class="btn btn-primary">Volver al Menú anterior</a>
+                </div>
+            </div>
+        </NotAuthorized>
+
+        <Authorized>
+
+        </Authorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@if (TipoUsuario)
+{
+    <EditForm Model="categorias" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+
+        <div id="ContenedorPrincipal" class="card">
+
+            <div id="PrincipalContainer" class="card-header">
+                <div class="form-group">
+                    <img src="css/Images/ProductsImage.png" title="LogoCategorias" alt="Logo del regsitro de Categorias" />
+                    <h3 id="Titulo">Registro Categorias</h3>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <form>
+                    @*CategoriasId*@
+                    <div class="form-row aling-items-center">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="CategoriasIdPicker">CategoriasId</label>
+                                <div class="input-group">
+                                    <InputNumber @bind-Value="categorias.CategoriaId" autoComplete="off" id="CategoriasIdPicker" class="form-control col-4" />
+                                    <div class="form-group-append">
+                                        <button style="margin-left: 5px;" type="button" class="btn btn-primary input-group-text" @onclick="Buscar">
+                                            <span class="oi oi-zoom-in"></span> Buscar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Nombres*@
+                    <div class="form-group">
+                        <label for="NombreCategoriaTextBox">Nombre Categoria</label>
+                        <InputText @bind-Value="categorias.NombreCategoria" id="NombreCategoriaTextBox" class="form-control" autoComplete="off" />
+                        <ValidationMessage For="@(() => categorias.NombreCategoria)" />
+                        <small id="CompanyNameInLineHelper">
+                            Ingresar el(os) nombres de la categoria
+                        </small>
+                    </div>
+
+                   
+                    @*Fecha ingreso*@
+                    <div class="form-group">
+                        <label for="FechaIngresoDatePicker">Fecha ingreso</label>
+                        <InputDate @bind-Value="categorias.FechaIngreso" id="FechaIngresoDatePicker" class="form-control" ReadOnly />
+                        <ValidationMessage For="(() => categorias.FechaIngreso)" />
+                        <small id="EntryDateInlineHelper">
+                            Ingresar fecha de ingreso de la categoria
+                        </small>
+                    </div>
+
+                    @*UsuarioId*@
+                    <div class="form-group">
+                        <label for="UsuarioIdSelect">UsuarioId</label>
+                        <InputSelect @bind-Value="@usuarioId" class="form-control">
+                            <option value="0">Elige el usuario</option>
+                            @foreach (var item in listaUsuarios)
+                                {
+                                <option value="@item.UsuarioId">@item.Nombres</option>
+                                }
+                        </InputSelect>
+                        <ValidationMessage For="(() => categorias.UsuariosId)" />
+                        <small id="UserIdInlineHelper">
+                            Ingresar el usuario que esta insertando la categoria
+                        </small>
+                    </div>
+
+
+                </form>
+
+            </div>
+
+            @*Buttons*@
+            <div class="card-footer">
+
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">
+                        <span class="oi oi-plus" aria-hidden="true"></span> Nuevo
+                    </button>
+
+                    <button type="submit" class="btn btn-lg btn-success">
+                        <span class="oi oi-clipboard" aria-hidden="true"></span> Guardar
+                    </button>
+
+                    <button class="btn btn-lg btn-danger" @onclick="ELiminar">
+                        <span class="oi oi-trash" aria-hidden="true"></span> Eliminar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </EditForm>
+
+}
+
+@code {
+    [Parameter]
+    public int CategoriaId { get; set; }
+    Categorias categorias = new Categorias();
+
+    private string usuarioId;
+    private bool TipoUsuario = false;
+    List<Usuarios> listaUsuarios = new List<Usuarios>();
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        Buscar();
+        TipoUsuario = GetAuthorization();
+
+        listaUsuarios = UsuariosBLL.GetList(x => true);
+    }
+
+    private void Nuevo()
+    {
+        categorias = new Categorias();
+        listaUsuarios = UsuariosBLL.GetList(x => true);
+        usuarioId = "";
+    }
+
+    private void Guardar()
+    {
+        bool guardo = false;
+        categorias.UsuariosId = Convert.ToInt32(usuarioId);
+
+        if (UsuariosBLL.ExistenciaUsuario(categorias.UsuariosId))
+        {
+            guardo = CategoriasBLL.Guardar(categorias);
+        }
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No guardo");
+    }
+
+    private void Buscar()
+    {
+        if (categorias.CategoriaId > 0)
+        {
+
+            var encontrado = CategoriasBLL.Buscar(categorias.CategoriaId);
+            if (encontrado != null)
+            {
+                this.categorias = encontrado;
+                usuarioId = this.categorias.UsuariosId.ToString();
+            }
+            else
+                toast.ShowWarning("No se encontrado");
+        }
+    }
+
+    private void ELiminar()
+    {
+        bool elimino;
+        elimino = CategoriasBLL.Eliminar(categorias.CategoriaId);
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Elimino Correctamente");
+        }
+        else
+            toast.ShowError("No elimino");
+    }
+
+    private bool GetAuthorization()
+    {
+        bool acceso;
+
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
+            || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
+            acceso = true;
+        else
+            acceso = false;
+
+        return acceso;
+    }
+}

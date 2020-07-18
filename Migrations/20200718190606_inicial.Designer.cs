@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProyectoFinal_PA2.DAL;
 
 namespace ProyectoFinal_PA2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20200718190606_inicial")]
+    partial class inicial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -390,7 +392,7 @@ namespace ProyectoFinal_PA2.Migrations
                             Contrasena = "Admin",
                             Direccion = "SFM",
                             Email = "admin123@gmail.com",
-                            FechaIngreso = new DateTime(2020, 7, 18, 15, 14, 59, 540, DateTimeKind.Local).AddTicks(4975),
+                            FechaIngreso = new DateTime(2020, 7, 18, 15, 6, 5, 822, DateTimeKind.Local).AddTicks(8149),
                             NombreUsuario = "Admin",
                             Nombres = "Admin",
                             Sexo = "Femenino",
@@ -450,9 +452,6 @@ namespace ProyectoFinal_PA2.Migrations
 
                     b.Property<int>("ProductoId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Valor")
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("VentaId")
                         .HasColumnType("INTEGER");

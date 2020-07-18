@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProyectoFinal_PA2.Migrations
 {
-    public partial class iicial : Migration
+    public partial class inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -200,6 +200,7 @@ namespace ProyectoFinal_PA2.Migrations
                     ComprasId = table.Column<int>(nullable: false),
                     Cantidad = table.Column<int>(nullable: false),
                     Precio = table.Column<decimal>(nullable: false),
+                    Valor = table.Column<decimal>(nullable: false),
                     CompraId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -279,7 +280,7 @@ namespace ProyectoFinal_PA2.Migrations
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "Apellidos", "Cedula", "Celular", "Contrasena", "Direccion", "Email", "FechaIngreso", "NombreUsuario", "Nombres", "Sexo", "Telefono", "TipoUsuario" },
-                values: new object[] { 1, "Admin", "88888888888", "8888888888", "Admin", "SFM", "admin123@gmail.com", new DateTime(2020, 7, 16, 23, 30, 37, 752, DateTimeKind.Local).AddTicks(7651), "Admin", "Admin", "Femenino", "8888888888", "Administrador" });
+                values: new object[] { 1, "Admin", "88888888888", "8888888888", "Admin", "SFM", "admin123@gmail.com", new DateTime(2020, 7, 18, 15, 6, 5, 822, DateTimeKind.Local).AddTicks(8149), "Admin", "Admin", "Femenino", "8888888888", "Administrador" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categorias_UsuariosId",

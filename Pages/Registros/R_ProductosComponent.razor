@@ -120,8 +120,11 @@
                     <div class="form-group">
                         <label for="UsuarioIdSelect">SuplidorId</label>
                         <InputSelect @bind-Value="@suplidorId" class="form-control">
-                            <option value="0">Elige el usuario</option>
-                            <option value="1">DEFECTO</option>
+                            <option value="0">Elige el suplidor</option>
+                            @foreach (var item in listaSuplidores)
+                                {
+                                    <option value="@item.SuplidorId">@item.NombreSuplidor</option>
+                                }
                         </InputSelect>
                         <ValidationMessage For="(() => productos.SuplidorId)" />
                         <small id="SupplierIdInlineHelper">
@@ -133,8 +136,11 @@
                     <div class="form-group">
                         <label for="CategoriaIdSelect">CategoriaId</label>
                         <InputSelect @bind-Value="@categoriaId" id="CategoriaIdSelect" class="form-control">
-                            <option value="0">Elige el usuario</option>
-                            <option value="1">DEFECTO</option>
+                            <option value="0">Elige la categoria</option>
+                            @foreach (var item in listaCategorias)
+                             {
+                                <option value="@item.CategoriaId">@item.NombreCategoria</option>
+                             }
                         </InputSelect>
                         <ValidationMessage For="(() => productos.CategoriaId)" />
                         <small id="SupplierIdInlineHelper">
@@ -196,6 +202,8 @@
     private string suplidorId;
     private string categoriaId;
     List<Usuarios> listaUsuarios = new List<Usuarios>();
+    List<Categorias> listaCategorias = new List<Categorias>();
+    List<Suplidores> listaSuplidores = new List<Suplidores>();
 
     protected override void OnInitialized()
     {
@@ -204,12 +212,15 @@
         TipoUsuario = GetAuthorization();
 
         listaUsuarios = UsuariosBLL.GetList(x => true);
+        listaCategorias = CategoriasBLL.GetList(x => true);
+        listaSuplidores = SuplidoresBLL.GetList(x => true);
     }
 
     private void Nuevo()
     {
         productos = new Productos();
         listaUsuarios = UsuariosBLL.GetList(x => true);
+
         usuarioId = "";
     }
 

@@ -269,6 +269,9 @@
     public int cantidad = 0;
     public decimal precio = 0;
     public decimal Valor = 0;
+    private Usuarios Usuarios { get; set; }
+    private Suplidores Suplidores { get; set; }
+
 
     public List<Suplidores> ListaSuplidores{ get; set; }
     //public List<Empleados> ListaEmpleados { get; set; }
@@ -340,10 +343,18 @@
             compras.UsuariosId = Convert.ToInt32(UsuarioID);
             int id = Convert.ToInt32(ProductoID);
 
-            if (UsuariosBLL.ExistenciaUsuario(compras.UsuariosId) == true && SuplidoresBLL.ExistenciaSuplidores(compras.SuplidorId) == true)
+            Usuarios = UsuariosBLL.Buscar(compras.UsuariosId);
+            Suplidores = SuplidoresBLL.Buscar(compras.SuplidorId);
+
+            if (VerificarExistenciaBLL.VerificarExistencia(Usuarios, compras.UsuariosId)
+            && VerificarExistenciaBLL.VerificarExistencia(Suplidores, compras.SuplidorId)
+            )
             {
                 guardo = ComprasBLL.Guardar(compras);
             }
+            else
+                toast.ShowError("Ha ocurrido un error. Verifique que el Usuario, Cliente o Empleado Id sean correctos");
+
 
             if (guardo)
             {

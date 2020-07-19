@@ -42,7 +42,6 @@ namespace ProyectoFinal_PA2.Models
 
         [Required(ErrorMessage = "Debe ingrear el Cargo del Empleado")]
         [MinLength(3, ErrorMessage = "El Cargo es demasiado corto")]
-        
         public string Cargo { get; set; }
 
         [Required(ErrorMessage = "Se debe ingresar el Sueldo del empleado")]
@@ -62,6 +61,7 @@ namespace ProyectoFinal_PA2.Models
         public int UsuariosId { get; set; }
         public Usuarios Usuarios { get; set; }
 
+        public ICollection<Ventas> Ventas { get; set; }
 
         public Empleados()
         {

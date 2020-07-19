@@ -390,7 +390,7 @@ namespace ProyectoFinal_PA2.Migrations
                             Contrasena = "Admin",
                             Direccion = "SFM",
                             Email = "admin123@gmail.com",
-                            FechaIngreso = new DateTime(2020, 7, 18, 15, 14, 59, 540, DateTimeKind.Local).AddTicks(4975),
+                            FechaIngreso = new DateTime(2020, 7, 19, 15, 33, 43, 915, DateTimeKind.Local).AddTicks(9759),
                             NombreUsuario = "Admin",
                             Nombres = "Admin",
                             Sexo = "Femenino",
@@ -430,6 +430,8 @@ namespace ProyectoFinal_PA2.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("VentaId");
+
+                    b.HasIndex("EmpleadoId");
 
                     b.HasIndex("UsuariosId");
 
@@ -509,11 +511,11 @@ namespace ProyectoFinal_PA2.Migrations
 
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Productos", b =>
                 {
-                    b.HasOne("ProyectoFinal_PA2.Models.Categorias", null)
+                    b.HasOne("ProyectoFinal_PA2.Models.Categorias", "Categorias")
                         .WithMany("Productos")
                         .HasForeignKey("CategoriasCategoriaId");
 
-                    b.HasOne("ProyectoFinal_PA2.Models.Suplidores", null)
+                    b.HasOne("ProyectoFinal_PA2.Models.Suplidores", "Suplidores")
                         .WithMany("Productos")
                         .HasForeignKey("SuplidoresSuplidorId");
 
@@ -535,6 +537,12 @@ namespace ProyectoFinal_PA2.Migrations
 
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Ventas", b =>
                 {
+                    b.HasOne("ProyectoFinal_PA2.Models.Empleados", "Empleado")
+                        .WithMany("Ventas")
+                        .HasForeignKey("EmpleadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ProyectoFinal_PA2.Models.Usuarios", "Usuarios")
                         .WithMany("Ventas")
                         .HasForeignKey("UsuariosId")

@@ -150,25 +150,7 @@ namespace ProyectoFinal_PA2.BLL
             return listas;
         }
 
-        public static bool ExistenciaUsuario(int id)
-        {
-            bool existe = false;
-            Contexto db = new Contexto();
-            try
-            {
-                existe = db.Usuarios.Any(x=> x.UsuarioId == id);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            finally
-            {
-                db.Dispose();
-            }
-            return existe;
-        }
+        
 
         public static bool GetExistenciaYClaveUsuario(string NombreUsuario, string clave)
         {

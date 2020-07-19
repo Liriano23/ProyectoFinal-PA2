@@ -15,10 +15,6 @@
                 </div>
             </div>
         </NotAuthorized>
-
-        <Authorized>
-
-        </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
 
@@ -129,9 +125,9 @@
                     @*Cargo*@
                     <div class="form-group">
                         <label for="EmailTextBox">Cargo</label>
-                        <InputText @bind-Value="empleados.Cargo" id="EmailTextBox" class="form-control" autoComplete="off" />
+                        <InputText @bind-Value="empleados.Cargo" id="CargoTextBox" class="form-control" autoComplete="off" />
                         <ValidationMessage For="(() => empleados.Cargo)" />
-                        <small id="EmailInlineHelper" class="text-muted">
+                        <small id="CargoInlineHelper" class="text-muted">
                             Ingresar cargo del Empleado
                         </small>
                     </div>
@@ -217,6 +213,8 @@
 
     private string usuarioId;
     private bool TipoUsuario = false;
+    private Usuarios Usuarios { get; set; }
+
     List<Usuarios> listaUsuarios = new List<Usuarios>();
 
     protected override void OnInitialized()
@@ -239,11 +237,14 @@
     {
         bool guardo = false;
         empleados.UsuariosId = Convert.ToInt32(usuarioId);
+        Usuarios = UsuariosBLL.Buscar(empleados.UsuariosId);
 
-        if (UsuariosBLL.ExistenciaUsuario(empleados.UsuariosId))
+        if (VerificarExistenciaBLL.VerificarExistencia(Usuarios, empleados.UsuariosId))
         {
             guardo = EmpleadosBLL.Guardar(empleados);
         }
+        else
+            toast.ShowError("El id del usuario que acaba de ingresar no existe.");
 
         if (guardo)
         {

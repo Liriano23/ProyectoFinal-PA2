@@ -33,14 +33,16 @@ namespace ProyectoFinal_PA2.Models
         [Required(ErrorMessage = "Debe ingresar la fecha de ingreso del producto")]
         public DateTime FechaIngreso { get; set; }
 
-       // [ForeignKey("Suplidores")]
+        [Required(ErrorMessage = "Debe ingresar el suplidor del producto")]
         public int SuplidorId { get; set; }
+        public virtual Suplidores Suplidores { get; set; }
 
-        //[ForeignKey("Categorias")]
+        [Required(ErrorMessage = "Debe ingresar la categoria que pertence el producto")]
         public int CategoriaId { get; set; }
+        public virtual Categorias Categorias { get; set; }
 
 
-        [Required(ErrorMessage = "Debe ingresar el usuario que esta agregando al cliente")]
+        [Required(ErrorMessage = "Debe ingresar el usuario que esta agregando el producto")]
         public int UsuariosId { get; set; }
         public virtual Usuarios Usuarios { get; set; }
 

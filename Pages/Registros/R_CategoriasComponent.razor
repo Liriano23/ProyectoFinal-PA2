@@ -15,10 +15,6 @@
                 </div>
             </div>
         </NotAuthorized>
-
-        <Authorized>
-
-        </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
 
@@ -127,6 +123,8 @@
 
     private string usuarioId;
     private bool TipoUsuario = false;
+    private Usuarios Usuarios { get; set; }
+
     List<Usuarios> listaUsuarios = new List<Usuarios>();
 
     protected override void OnInitialized()
@@ -136,13 +134,16 @@
         TipoUsuario = GetAuthorization();
 
         listaUsuarios = UsuariosBLL.GetList(x => true);
+
+        usuarioId = "0";
+
     }
 
     private void Nuevo()
     {
         categorias = new Categorias();
         listaUsuarios = UsuariosBLL.GetList(x => true);
-        usuarioId = "";
+        usuarioId = "0";
     }
 
     private void Guardar()
@@ -150,10 +151,14 @@
         bool guardo = false;
         categorias.UsuariosId = Convert.ToInt32(usuarioId);
 
-        if (UsuariosBLL.ExistenciaUsuario(categorias.UsuariosId))
+        Usuarios = UsuariosBLL.Buscar(categorias.UsuariosId);
+
+        if (VerificarExistenciaBLL.VerificarExistencia(Usuarios, categorias.UsuariosId))
         {
             guardo = CategoriasBLL.Guardar(categorias);
         }
+        else
+            toast.ShowError("El id del usuario que acaba de ingresar no existe.");
 
         if (guardo)
         {

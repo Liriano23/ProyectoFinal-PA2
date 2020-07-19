@@ -16,10 +16,6 @@
                 </div>
             </div>
         </NotAuthorized>
-
-        <Authorized>
-
-        </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
 
@@ -123,7 +119,7 @@
                             <option value="0">Elige el suplidor</option>
                             @foreach (var item in listaSuplidores)
                                 {
-                                    <option value="@item.SuplidorId">@item.NombreSuplidor</option>
+                                <option value="@item.SuplidorId">@item.NombreSuplidor</option>
                                 }
                         </InputSelect>
                         <ValidationMessage For="(() => productos.SuplidorId)" />
@@ -138,9 +134,9 @@
                         <InputSelect @bind-Value="@categoriaId" id="CategoriaIdSelect" class="form-control">
                             <option value="0">Elige la categoria</option>
                             @foreach (var item in listaCategorias)
-                             {
+                                {
                                 <option value="@item.CategoriaId">@item.NombreCategoria</option>
-                             }
+                                }
                         </InputSelect>
                         <ValidationMessage For="(() => productos.CategoriaId)" />
                         <small id="SupplierIdInlineHelper">
@@ -154,9 +150,9 @@
                         <InputSelect @bind-Value="@usuarioId" class="form-control">
                             <option value="0">Elige el usuario</option>
                             @foreach (var item in listaUsuarios)
-                            {
+                                {
                                 <option value="@item.UsuarioId">@item.Nombres</option>
-                            }
+                                }
                         </InputSelect>
                         <ValidationMessage For="(() => productos.UsuariosId)" />
                         <small id="UserIdInlineHelper">
@@ -201,6 +197,10 @@
     private string usuarioId;
     private string suplidorId;
     private string categoriaId;
+    private Usuarios Usuarios { get; set; }
+    private Categorias Categorias { get; set; }
+    private Suplidores Suplidores { get; set; }
+
     List<Usuarios> listaUsuarios = new List<Usuarios>();
     List<Categorias> listaCategorias = new List<Categorias>();
     List<Suplidores> listaSuplidores = new List<Suplidores>();
@@ -214,14 +214,22 @@
         listaUsuarios = UsuariosBLL.GetList(x => true);
         listaCategorias = CategoriasBLL.GetList(x => true);
         listaSuplidores = SuplidoresBLL.GetList(x => true);
+
+        usuarioId = "0";
+        suplidorId = "0";
+        categoriaId = "0";
     }
 
     private void Nuevo()
     {
         productos = new Productos();
         listaUsuarios = UsuariosBLL.GetList(x => true);
+        listaCategorias = CategoriasBLL.GetList(x => true);
+        listaSuplidores = SuplidoresBLL.GetList(x => true);
 
-        usuarioId = "";
+        usuarioId = "0";
+        suplidorId = "0";
+        categoriaId = "0";
     }
 
     private void Guardar()
@@ -231,12 +239,23 @@
         productos.SuplidorId = Convert.ToInt32(suplidorId);
         productos.CategoriaId = Convert.ToInt32(categoriaId);
 
+        Usuarios = UsuariosBLL.Buscar(productos.UsuariosId);
+        Categorias = CategoriasBLL.Buscar(productos.CategoriaId);
+        Suplidores = SuplidoresBLL.Buscar(productos.SuplidorId);
+
         try
         {
-            if (UsuariosBLL.ExistenciaUsuario(productos.UsuariosId))
+
+
+            if (VerificarExistenciaBLL.VerificarExistencia(Usuarios, productos.UsuariosId)
+                && VerificarExistenciaBLL.VerificarExistencia(Categorias, productos.CategoriaId)
+                && VerificarExistenciaBLL.VerificarExistencia(Suplidores, productos.SuplidorId)
+                )
             {
                 guardo = ProductosBLL.Guardar(productos);
             }
+            else
+                toast.ShowError("Ha ocurrido un error. Verifique que el Usuario, Categoria o Suplidor Id sean correctos");
 
             if (guardo)
             {
@@ -313,4 +332,5 @@
 
         return acceso;
     }
+
 }

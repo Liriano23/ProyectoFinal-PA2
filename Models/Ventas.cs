@@ -15,6 +15,7 @@ namespace ProyectoFinal_PA2.Models
 
         [Required(ErrorMessage = "Debe seleccionar el Id del empleado")]
         public int EmpleadoId { get; set; }
+        public Empleados Empleado { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
@@ -35,6 +36,7 @@ namespace ProyectoFinal_PA2.Models
 
         public int UsuariosId { get; set; }
         public Usuarios Usuarios { get; set; }
+
 
         public Ventas()
         {

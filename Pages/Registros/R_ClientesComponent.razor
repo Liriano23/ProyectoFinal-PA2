@@ -204,84 +204,88 @@
 }
 
 @code {
-        [Parameter]
-        public int ClienteId { get; set; }
-        Clientes cliente = new Clientes();
+    [Parameter]
+    public int ClienteId { get; set; }
+    Clientes cliente = new Clientes();
+    private Usuarios Usuarios { get; set; }
 
-        private string usuarioId;
-        private bool TipoUsuario = false;
-        List<Usuarios> listaUsuarios = new List<Usuarios>();
+    private string usuarioId;
+    private bool TipoUsuario = false;
+    List<Usuarios> listaUsuarios = new List<Usuarios>();
 
-        protected override void OnInitialized()
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        Buscar();
+        TipoUsuario = GetAuthorization();
+
+        listaUsuarios = UsuariosBLL.GetList(x => true);
+    }
+
+    private void Nuevo()
+    {
+        cliente = new Clientes();
+        listaUsuarios = UsuariosBLL.GetList(x => true);
+        usuarioId = "";
+    }
+
+    private void Guardar()
+    {
+        bool guardo = false;
+        cliente.UsuariosId = Convert.ToInt32(usuarioId);
+        Usuarios = UsuariosBLL.Buscar(cliente.UsuariosId);
+
+        if (VerificarExistenciaBLL.VerificarExistencia(Usuarios,cliente.UsuariosId))
+        {
+            guardo = ClientesBLL.Guardar(cliente);
+        }
+        else
+            toast.ShowError("El id del usuario que acaba de ingresar no existe.");
+
+        if (guardo)
         {
             Nuevo();
-            Buscar();
-            TipoUsuario = GetAuthorization();
-
-            listaUsuarios = UsuariosBLL.GetList(x => true);
+            toast.ShowSuccess("Guardado correctamente");
         }
+        else
+            toast.ShowError("No guardo");
+    }
 
-        private void Nuevo()
+    private void Buscar()
+    {
+        if (cliente.ClienteId > 0)
         {
-            cliente = new Clientes();
-            listaUsuarios = UsuariosBLL.GetList(x => true);
-            usuarioId = "";
-        }
 
-        private void Guardar()
-        {
-            bool guardo = false;
-            cliente.UsuariosId = Convert.ToInt32(usuarioId);
-
-            if (UsuariosBLL.ExistenciaUsuario(cliente.UsuariosId))
+            var encontrado = ClientesBLL.Buscar(cliente.ClienteId);
+            if (encontrado != null)
             {
-                guardo = ClientesBLL.Guardar(cliente);
-            }
-
-            if (guardo)
-            {
-                Nuevo();
-                toast.ShowSuccess("Guardado correctamente");
+                this.cliente = encontrado;
+                usuarioId = this.cliente.UsuariosId.ToString();
             }
             else
-                toast.ShowError("No guardo");
+                toast.ShowWarning("No se encontrado");
         }
+    }
 
-        private void Buscar()
+    private void ELiminar()
+    {
+        bool elimino;
+        elimino = ClientesBLL.Eliminar(cliente.ClienteId);
+        if (elimino)
         {
-            if (cliente.ClienteId > 0)
-            {
-
-                var encontrado = ClientesBLL.Buscar(cliente.ClienteId);
-                if (encontrado != null)
-                {
-                    this.cliente = encontrado;
-                    usuarioId = this.cliente.UsuariosId.ToString();
-                }
-                else
-                    toast.ShowWarning("No se encontrado");
-            }
+            Nuevo();
+            toast.ShowSuccess("Elimino Correctamente");
         }
+        else
+            toast.ShowError("No elimino");
+    }
 
-        private void ELiminar()
-        {
-            bool elimino;
-            elimino = ClientesBLL.Eliminar(cliente.ClienteId);
-            if (elimino)
-            {
-                Nuevo();
-                toast.ShowSuccess("Elimino Correctamente");
-            }
-            else
-                toast.ShowError("No elimino");
-        }
+    private bool GetAuthorization()
+    {
+        bool acceso;
 
-        private bool GetAuthorization()
-        {
-            bool acceso;
-
-            if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
-                || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
+            || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
             acceso = true;
         else
             acceso = false;

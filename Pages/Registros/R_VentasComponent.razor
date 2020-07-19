@@ -16,10 +16,6 @@
                 </div>
             </div>
         </NotAuthorized>
-
-        <Authorized>
-           
-        </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
 
@@ -73,20 +69,18 @@
 
                     @*EmpleadoId*@
                     <div class="form-group">
-                        <label for="EmployeerIdPicker">Empleado Id</label>
-                        <InputNumber @bind-Value="ventas.EmpleadoId" class="form-control" />
-                        <ValidationMessage For="(() => ventas.EmpleadoId)" />
-                        <small id="EmployeerIdLineHelper">
+                        <label for="EmployeerIdPicker"> Empleado Id </label>
+                        <InputSelect @bind-Value="EmpleadoID" id="EmployeerIdPicker" class="form-control">
+                            <option value="0">Elige usuario</option>
+                            @foreach (var employer in ListaEmpleados)
+                             {
+                                <option value="@employer.EmpleadoId">@employer.Nombres</option>
+                             }
+                        </InputSelect>
+                        <ValidationMessage For="(() => ventas.ClienteId)" />
+                        <small id="EmployeerIdPickerLineHelper">
                             Seleccione el empleado
                         </small>
-
-                        @* <InputSelect @bind-Value="ventas.EmpleadoId" class="form-control">
-                                <option value="0">seleccione empleado</option>
-                                @foreach(var employeer in ListaEmpleados)
-                                {
-                                    <option value="@employeer.empleadoID">@employeer.Nombres</option>
-                                }
-                            </InputSelect>*@
                     </div>
 
                     @*FechaEmision*@
@@ -258,7 +252,7 @@
     VentasDetalle ventasDetalle = new VentasDetalle();
 
     public string ClienteID = "0";
-    //public string EmpleadoID = "0";
+    public string EmpleadoID = "0";
     public string ProductoID = "0";
     public string UsuarioID = "0";
     private bool TipoUsuario;
@@ -269,8 +263,14 @@
     public decimal precio = 0;
     public decimal Valor = 0;
 
+
+    private Usuarios Usuarios { get; set; }
+    private Clientes Clientes { get; set; }
+    private Empleados Empleados { get; set; }
+    private Productos Productos { get; set; } //Validar la existencia para agregar al detalle
+
     public List<Clientes> ListaClientes { get; set; }
-    //public List<Empleados> ListaEmpleados { get; set; }
+    public List<Empleados> ListaEmpleados { get; set; }
     public List<Productos> ListaProductos { get; set; }
     public List<Usuarios> ListaUsuarios { get; set; }
 
@@ -285,17 +285,20 @@
         ListaClientes = ClientesBLL.GetList(x => true);
         ListaUsuarios = UsuariosBLL.GetList(x => true);
         ListaProductos = ProductosBLL.GetList(x => true);
+        ListaEmpleados = EmpleadosBLL.GetList(x => true);
     }
 
     private void Nuevo()
     {
         ventas = new Ventas();
         ListaUsuarios = UsuariosBLL.GetList(x => true);
+        ListaClientes = ClientesBLL.GetList(x => true);
         ListaProductos = ProductosBLL.GetList(x => true);
+        ListaEmpleados = EmpleadosBLL.GetList(x => true);
 
         UsuarioID = "0";
         ClienteID = "0";
-        //EmpleadoID = "0";
+        EmpleadoID = "0";
         ProductoID = "0";
         precio = 0;
         Valor = 0;
@@ -314,7 +317,8 @@
                     this.ventas = encontrado;
                     UsuarioID = this.ventas.UsuariosId.ToString();
                     ClienteID = this.ventas.ClienteId.ToString();
-                    //ProductosID = this.ventas.ToString();
+                    EmpleadoID = this.ventas.EmpleadoId.ToString();
+
                     CalcularTotalVenta();
                 }
                 else
@@ -337,12 +341,22 @@
         {
             ventas.ClienteId = Convert.ToInt32(ClienteID);
             ventas.UsuariosId = Convert.ToInt32(UsuarioID);
-            int id = Convert.ToInt32(ProductoID);
+            ventas.EmpleadoId = Convert.ToInt32(EmpleadoID);
 
-            if (UsuariosBLL.ExistenciaUsuario(ventas.UsuariosId) == true && ClientesBLL.ExistenciaClientes(ventas.ClienteId) == true)
+
+            Usuarios = UsuariosBLL.Buscar(ventas.UsuariosId);
+            Clientes = ClientesBLL.Buscar(ventas.ClienteId);
+            Empleados = EmpleadosBLL.Buscar(ventas.EmpleadoId);
+
+            if (VerificarExistenciaBLL.VerificarExistencia(Usuarios, ventas.UsuariosId)
+            && VerificarExistenciaBLL.VerificarExistencia(Clientes, ventas.ClienteId)
+            && VerificarExistenciaBLL.VerificarExistencia(Empleados, ventas.EmpleadoId)
+            )
             {
                 guardo = VentasBLL.Guardar(ventas);
             }
+            else
+                toast.ShowError("Ha ocurrido un error. Verifique que el Usuario, Cliente o Empleado Id sean correctos");
 
             if (guardo)
             {
@@ -382,23 +396,31 @@
     private void AgregarAlDetalle()
     {
         int id = Convert.ToInt32(ProductoID);
+        Productos = ProductosBLL.Buscar(id);
 
-        ventas.Detalle.Add(new VentasDetalle
+        if (VerificarExistenciaBLL.VerificarExistencia(Productos, id))
         {
-            Id = 0,
-            ProductoId = Convert.ToInt32(ProductoID),
-            VentaId = ventas.VentaId,
-            Cantidad = cantidad,
-            Precio = precio,
-            Valor = cantidad*precio
-        });
 
-        ProductosBLL.DisminuirInventario(id,cantidad);
-        CalcularTotalVenta();
+            ventas.Detalle.Add(new VentasDetalle
+            {
+                Id = 0,
+                ProductoId = Convert.ToInt32(ProductoID),
+                VentaId = ventas.VentaId,
+                Cantidad = cantidad,
+                Precio = precio,
+                Valor = cantidad * precio
+            });
+
+            ProductosBLL.DisminuirInventario(id, cantidad);
+            CalcularTotalVenta();
+
+        }
+        else
+            toast.ShowError("No existe este producto en la base de datos. ");
 
         DetalleId = 0;
         ProductoID = "0";
-        //EmpleadoID = "0";
+        EmpleadoID = "0";
         cantidad = 0;
         precio = 0;
     }

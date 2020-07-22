@@ -1,4 +1,4 @@
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+    @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -84,7 +84,7 @@ app {
             height: 3rem;
             display: flex;
             align-items: center;
-            line-height: 3rem;
+            line-height: 7rem;
         }
 
             .sidebar .nav-item a.active {
@@ -215,4 +215,9 @@ label {
     margin-top: 2px;
     font-weight: bold;
     
+}
+
+.nav-item a.active {
+    content: "*";
+    margin-top: 2px;
 }

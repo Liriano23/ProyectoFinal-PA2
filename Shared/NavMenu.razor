@@ -14,33 +14,121 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>
+
+        @*Registros*@
 
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="MenuRegistros">
-                <span class="oi oi-person" aria-hidden="true"></span> Registros
+            <NavLink class="nav-link" href="" @onclick="()=>expandSubMenuR= !expandSubMenuR">
+                <span class="oi oi-plus" aria-hidden="true"></span> Registros
             </NavLink>
+            @if (expandSubMenuR)
+            {
+                <ul class="nav flex-column">
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="RegistroUsuarios">
+                            <span class="oi oi-person" aria-hidden="true"></span> R Usuarios
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="RegistroClientes">
+                            <span class="oi oi-person" aria-hidden="true"></span> R Clientes
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="RegistroEmpleados">
+                            <span class="oi oi-person" aria-hidden="true"></span> R Empleados
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="RegistroSuplidores">
+                            <span class="oi oi-person" aria-hidden="true"></span> R Suplidores
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="RegistroProductos">
+                            <span class="oi oi-file" aria-hidden="true"></span> R Productos
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="RegistroCategorias">
+                            <span class="oi oi-file" aria-hidden="true"></span> R Categorias
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="RegistroVentas">
+                            <span class="oi oi-file" aria-hidden="true"></span> R Ventas
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="RegistroCompras">
+                            <span class="oi oi-file" aria-hidden="true"></span> R Compras
+                        </NavLink>
+                    </li>
+                </ul>
+            }
         </li>
 
+        @*Consultas*@
+
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="MenuConsultas">
-                <span class="oi oi-list" aria-hidden="true"></span> Consultas
+            <NavLink class="nav-link" href="" @onclick="()=>expandSubMenuC= !expandSubMenuC">
+                <span class="oi oi-plus" aria-hidden="true"></span> Consultas
             </NavLink>
+            @if (expandSubMenuC)
+            {
+                <ul class="nav flex-column">
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ConsultaUsuarios">
+                            <span class="oi oi-file" aria-hidden="true"></span> C Usuarios
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ConsultaClientes">
+                            <span class="oi oi-file" aria-hidden="true"></span> C Clientes
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ConsultaEmpleados">
+                            <span class="oi oi-file" aria-hidden="true"></span> C Empleados
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ConsultaSuplidores">
+                            <span class="oi oi-file" aria-hidden="true"></span> C Suplidores
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ConsultaProductos">
+                            <span class="oi oi-file" aria-hidden="true"></span> C Productos
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ConsultaCategoiras">
+                            <span class="oi oi-file" aria-hidden="true"></span> C Categorias
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ConsultaVentas">
+                            <span class="oi oi-file" aria-hidden="true"></span> C Ventas
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ConsultaCompras">
+                            <span class="oi oi-file" aria-hidden="true"></span> C Compras
+                        </NavLink>
+                    </li>
+                </ul>
+            }
         </li>
+
     </ul>
 </div>
 
+
 @code {
     private bool collapseNavMenu = true;
+    private bool expandSubMenuR;
+    private bool expandSubMenuC;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 

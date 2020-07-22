@@ -1,4 +1,5 @@
 ﻿@page "/ConsultaUsuarios"
+@using ProyectoFinal_PA2.DAL;
 
 <CascadingAuthenticationState>
     <AuthorizeView>
@@ -123,6 +124,17 @@
             </tbody>
         </table>
     }
+    <nav aria-label="...">
+        <ul class="pagination pagination-lg">
+
+            <li class="page-item Azul"><a class="page-link Azul" @onclick="Anterior"> « </a></li>
+            @for (int i = 1; i <= totaldepaginas; i++)
+            {
+                <li class="page-item Azul"><a class="page-link Azul" @onclick="OnInitialized" href="ConsultaUsuarios/@i">@i</a></li>
+            }
+            <li class="page-item Azul"><a class="page-link Azul" @onclick="Saltar"> » </a></li>
+        </ul>
+    </nav>
 }
 
 @code {
@@ -133,11 +145,50 @@
     private string criterio = "";
     private bool TipoUsuario;
 
+
+    @*Paginado*@
+    public int I { get; set; }
+    double conteo = 0;
+    double totaldepaginas = 0;
+    Paginando paginacion = new Paginando();
+    Contexto contexto = new Contexto();
+    public int Contador { get; set; }
+
     protected override void OnInitialized()
     {
         lista = UsuariosBLL.GetList(x => true);
         TipoUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador");
+        conteo = contexto.Categorias.Count();
+        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
+        this.lista = contexto.Usuarios.Take(paginacion.CantidadMostrar).ToList();
+    }
 
+    private void Anterior()
+    {
+        Contador -= paginacion.Pagina;
+        if (Contador <= totaldepaginas)
+        {
+            Contador = 0;
+        }
+
+        lista = contexto.Usuarios
+        .Skip(Contador * paginacion.CantidadMostrar)
+        .Take(paginacion.CantidadMostrar)
+        .ToList();
+    }
+
+    private void Saltar()
+    {
+        Contador += paginacion.Pagina;
+        if (Contador >= totaldepaginas)
+        {
+            Contador = 0;
+        }
+
+        lista = contexto.Usuarios
+        .Skip(Contador * paginacion.CantidadMostrar)
+        .Take(paginacion.CantidadMostrar)
+        .ToList();
     }
 
     private void MostrarDatos()

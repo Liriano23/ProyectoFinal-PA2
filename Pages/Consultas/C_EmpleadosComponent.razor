@@ -1,0 +1,310 @@
+﻿@page "/ConsultaEmpleados"
+@using ProyectoFinal_PA2.DAL;
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Atención</h5>
+                    <p>Debe iniciar sesion para poder acceder a estas opciones</p>
+                    <a href="MenuConsultas" class="btn btn-primary">Ir al Menú</a>
+                </div>
+            </div>
+        </NotAuthorized>
+
+        <Authorized>
+            @if (!TipoUsuario)
+            {
+                <div class="card text-center">
+                    <div class="card-header">
+                        No Autorizado
+                    </div>
+                    <div class="card-body">
+                        <h5>Atención</h5>
+                        <p>Debe tener acceso de administrador para poder acceder a estas opciones.</p>
+                        <a href="MenuConsultas" class="btn btn-primary">Volver al Menú anterior</a>
+                    </div>
+                </div>
+            }
+        </Authorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && TipoUsuario)
+{
+    <h3>Consulta Empleados</h3>
+
+    <div class="row">
+        <div class="col-1">
+            <label>Filtro</label>
+        </div>
+
+        <div class="col-sm">
+            <select @bind="opcion" class="form-control">
+
+                <option value="0">Todo</option>
+                <option value="1">Clientes Id</option>
+                <option value="2">Nombres</option>
+                <option value="3">Apellido</option>
+                <option value="4">Cedula</option>
+                <option value="5">Dirección</option>
+                <option value="6">Telefónio</option>
+                <option value="7">Celular</option>
+                <option value="8">Email</option>
+                <option value="9">Cargo</option>
+                <option value="10">Sueldo</option>
+                <option value="11">Fecha Nacimiento</option>
+                <option value="12">Fecha Ingreso</option>
+                <option value="13">Usuario Id</option>
+            </select>
+        </div>
+
+        <div class="col-1">
+            <label>Criterio</label>
+        </div>
+
+        <div class="col">
+            <input type="text" @bind="criterio" class="form-control" />
+        </div>
+
+        <div class="col-lg">
+            <button class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
+        </div>
+    </div>
+
+    @if (lista == null)
+    {
+        <h3>No existen usuarios en la base de datos</h3>
+    }
+    else
+    {
+        <table class="table table-dark" style="margin-top: 5px;">
+            <thead>
+                <tr>
+                    <th>Cliente Id</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Cedula</th>
+                    <th>Dirección</th>
+                    <th>Telefóno</th>
+                    <th>Celular</th>
+                    <th>Email</th>
+                    <th>Cargo</th>
+                    <th>Sueldo</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>Fecha ingreso</th>
+                    <th>Usuario Id</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var list in lista)
+                {
+                    <tr>
+                        <td>@list.EmpleadoId</td>
+                        <td>@list.Nombres</td>
+                        <td>@list.Apellidos</td>
+                        <td>@list.Cedula</td>
+                        <td>@list.Direccion</td>
+                        <td>@list.Telefono</td>
+                        <td>@list.Celular</td>
+                        <td>@list.Email</td>
+                        <td>@list.Cargo</td>
+                        <td>@list.Sueldo</td>
+                        <td>@list.FechaNacimiento</td>
+                        <td>@list.FechaIngreso</td>
+                        <td>@list.UsuariosId</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    <nav aria-label="...">
+        <ul class="pagination pagination-lg">
+
+            <li class="page-item Azul"><a class="page-link Azul" @onclick="Anterior"> « </a></li>
+            @for (int i = 1; i <= totaldepaginas; i++)
+            {
+                <li class="page-item Azul"><a class="page-link Azul" @onclick="OnInitialized" href="ConsultaEmpleados/@i">@i</a></li>
+            }
+            <li class="page-item Azul"><a class="page-link Azul" @onclick="Saltar"> » </a></li>
+        </ul>
+    </nav>
+}
+
+@code {
+
+    List<Empleados> lista = new List<Empleados>();
+    private string opcion = "0";
+    private string criterio = "";
+    private bool TipoUsuario;
+    private DateTime Desde = DateTime.Now;
+    private DateTime Hasta = DateTime.Now;
+
+    @*Paginado*@
+public int I { get; set; }
+double conteo = 0;
+double totaldepaginas = 0;
+Paginando paginacion = new Paginando();
+Contexto contexto = new Contexto();
+public int Contador { get; set; }
+
+protected override void OnInitialized()
+{
+    lista = EmpleadosBLL.GetList(x => true);
+    TipoUsuario = GetAuthorization();
+    conteo = contexto.Categorias.Count();
+    totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
+    this.lista = contexto.Empleados.Take(paginacion.CantidadMostrar).ToList();
+}
+
+private void Anterior()
+{
+    Contador -= paginacion.Pagina;
+    if (Contador <= totaldepaginas)
+    {
+        Contador = 0;
+    }
+
+    lista = contexto.Empleados
+    .Skip(Contador * paginacion.CantidadMostrar)
+    .Take(paginacion.CantidadMostrar)
+    .ToList();
+}
+
+private void Saltar()
+{
+    Contador += paginacion.Pagina;
+    if (Contador >= totaldepaginas)
+    {
+        Contador = 0;
+    }
+
+    lista = contexto.Empleados
+    .Skip(Contador * paginacion.CantidadMostrar)
+    .Take(paginacion.CantidadMostrar)
+    .ToList();
+}
+
+private void MostrarDatos()
+{
+    int elegido = Convert.ToInt32(opcion);
+
+    if (criterio.Trim().Length > 0 && criterio != "")
+    {
+        switch (elegido)
+        {
+            case 0:
+                {
+                    int id;
+                    id = Convert.ToInt32(criterio);
+                    lista = EmpleadosBLL.GetList(x => x.EmpleadoId == id);
+                }
+                break;
+
+            case 1:
+                {
+                    lista = EmpleadosBLL.GetList(x => x.Nombres == criterio);
+                }
+                break;
+
+            case 2:
+                {
+                    lista = EmpleadosBLL.GetList(x => x.Apellidos == criterio);
+                }
+                break;
+
+            case 3:
+                {
+                    lista = EmpleadosBLL.GetList(x => x.Cedula == criterio);
+                }
+                break;
+
+            case 4:
+                {
+                    lista = EmpleadosBLL.GetList(x => x.Direccion == criterio);
+                }
+                break;
+
+            case 5:
+                {
+                    lista = EmpleadosBLL.GetList(x => x.Telefono == criterio);
+                }
+                break;
+
+            case 6:
+                {
+                    lista = EmpleadosBLL.GetList(x => x.Celular == criterio);
+                }
+                break;
+
+            case 7:
+                {
+                    lista = EmpleadosBLL.GetList(x => x.Email == criterio);
+                }
+                break;
+
+            case 8:
+                {
+                    lista = EmpleadosBLL.GetList(x => x.Cargo == criterio);
+                }
+                break;
+
+            case 9:
+                {
+                    int sueldo;
+                    sueldo = Convert.ToInt32(criterio);
+                    lista = EmpleadosBLL.GetList(x => x.Sueldo == sueldo);
+                }
+                break;
+
+            case 10:
+                {
+                    //lista = lista.Where(c => c.FechaNacimiento.Date >= Desde.Date && c.FechaNacimiento.Date <= Hasta.Date).ToList();
+                }
+                break;
+
+            case 11:
+                {
+                    //lista = lista.Where(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
+                }
+                break;
+
+            case 12:
+                {
+                    int id;
+                    id = Convert.ToInt32(criterio);
+                    lista = EmpleadosBLL.GetList(x => x.UsuariosId == id);
+                }
+                break;
+        }
+    }
+    else if (criterio == "")
+    {
+        lista = EmpleadosBLL.GetList(x => true);
+    }
+    else
+    {
+        lista = EmpleadosBLL.GetList(x => true);
+    }
+}
+
+private bool GetAuthorization()
+{
+    bool acceso;
+
+    if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
+        || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
+        acceso = true;
+    else
+        acceso = false;
+
+    return acceso;
+}
+
+}

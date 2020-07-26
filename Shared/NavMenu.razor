@@ -9,6 +9,7 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
+
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
@@ -24,44 +25,60 @@
             @if (expandSubMenuR)
             {
                 <ul class="nav flex-column">
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="RegistroUsuarios">
-                            <span class="oi oi-person" aria-hidden="true"></span> R Usuarios
-                        </NavLink>
-                    </li>
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="RegistroClientes">
-                            <span class="oi oi-person" aria-hidden="true"></span> R Clientes
-                        </NavLink>
-                    </li>
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="RegistroEmpleados">
-                            <span class="oi oi-person" aria-hidden="true"></span> R Empleados
-                        </NavLink>
-                    </li>
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="RegistroSuplidores">
-                            <span class="oi oi-person" aria-hidden="true"></span> R Suplidores
-                        </NavLink>
-                    </li>
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="RegistroProductos">
-                            <span class="oi oi-file" aria-hidden="true"></span> R Productos
-                        </NavLink>
-                    </li>
+
+                    @*Registro Categorias*@
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="RegistroCategorias">
-                            <span class="oi oi-file" aria-hidden="true"></span> R Categorias
+                            <span class="oi oi-align-center"   aria-hidden="true"></span> R Categorias
                         </NavLink>
                     </li>
+                        
+                    @*Registro Clientes*@
                     <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="RegistroVentas">
-                            <span class="oi oi-file" aria-hidden="true"></span> R Ventas
+                        <NavLink class="nav-link" href="RegistroClientes">
+                            <span class="oi oi-people" aria-hidden="true"></span> R Clientes
                         </NavLink>
                     </li>
+
+                    @*Registro Compras*@
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="RegistroCompras">
-                            <span class="oi oi-file" aria-hidden="true"></span> R Compras
+                            <span class="oi oi-cart" aria-hidden="true"></span> R Compras
+                        </NavLink>
+                    </li>
+
+                    @*Registro Empleados*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="RegistroEmpleados">
+                            <span class="oi oi-people" aria-hidden="true"></span> R Empleados
+                        </NavLink>
+                    </li>
+
+                    @*Registro Productos*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="RegistroProductos">
+                            <span class="oi oi-tags" aria-hidden="true"></span> R Productos
+                        </NavLink>
+                    </li>
+
+                    @*Registro Suplidores*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="RegistroSuplidores">
+                            <span class="oi oi-people" aria-hidden="true"></span> R Suplidores
+                        </NavLink>
+                    </li>
+                    
+                    @*Registro Usuarios*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="RegistroUsuarios">
+                            <span class="oi oi-people" aria-hidden="true"></span> R Usuarios
+                        </NavLink>
+                    </li>
+                    
+                    @*Registro Ventas*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="RegistroVentas">
+                            <span class="oi oi-cart" aria-hidden="true"></span> R Ventas
                         </NavLink>
                     </li>
                 </ul>
@@ -77,48 +94,64 @@
             @if (expandSubMenuC)
             {
                 <ul class="nav flex-column">
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="ConsultaUsuarios">
-                            <span class="oi oi-file" aria-hidden="true"></span> C Usuarios
-                        </NavLink>
-                    </li>
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="ConsultaClientes">
-                            <span class="oi oi-file" aria-hidden="true"></span> C Clientes
-                        </NavLink>
-                    </li>
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="ConsultaEmpleados">
-                            <span class="oi oi-file" aria-hidden="true"></span> C Empleados
-                        </NavLink>
-                    </li>
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="ConsultaSuplidores">
-                            <span class="oi oi-file" aria-hidden="true"></span> C Suplidores
-                        </NavLink>
-                    </li>
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="ConsultaProductos">
-                            <span class="oi oi-file" aria-hidden="true"></span> C Productos
-                        </NavLink>
-                    </li>
+
+                    @*Consulta Categorias*@
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="ConsultaCategoiras">
                             <span class="oi oi-file" aria-hidden="true"></span> C Categorias
                         </NavLink>
                     </li>
+
+                    @*Consulta Clientes*@
                     <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="ConsultaVentas">
-                            <span class="oi oi-file" aria-hidden="true"></span> C Ventas
+                        <NavLink class="nav-link" href="ConsultaClientes">
+                            <span class="oi oi-file" aria-hidden="true"></span> C Clientes
                         </NavLink>
                     </li>
+
+                    @*Consulta Compras*@
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="ConsultaCompras">
                             <span class="oi oi-file" aria-hidden="true"></span> C Compras
                         </NavLink>
                     </li>
+
+                    @*Consulta Empleados*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ConsultaEmpleados">
+                            <span class="oi oi-file" aria-hidden="true"></span> C Empleados
+                        </NavLink>
+                    </li>
+
+                    @*Consulta Productos*@
+                     <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ConsultaProductos">
+                            <span class="oi oi-file" aria-hidden="true"></span> C Productos
+                        </NavLink>
+                    </li>
+
+                    @*Consulta Suplidores*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ConsultaSuplidores">
+                            <span class="oi oi-file" aria-hidden="true"></span> C Suplidores
+                        </NavLink>
+                    </li>
+                   
+                    @*Consulta Usuarios*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ConsultaUsuarios">
+                            <span class="oi oi-file" aria-hidden="true"></span> C Usuarios
+                        </NavLink>
+                    </li>
+
+                    @*Consulta Ventas*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ConsultaVentas">
+                            <span class="oi oi-file" aria-hidden="true"></span> C Ventas
+                        </NavLink>
+                    </li>
                 </ul>
-            }
+             }
         </li>
 
     </ul>

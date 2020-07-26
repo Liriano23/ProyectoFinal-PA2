@@ -8,6 +8,6 @@ namespace ProyectoFinal_PA2.Pages
     public class Paginando
     {
         public int Pagina { get; set; } = 1;
-        public int CantidadMostrar { get; set; } = 5;
+        public int CantidadMostrar { get; set; } = 10;
     }
 }

@@ -1,5 +1,6 @@
 ﻿@page "/RegistroClientes"
 @page "/RegistroClientes/{ClienteId:int}"
+
 <CascadingAuthenticationState>
 
     <AuthorizeView>
@@ -217,6 +218,10 @@
     {
         Nuevo();
         Buscar();
+
+        if (ClienteId > 0)
+            Buscar(ClienteId);
+
         TipoUsuario = GetAuthorization();
 
         listaUsuarios = UsuariosBLL.GetList(x => true);
@@ -257,6 +262,22 @@
         {
 
             var encontrado = ClientesBLL.Buscar(cliente.ClienteId);
+            if (encontrado != null)
+            {
+                this.cliente = encontrado;
+                usuarioId = this.cliente.UsuariosId.ToString();
+            }
+            else
+                toast.ShowWarning("No se encontrado");
+        }
+    }
+
+    private void Buscar(int id)
+    {
+        if (ClienteId > 0)
+        {
+
+            var encontrado = ClientesBLL.Buscar(id);
             if (encontrado != null)
             {
                 this.cliente = encontrado;

@@ -17,6 +17,7 @@ namespace ProyectoFinal_PA2.Models
         public int EmpleadoId { get; set; }
         public Empleados Empleado { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaEmision { get; set; }

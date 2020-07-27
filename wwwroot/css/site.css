@@ -221,12 +221,15 @@ label {
 
 #Fondo {
     background-color: rgb(188,191,197);
-    background-color: rgb(188,191,197);
+    background-repeat: repeat-y;
+    background-position: center top;
+    width: 760px;
+    margin: 0 auto;
 }
 
 #ResetPassword {
-    margin-left: 1150px;
-    margin-bottom: 5px;
+    margin-top: 5px;
+    margin-left: 530px;
 }
 
 h4 {
@@ -238,6 +241,12 @@ h4 {
     padding-top: 7px;
 }
 
+#bannerImg {
+    width: 250px;
+    height: 250px;
+    margin-left: 575px;
+    margin-bottom: 5px;
+}
 .nav-item a.active {
     content: "*";
     margin-top: 2px;

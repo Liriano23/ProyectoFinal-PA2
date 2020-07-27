@@ -20,10 +20,11 @@ namespace ProyectoFinal_PA2.Models
         [MinLength(3, ErrorMessage = "El apellido es demasiado corto")]
         public string Apellidos { get; set; }
 
-        [Required(ErrorMessage = "Debe ingresar el apellido del cliente")]
-        [MinLength(11, ErrorMessage = "El formato de la cedula es incorrecto")]
-        [MaxLength(11, ErrorMessage = "El formato de la cedula es incorrecto")]
+        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{11}$", ErrorMessage = "Por favor ingrese un No. de cédula válido")]
+        [MinLength(11, ErrorMessage = "El formato de la cedula es muy corto")]
+        [MaxLength(11, ErrorMessage = "Ha excedido la cantidad de numeros de una cedula")]
         public string Cedula { get; set; }
+       
 
         [Required(ErrorMessage = "Debe ingresar el sexo del cliente")]
         [MinLength(3, ErrorMessage ="Debe ingresar el sexo del cliente")]
@@ -33,11 +34,11 @@ namespace ProyectoFinal_PA2.Models
         public string Direccion { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el telefono del cliente en caso de no tener inserte N/A")]
-        [Phone]
+        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10}$", ErrorMessage = "Por favor ingrese un No. de teléfono válido")]
         public string Telefono { get; set; }
 
-        [Required(ErrorMessage = "Debe ingresar el celular del cliente en caso de no tener inserte N/A")]
-        [Phone]
+        [Required(ErrorMessage = "Debe ingresar el celular del cliente")]
+        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10}$", ErrorMessage = "Por favor ingrese un No. de celular válido")]
         public string Celular { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el email del cliente.")]

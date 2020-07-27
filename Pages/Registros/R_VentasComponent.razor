@@ -280,6 +280,10 @@
     {
         Nuevo();
         Buscar();
+
+        if (VentaId > 0)
+            Buscar(VentaId);
+
         TipoUsuario = GetAuthorization();
 
         ListaClientes = ClientesBLL.GetList(x => true);
@@ -333,6 +337,34 @@
         }
     }
 
+    private void Buscar(int id)
+    {
+        try
+        {
+            if (VentaId > 0)
+            {
+                var encontrado = VentasBLL.Buscar(id);
+
+                if (encontrado != null)
+                {
+                    this.ventas = encontrado;
+                    UsuarioID = this.ventas.UsuariosId.ToString();
+                    ClienteID = this.ventas.ClienteId.ToString();
+                    EmpleadoID = this.ventas.EmpleadoId.ToString();
+
+                    CalcularTotalVenta();
+                }
+                else
+                {
+                    toast.ShowWarning("No encontrado");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            toast.ShowError($"Ha ocurrido un error {e.Message}, Intentelo nuevamente");
+        }
+    }
     private void Guardar()
     {
         bool guardo = false;

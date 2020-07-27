@@ -284,6 +284,10 @@
     {
         Nuevo();
         Buscar();
+
+        if (CompraId > 0)
+            Buscar(CompraId);
+
         TipoUsuario = GetAuthorization();
 
         ListaSuplidores= SuplidoresBLL.GetList(x => true);
@@ -333,6 +337,33 @@
         }
     }
 
+    private void Buscar(int id)
+    {
+        try
+        {
+            if (CompraId > 0)
+            {
+                var encontrado = ComprasBLL.Buscar(id);
+
+                if (encontrado != null)
+                {
+                    this.compras = encontrado;
+                    UsuarioID = this.compras.UsuariosId.ToString();
+                    SuplidorID = this.compras.SuplidorId.ToString();
+                    //ProductosID = this.ventas.ToString();
+                    CalcularTotalCompra();
+                }
+                else
+                {
+                    toast.ShowWarning("No encontrado");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            toast.ShowError($"Ha ocurrido un error {e.Message}, Intentelo nuevamente");
+        }
+    }
     private void Guardar()
     {
         bool guardo = false;

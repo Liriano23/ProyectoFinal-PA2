@@ -28,11 +28,11 @@ namespace ProyectoFinal_PA2.Models
         public string Direccion { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el telefono del Suplidor en caso de no tener inserte N/A")]
-        [Phone]
+        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10}$", ErrorMessage = "Por favor ingrese un No. de teléfono válido")]
         public string Telefono { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el celular del Suplidor en caso de no tener inserte N/A")]
-        [Phone]
+        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10}$", ErrorMessage = "Por favor ingrese un No. de celular válido")]
         public string Celular { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar la Ciudad del Suplidor")]

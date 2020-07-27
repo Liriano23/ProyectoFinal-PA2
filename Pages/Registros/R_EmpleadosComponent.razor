@@ -221,6 +221,10 @@
     {
         Nuevo();
         Buscar();
+
+        if (EmpleadoId > 0)
+            Buscar(EmpleadoId);
+
         TipoUsuario = GetAuthorization();
 
         listaUsuarios = UsuariosBLL.GetList(x => true);
@@ -271,6 +275,21 @@
         }
     }
 
+    private void Buscar(int id)
+    {
+        if (EmpleadoId> 0)
+        {
+
+            var encontrado = EmpleadosBLL.Buscar(id);
+            if (encontrado != null)
+            {
+                this.empleados = encontrado;
+                usuarioId = this.empleados.UsuariosId.ToString();
+            }
+            else
+                toast.ShowWarning("No se encontrado");
+        }
+    }
     private void ELiminar()
     {
         bool elimino;

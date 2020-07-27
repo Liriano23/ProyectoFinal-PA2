@@ -1,5 +1,6 @@
 ﻿@page "/RegistroCategorias"
 @page "/RegistroCategorias/{CategoriaId:int}"
+
 <CascadingAuthenticationState>
 
     <AuthorizeView>
@@ -131,6 +132,9 @@
     {
         Nuevo();
         Buscar();
+        if (CategoriaId > 0)
+            Buscar(CategoriaId);
+
         TipoUsuario = GetAuthorization();
 
         listaUsuarios = UsuariosBLL.GetList(x => true);
@@ -185,6 +189,21 @@
         }
     }
 
+    private void Buscar(int id)
+    {
+        if (CategoriaId > 0)
+        {
+
+            var encontrado = CategoriasBLL.Buscar(id);
+            if (encontrado != null)
+            {
+                this.categorias = encontrado;
+                usuarioId = this.categorias.UsuariosId.ToString();
+            }
+            else
+                toast.ShowWarning("No se encontrado");
+        }
+    }
     private void ELiminar()
     {
         bool elimino;

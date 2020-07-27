@@ -201,6 +201,10 @@
     {
         Nuevo();
         Buscar();
+
+        if (SuplidorId > 0)
+            Buscar(SuplidorId);
+
         TipoUsuario = GetAuthorization();
 
         listaUsuarios = UsuariosBLL.GetList(x => true);
@@ -241,6 +245,22 @@
         {
 
             var encontrado = SuplidoresBLL.Buscar(suplidores.SuplidorId);
+            if (encontrado != null)
+            {
+                this.suplidores = encontrado;
+                usuarioId = this.suplidores.UsuariosId.ToString();
+            }
+            else
+                toast.ShowWarning("No se encontrado");
+        }
+    }
+
+    private void Buscar(int id)
+    {
+        if (SuplidorId > 0)
+        {
+
+            var encontrado = SuplidoresBLL.Buscar(id);
             if (encontrado != null)
             {
                 this.suplidores = encontrado;

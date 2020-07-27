@@ -19,8 +19,9 @@ namespace ProyectoFinal_PA2.Models
         [MinLength(3, ErrorMessage = "El apellido es demasiado corto")]
         public string Apellidos { get; set; }
 
-        [Required(ErrorMessage = "La cedula no puede estar vacia.")]
-        [MinLength(11, ErrorMessage = "La cedula es demasiado corto")]
+        [Required (ErrorMessage = "Debe ingresar la Cedula del usuario")]
+        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{11}$", ErrorMessage = "Por favor ingrese un No. de cédula válido")]
+        [MinLength(11, ErrorMessage = "El formato de la cedula es demasiado corto")]
         [MaxLength (11,ErrorMessage = "Ha excedido la cantidad de numeros de una cedula")]
         public string Cedula { get; set; }
 
@@ -28,13 +29,13 @@ namespace ProyectoFinal_PA2.Models
         public string Sexo { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el telefono del usuario")]
-        [Phone]
+        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10}$", ErrorMessage = "Por favor ingrese un No. de teléfono válido")]
         [MinLength (10, ErrorMessage = "Formato incorrecto, debe ingresar el teléfono completo")]
         [MaxLength(10, ErrorMessage = "Formato incorrecto, ha excedido la cantidad maxima de caracteres de un N° telefono")]
         public string Telefono { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el celular del usuario")]
-        [Phone]
+        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10}$", ErrorMessage = "Por favor ingrese un No. de celular válido")]
         [MinLength(10, ErrorMessage = "Formato incorrecto, debe ingresar el celular completo")]
         [MaxLength(10, ErrorMessage = "Formato incorrecto, ha excedido la cantidad maxima de caracteres de un  N° celular")]
         public string Celular { get; set; }

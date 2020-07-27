@@ -219,6 +219,7 @@
         </div>
     </EditForm>
 }
+
 @code {
     [Parameter]
     public int UsuarioId { get; set; }
@@ -231,6 +232,9 @@
         base.OnInitialized();
         Nuevo();
         Buscar();
+
+        if (UsuarioId > 0)
+            Buscar(UsuarioId);
 
         TipoUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador");
     }
@@ -245,6 +249,19 @@
         if (usuario.UsuarioId > 0)
         {
             var encontrado = UsuariosBLL.Buscar(usuario.UsuarioId);
+
+            if (encontrado != null)
+                this.usuario = encontrado;
+            else
+                toast.ShowWarning("Usuario no encontrado");
+        }
+    }
+
+    private void Buscar(int id)
+    {
+        if (UsuarioId> 0)
+        {
+            var encontrado = UsuariosBLL.Buscar(id);
 
             if (encontrado != null)
                 this.usuario = encontrado;

@@ -209,6 +209,10 @@
     {
         Nuevo();
         Buscar();
+
+        if (ProductoId > 0)
+            Buscar(ProductoId);
+
         TipoUsuario = GetAuthorization();
 
         listaUsuarios = UsuariosBLL.GetList(x => true);
@@ -299,6 +303,33 @@
         }
     }
 
+    private void Buscar(int id)
+    {
+        try
+        {
+            if (ProductoId > 0)
+            {
+
+                var encontrado = ProductosBLL.Buscar(id);
+
+                if (encontrado != null)
+                {
+                    this.productos = encontrado;
+
+                    categoriaId = this.productos.CategoriaId.ToString();
+                    suplidorId = this.productos.SuplidorId.ToString();
+                    usuarioId = this.productos.UsuariosId.ToString();
+                }
+                else
+                    toast.ShowWarning("No se encontrado");
+            }
+        }
+        catch (Exception e)
+        {
+
+            toast.ShowError($"Ha ocurrido un error con la base de datos {e.Message}, Intentelo nuevamente");
+        }
+    }
     private void Eliminar()
     {
         bool eliminar = false;

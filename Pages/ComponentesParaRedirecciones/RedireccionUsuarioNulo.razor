@@ -1,20 +1,28 @@
 ﻿@page "/UserNotExist"
 
-<div class="card text-center">
-    <div class="card-header">
-        Advertencia
+    <div id="FondoUsuarioNulo">
+        <div id="banner">
+            <img id="bannerImg" src="css/Images/ErrorIcon.png" title="Error Icon" alt="Logo de error" />
+        </div>
+
+        <div class="card text-center">
+            <div class="card-header">
+                Advertencia
+            </div>
+            <div class="card-body">
+                <h5>Atención</h5>
+                <p>El usuario que acaba de ingresar no existe intenlo de nuevo</p>
+                <a href="LogInPage" class="btn btn-primary">Volver al Menú del Login</a>
+            </div>
+
+        </div>
+
     </div>
-    <div class="card-body">
-        <h5>Atención</h5>
-        <p>El usuario que acaba de ingresar no existe intenlo de nuevo</p>
-        <a href="LogInPage" class="btn btn-primary">Volver al Menú del Login</a>
-    </div>
-</div>
+   
 
-
-@*
-    SE DEBE AGREGAR UNA IMAGEN PARA EMBELLECER EL COMPONENTE
+    @*
+        SE DEBE AGREGAR UNA IMAGEN PARA EMBELLECER EL COMPONENTE
 
 
 
-*@
+    *@

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using ProyectoFinal_PA2.DAL;
 using ProyectoFinal_PA2.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ProyectoFinal_PA2.BLL
 {
@@ -150,8 +151,6 @@ namespace ProyectoFinal_PA2.BLL
             return listas;
         }
 
-        
-
         public static bool GetExistenciaYClaveUsuario(string NombreUsuario, string clave)
         {
             bool paso = false;
@@ -184,6 +183,93 @@ namespace ProyectoFinal_PA2.BLL
                 throw;
             }
             return nivel;
+        }
+
+        public static bool ExisteEmail(string mail)
+        {
+            bool paso = false;
+            Contexto db = new Contexto();
+
+            try
+            {
+                paso = db.Usuarios.Any(x => x.Email == mail);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+
+            return paso;
+        }
+
+        public static bool ChangePassword(string mail, string newPassword)
+        {
+            bool paso = false;
+            Contexto db = new Contexto();
+
+            try
+            {
+                var usuario = BuscarPorEmail(mail);
+
+                if (usuario != null)
+                {
+                    usuario.Contrasena = newPassword;
+                    int id = usuario.UsuarioId;
+                    
+                    Modificar(usuario); // Se modifica el usuario
+                    paso = (db.SaveChanges() > 0);
+                    
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+
+            return paso;
+        }
+
+        public static Usuarios BuscarPorEmail (string email)
+        {
+            Usuarios usuarios = new Usuarios();
+            List<Usuarios> lista = new List<Usuarios>();
+
+            Contexto db = new Contexto();
+
+            try
+            {
+                lista = GetList(x => true);
+                foreach(var item in lista)
+                {
+                    if (item.Email == email)
+                    {
+                        usuarios = Buscar(item.UsuarioId);
+                        break;
+                    }
+                        
+                }
+                
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+            return usuarios;
         }
 
     }

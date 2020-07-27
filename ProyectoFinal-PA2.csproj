@@ -48,4 +48,10 @@
     <Folder Include="Pages\EmailComponent\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Data\RespuestosRafa.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

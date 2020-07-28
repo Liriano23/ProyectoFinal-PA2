@@ -21,48 +21,49 @@
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && TipoUsuario)
 {
-    <h3>Consulta Ventas</h3>
-    <div class="row">
+    <h3>Consulta Compras</h3>
+    <div id="PrincipalContainer" class="card">
 
-        @*Desde*@
-        <div class="form-group col-2">
-            <label>Desde</label>
-            <input type="date" class="form-control" @bind="Desde" />
-        </div>
+        <div class="row">
+            @*Desde*@
+            <div class="form-group col-2">
+                <label>Desde</label>
+                <input type="date" class="form-control" @bind="Desde" />
+            </div>
 
-        @*Hasta*@
-        <div class="form-group col-2">
-            <label>Hasta</label>
-            <input type="date" class="form-control" @bind="Hasta" />
-        </div>
+            @*Hasta*@
+            <div class="form-group col-2">
+                <label>Hasta</label>
+                <input type="date" class="form-control" @bind="Hasta" />
+            </div>
 
 
-        <div class="col-1">
-            <label>Filtro</label>
-        </div>
+            <div class="form-group col-2">
+                <label>Filtro</label>
+                <select @bind="opcion" class="form-control">
+                    <option value="0" disabled>Elija una opcion</option>
+                    <option value="1">TODO</option>
+                    <option value="2">Compra Id</option>
+                    <option value="3">Suplidor Id</option>
+                    <option value="4">Fecha de Compra</option>
+                    <option value="5">Usuario Id</option>
+                    <option value="6">Total</option>
+                </select>
+            </div>
 
-        <div class="col-sm">
-            <select @bind="opcion" class="form-control">
-                <option value="0" disabled>Elija una opcion</option>
-                <option value="1">TODO</option>
-                <option value="2">Compra Id</option>
-                <option value="3">Suplidor Id</option>
-                <option value="4">Fecha de Compra</option>
-                <option value="5">Usuario Id</option>
-                <option value="6">Total</option>
-            </select>
-        </div>
+            <div class="form-group col-2">
+                <label>Criterio</label>
+                <input type="text" @bind="criterio" class="form-control" />
+            </div>
 
-        <div class="col-1">
-            <label>Criterio</label>
-        </div>
+            <div class="form-group col-2">
+                <button class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
+            </div>
 
-        <div class="col">
-            <input type="text" @bind="criterio" class="form-control" />
-        </div>
+            <div class="form-group col-2">
+                <a class="btn btn-primary" href="/ComprasReporte">Ir a reporte</a>
+            </div>
 
-        <div class="col-lg">
-            <button class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
         </div>
     </div>
 

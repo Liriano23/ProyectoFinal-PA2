@@ -1,0 +1,37 @@
+﻿@page "/CategoriaReporte"
+@inject IJSRuntime js
+<h1>Reporte de Categorias</h1>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Hacer Click Para Reporte</button>
+
+@if (Data is { })
+{
+    <form style="border:dashed; ">
+        <object data="@pdfContent" width="1000" height="1000"></object>
+    </form>
+}
+
+@code {
+    private int currentCount = 0;
+    List<Categorias> lista = new List<Categorias>();
+
+    byte[] Data;
+    string pdfContent = "";
+
+
+
+    private async Task IncrementCount()
+    {
+        currentCount++;
+
+        ProyectoFinal_PA2.Reportes.CategoriasReport cat = new Reportes.CategoriasReport();
+        lista = CategoriasBLL.GetList(x => true);
+        Data = cat.Reporte(lista);
+
+        pdfContent = "data:application/pdf;base64,";
+        pdfContent += System.Convert.ToBase64String(Data);
+
+
+    }
+
+}

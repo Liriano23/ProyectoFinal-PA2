@@ -29,10 +29,10 @@
                     @*Registro Categorias*@
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="RegistroCategorias">
-                            <span class="oi oi-align-center"   aria-hidden="true"></span> R Categorias
+                            <span class="oi oi-align-center" aria-hidden="true"></span> R Categorias
                         </NavLink>
                     </li>
-                        
+
                     @*Registro Clientes*@
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="RegistroClientes">
@@ -67,14 +67,14 @@
                             <span class="oi oi-people" aria-hidden="true"></span> R Suplidores
                         </NavLink>
                     </li>
-                    
+
                     @*Registro Usuarios*@
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="RegistroUsuarios">
                             <span class="oi oi-people" aria-hidden="true"></span> R Usuarios
                         </NavLink>
                     </li>
-                    
+
                     @*Registro Ventas*@
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="RegistroVentas">
@@ -124,7 +124,7 @@
                     </li>
 
                     @*Consulta Productos*@
-                     <li class="nav-item px-3">
+                    <li class="nav-item px-3">
                         <NavLink class="nav-link" href="ConsultaProductos">
                             <span class="oi oi-file" aria-hidden="true"></span> C Productos
                         </NavLink>
@@ -136,7 +136,7 @@
                             <span class="oi oi-file" aria-hidden="true"></span> C Suplidores
                         </NavLink>
                     </li>
-                   
+
                     @*Consulta Usuarios*@
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="ConsultaUsuarios">
@@ -151,7 +151,76 @@
                         </NavLink>
                     </li>
                 </ul>
-             }
+            }
+        </li> 
+
+        @*Reportes*@
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" @onclick="()=>expandSubMenuRe= !expandSubMenuRe">
+                <span class="oi oi-plus" aria-hidden="true"></span> Reportes
+            </NavLink>
+            @if (expandSubMenuRe)
+            {
+                <ul class="nav flex-column">
+
+                    @*Reportes Categorias*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="CategoriaReporte">
+                            <span class="oi oi-file" aria-hidden="true"></span> R Categorias
+                        </NavLink>
+                    </li>
+
+                    @*Reportes Clientes*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ClienteReporte">
+                            <span class="oi oi-file" aria-hidden="true"></span> R Clientes
+                        </NavLink>
+                    </li>
+
+                    @*Reportes Compras*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ComprasReporte">
+                            <span class="oi oi-file" aria-hidden="true"></span> R Compras
+                        </NavLink>
+                    </li>
+
+                    @*Reportes Empleados*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="EmpleadosReporte">
+                            <span class="oi oi-file" aria-hidden="true"></span> R Empleados
+                        </NavLink>
+                    </li>
+
+                    @*Reportes Productos*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ProductosReporte">
+                            <span class="oi oi-file" aria-hidden="true"></span> R Productos
+                        </NavLink>
+                    </li>
+
+                    @*Reportes Suplidores*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="SuplidoresReporte">
+                            <span class="oi oi-file" aria-hidden="true"></span> R Suplidores
+                        </NavLink>
+                    </li>
+
+                    @*Reportes Usuarios*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="UsuariosReporte">
+                            <span class="oi oi-file" aria-hidden="true"></span> R Usuarios
+                        </NavLink>
+                    </li>
+
+                    @*Reportes Ventas*@
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="VentasReporte">
+                            <span class="oi oi-file" aria-hidden="true"></span> R Ventas
+                        </NavLink>
+                    </li>
+                </ul>
+            }
         </li>
 
     </ul>
@@ -162,6 +231,7 @@
     private bool collapseNavMenu = true;
     private bool expandSubMenuR;
     private bool expandSubMenuC;
+    private bool expandSubMenuRe;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 

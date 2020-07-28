@@ -1,0 +1,37 @@
+﻿@page "/UsuariosReporte"
+@inject IJSRuntime js
+<h1>Reporte de Usuarios</h1>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Hacer Click Para Reporte</button>
+
+@if (Data is { })
+{
+    <form style="border:dashed; ">
+        <object data="@pdfContent" width="1000" height="1000"></object>
+    </form>
+}
+
+@code {
+    private int currentCount = 0;
+    List<Usuarios> lista = new List<Usuarios>();
+
+    byte[] Data;
+    string pdfContent = "";
+
+
+
+    private async Task IncrementCount()
+    {
+        currentCount++;
+
+        ProyectoFinal_PA2.Reportes.UsuariosReport usu = new Reportes.UsuariosReport();
+        lista = UsuariosBLL.GetList(x => true);
+        Data = usu.Reporte(lista);
+
+        pdfContent = "data:application/pdf;base64,";
+        pdfContent += System.Convert.ToBase64String(Data);
+
+
+    }
+
+}

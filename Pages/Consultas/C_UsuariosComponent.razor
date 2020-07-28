@@ -40,270 +40,272 @@
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && TipoUsuario)
 {
     <h3>Consulta Usuarios</h3>
-    <div class="row">
+    <div id="PrincipalContainer" class="card">
 
-        @*Desde*@
-        <div class="form-group col-2">
-            <label>Desde</label>
-            <input type="date" class="form-control" @bind="Desde" />
-        </div>
+        <div class="row">
 
-        @*Hasta*@
-        <div class="form-group col-2">
-            <label>Hasta</label>
-            <input type="date" class="form-control" @bind="Hasta" />
-        </div>
+            @*Desde*@
+            <div class="form-group col-2">
+                <label>Desde</label>
+                <input type="date" class="form-control" @bind="Desde" />
+            </div>
 
-        <div class="col-1">
-            <label>Filtro</label>
-        </div>
+            @*Hasta*@
+            <div class="form-group col-2">
+                <label>Hasta</label>
+                <input type="date" class="form-control" @bind="Hasta" />
+            </div>
 
-        <div class="col-sm">
-            <select @bind="opcion" class="form-control">
-                <option value="0" disabled>Elija una opcion</option>
-                <option value="1">Todo</option>
-                <option value="2">Usuario Id</option>
-                <option value="3">Nombres</option>
-                <option value="4">Apellido</option>
-                <option value="5">Cedula</option>
-                <option value="6">Sexo</option>
-                <option value="7">Dirección</option>
-                <option value="8">Telefono</option>
-                <option value="9">Celular</option>
-                <option value="10">Email</option>
-                <option value="11">Tipo Usuario</option>
-                <option value="12">Nombre usuario</option>
-                <option value="13">Fecha Ingreso</option>
-            </select>
-        </div>
+            <div class="form-group col-2">
+                <label>Filtro</label>
+                <select @bind="opcion" class="form-control">
+                    <option value="0" disabled>Elija una opcion</option>
+                    <option value="1">Todo</option>
+                    <option value="2">Usuario Id</option>
+                    <option value="3">Nombres</option>
+                    <option value="4">Apellido</option>
+                    <option value="5">Cedula</option>
+                    <option value="6">Sexo</option>
+                    <option value="7">Dirección</option>
+                    <option value="8">Telefono</option>
+                    <option value="9">Celular</option>
+                    <option value="10">Email</option>
+                    <option value="11">Tipo Usuario</option>
+                    <option value="12">Nombre usuario</option>
+                    <option value="13">Fecha Ingreso</option>
+                </select>
+            </div>
 
-        <div class="col-1">
-            <label>Criterio</label>
-        </div>
 
-        <div class="col">
-            <input type="text" @bind="criterio" class="form-control" />
-        </div>
+            <div class="form-group col-2">
+                <label>Criterio</label>
+                <input type="text" @bind="criterio" class="form-control" />
+            </div>
 
-        <div class="col-lg">
-            <button class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
+            <div class="form-group col-2">
+                <button class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
+            </div>
+
+            <div class="form-group col-2">
+                <a class="btn btn-primary" href="/UsuariosReporte">Ir a reporte</a>
+            </div>
         </div>
     </div>
 
 
 
 
-    @if (lista == null)
-    {
-        <h3>No existen usuarios en la base de datos</h3>
-    }
-    else
-    {
-        <table class="table table-dark" style="margin-top: 5px;">
-            <thead>
-                <tr>
-                    <th>Usuario Id</th>
-                    <th>Nombres</th>
-                    <th>Apellidos</th>
-                    <th>Cedula</th>
-                    <th>Sexo</th>
-                    <th>Direcció</th>
-                    <th>Telefóno</th>
-                    <th>Celular</th>
-                    <th>Email</th>
-                    <th>Tipo Usuario</th>
-                    <th>Nombre Usuario</th>
-                    <th>Fecha Ingreso</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach (var list in lista)
-                {
-                    <tr>
-                        <td>@list.UsuarioId</td>
-                        <td>@list.Nombres</td>
-                        <td>@list.Apellidos</td>
-                        <td>@list.Cedula</td>
-                        <td>@list.Sexo</td>
-                        <td>@list.Direccion</td>
-                        <td>@list.Telefono</td>
-                        <td>@list.Celular</td>
-                        <td>@list.Email</td>
-                        <td>@list.TipoUsuario</td>
-                        <td>@list.NombreUsuario</td>
-                        <td>@list.FechaIngreso</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    <nav aria-label="...">
-        <ul class="pagination pagination-lg">
-
-            <li class="page-item Azul"><a class="page-link Azul" @onclick="Anterior"> ◄ </a></li>
-            @for (int i = 1; i <= totaldepaginas; i++)
-            {
-                <li class="page-item Azul"><a class="page-link Azul" @onclick="OnInitialized" href="ConsultaUsuarios/@i">@i</a></li>
-            }
-            <li class="page-item Azul"><a class="page-link Azul" @onclick="Saltar"> ► </a></li>
-        </ul>
-    </nav>
-}
-
-@code {
-
-    List<Usuarios> lista = new List<Usuarios>();
-    private string opcion = "0";
-    private string criterio = "";
-    private bool TipoUsuario;
-    private DateTime Desde = DateTime.Now;
-    private DateTime Hasta = DateTime.Now;
-
-
-    @*Paginado*@
-public int I { get; set; }
-double conteo = 0;
-double totaldepaginas = 0;
-Paginando paginacion = new Paginando();
-Contexto contexto = new Contexto();
-public int Contador { get; set; }
-
-protected override void OnInitialized()
-{
-    lista = UsuariosBLL.GetList(x => true);
-    TipoUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador");
-    conteo = contexto.Categorias.Count();
-    totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-    this.lista = contexto.Usuarios.Take(paginacion.CantidadMostrar).ToList();
-}
-
-private void Anterior()
-{
-    Contador -= paginacion.Pagina;
-    if (Contador <= totaldepaginas)
-    {
-        Contador = 0;
-    }
-
-    lista = contexto.Usuarios
-    .Skip(Contador * paginacion.CantidadMostrar)
-    .Take(paginacion.CantidadMostrar)
-    .ToList();
-}
-
-private void Saltar()
-{
-    Contador += paginacion.Pagina;
-    if (Contador >= totaldepaginas)
-    {
-        Contador = 0;
-    }
-
-    lista = contexto.Usuarios
-    .Skip(Contador * paginacion.CantidadMostrar)
-    .Take(paginacion.CantidadMostrar)
-    .ToList();
-}
-
-private void MostrarDatos()
-{
-    int elegido = Convert.ToInt32(opcion);
-
-    if (string.IsNullOrWhiteSpace(criterio))
-    {
-        lista = UsuariosBLL.GetList(x => true);
-    }
-    else
-    {
-        switch (elegido)
+        @if (lista == null)
         {
-            case 0:
-                {
-                    toast.ShowError("¡Opcion incorrecta!");
-                    break;
-                }
-
-            case 1:
-                {
-                    lista = UsuariosBLL.GetList(x => true);
-                }
-                break;
-
-            case 2:
-                {
-                    int id;
-                    id = Convert.ToInt32(criterio);
-                    lista = UsuariosBLL.GetList(x => x.UsuarioId == id);
-                }
-                break;
-
-            case 3:
-                {
-                    lista = UsuariosBLL.GetList(x => x.Nombres == criterio);
-                }
-                break;
-
-            case 4:
-                {
-                    lista = UsuariosBLL.GetList(x => x.Apellidos == criterio);
-                }
-                break;
-
-            case 5:
-                {
-                    lista = UsuariosBLL.GetList(x => x.Cedula == criterio);
-                }
-                break;
-
-            case 6:
-                {
-                    lista = UsuariosBLL.GetList(x => x.Sexo == criterio);
-                }
-                break;
-
-            case 7:
-                {
-                    lista = UsuariosBLL.GetList(x => x.Direccion == criterio);
-                }
-                break;
-
-            case 8:
-                {
-                    lista = UsuariosBLL.GetList(x => x.Telefono == criterio);
-                }
-                break;
-
-            case 9:
-                {
-                    lista = UsuariosBLL.GetList(x => x.Celular == criterio);
-                }
-                break;
-
-            case 10:
-                {
-                    lista = UsuariosBLL.GetList(x => x.Email == criterio);
-                }
-                break;
-
-            case 11:
-                {
-                    lista = UsuariosBLL.GetList(x => x.TipoUsuario == criterio);
-                }
-                break;
-
-            case 12:
-                {
-                    lista = UsuariosBLL.GetList(x => x.TipoUsuario == criterio);
-                }
-                break;
-            case 13:
-                {
-                    lista = UsuariosBLL.GetList(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
-                }
-                break;
+            <h3>No existen usuarios en la base de datos</h3>
         }
-        lista = lista.Where(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
-    }
-}
-}
+        else
+        {
+            <table class="table table-dark" style="margin-top: 5px;">
+                <thead>
+                    <tr>
+                        <th>Usuario Id</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Cedula</th>
+                        <th>Sexo</th>
+                        <th>Direcció</th>
+                        <th>Telefóno</th>
+                        <th>Celular</th>
+                        <th>Email</th>
+                        <th>Tipo Usuario</th>
+                        <th>Nombre Usuario</th>
+                        <th>Fecha Ingreso</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var list in lista)
+                    {
+                        <tr>
+                            <td>@list.UsuarioId</td>
+                            <td>@list.Nombres</td>
+                            <td>@list.Apellidos</td>
+                            <td>@list.Cedula</td>
+                            <td>@list.Sexo</td>
+                            <td>@list.Direccion</td>
+                            <td>@list.Telefono</td>
+                            <td>@list.Celular</td>
+                            <td>@list.Email</td>
+                            <td>@list.TipoUsuario</td>
+                            <td>@list.NombreUsuario</td>
+                            <td>@list.FechaIngreso</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        <nav aria-label="...">
+            <ul class="pagination pagination-lg">
+
+                <li class="page-item Azul"><a class="page-link Azul" @onclick="Anterior"> ◄ </a></li>
+                @for (int i = 1; i <= totaldepaginas; i++)
+                {
+                    <li class="page-item Azul"><a class="page-link Azul" @onclick="OnInitialized" href="ConsultaUsuarios/@i">@i</a></li>
+                }
+                <li class="page-item Azul"><a class="page-link Azul" @onclick="Saltar"> ► </a></li>
+            </ul>
+        </nav>
+        }
+
+        @code {
+
+            List<Usuarios> lista = new List<Usuarios>();
+    private string opcion = "0";
+        private string criterio = "";
+        private bool TipoUsuario;
+        private DateTime Desde = DateTime.Now;
+        private DateTime Hasta = DateTime.Now;
+
+
+        @*Paginado*@
+        public int I { get; set; }
+        double conteo = 0;
+        double totaldepaginas = 0;
+        Paginando paginacion = new Paginando();
+        Contexto contexto = new Contexto();
+        public int Contador { get; set; }
+
+        protected override void OnInitialized()
+        {
+            lista = UsuariosBLL.GetList(x => true);
+            TipoUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador");
+            conteo = contexto.Categorias.Count();
+            totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
+            this.lista = contexto.Usuarios.Take(paginacion.CantidadMostrar).ToList();
+        }
+
+        private void Anterior()
+        {
+            Contador -= paginacion.Pagina;
+            if (Contador <= totaldepaginas)
+            {
+                Contador = 0;
+            }
+
+            lista = contexto.Usuarios
+            .Skip(Contador * paginacion.CantidadMostrar)
+            .Take(paginacion.CantidadMostrar)
+            .ToList();
+        }
+
+        private void Saltar()
+        {
+            Contador += paginacion.Pagina;
+            if (Contador >= totaldepaginas)
+            {
+                Contador = 0;
+            }
+
+            lista = contexto.Usuarios
+            .Skip(Contador * paginacion.CantidadMostrar)
+            .Take(paginacion.CantidadMostrar)
+            .ToList();
+        }
+
+        private void MostrarDatos()
+        {
+            int elegido = Convert.ToInt32(opcion);
+
+            if (string.IsNullOrWhiteSpace(criterio))
+            {
+                lista = UsuariosBLL.GetList(x => true);
+            }
+            else
+            {
+                switch (elegido)
+                {
+                    case 0:
+                        {
+                            toast.ShowError("¡Opcion incorrecta!");
+                            break;
+                        }
+
+                    case 1:
+                        {
+                            lista = UsuariosBLL.GetList(x => true);
+                        }
+                        break;
+
+                    case 2:
+                        {
+                            int id;
+                            id = Convert.ToInt32(criterio);
+                            lista = UsuariosBLL.GetList(x => x.UsuarioId == id);
+                        }
+                        break;
+
+                    case 3:
+                        {
+                            lista = UsuariosBLL.GetList(x => x.Nombres == criterio);
+                        }
+                        break;
+
+                    case 4:
+                        {
+                            lista = UsuariosBLL.GetList(x => x.Apellidos == criterio);
+                        }
+                        break;
+
+                    case 5:
+                        {
+                            lista = UsuariosBLL.GetList(x => x.Cedula == criterio);
+                        }
+                        break;
+
+                    case 6:
+                        {
+                            lista = UsuariosBLL.GetList(x => x.Sexo == criterio);
+                        }
+                        break;
+
+                    case 7:
+                        {
+                            lista = UsuariosBLL.GetList(x => x.Direccion == criterio);
+                        }
+                        break;
+
+                    case 8:
+                        {
+                            lista = UsuariosBLL.GetList(x => x.Telefono == criterio);
+                        }
+                        break;
+
+                    case 9:
+                        {
+                            lista = UsuariosBLL.GetList(x => x.Celular == criterio);
+                        }
+                        break;
+
+                    case 10:
+                        {
+                            lista = UsuariosBLL.GetList(x => x.Email == criterio);
+                        }
+                        break;
+
+                    case 11:
+                        {
+                            lista = UsuariosBLL.GetList(x => x.TipoUsuario == criterio);
+                        }
+                        break;
+
+                    case 12:
+                        {
+                            lista = UsuariosBLL.GetList(x => x.TipoUsuario == criterio);
+                        }
+                        break;
+                    case 13:
+                        {
+                            lista = UsuariosBLL.GetList(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
+                        }
+                        break;
+                }
+                lista = lista.Where(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
+            }
+        }
+        }

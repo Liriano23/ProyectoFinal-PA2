@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <h5>Atención</h5>
                     <p>Debe iniciar sesion para poder acceder a estas opciones</p>
-                    <a href="MenuRegistros" class="btn btn-primary">Volver al Menú anterior</a>
+                    <a href="LogInPage" class="btn btn-primary">Ir al menu de Log-In</a>
                 </div>
             </div>
         </NotAuthorized>
@@ -30,10 +30,12 @@
     <EditForm Model="compras" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
 
-        <div id="PrincipalContainer" class="card">
+        <div id="MainContainer" class="card">
             <div class="card-header">
-                <img id="Logo" src="css/Images/ProductsImage.png" title="LogoCompras" alt="Logo para el formulario de Compras" />
-                <h3 id="Titulo">Registro Compras</h3>
+                <div class="form-group">
+                    <img id="Logo" src="css/Images/ProductsImage.png" title="LogoCompras" alt="Logo para el formulario de Compras" />
+                    <h5 id="Titulo">Registró Compras</h5>
+                </div>
             </div>
 
             <div class="card-body">
@@ -89,7 +91,7 @@
                             </InputSelect>*@
                    
 
-                    @*FechaEmision*@
+                    @*Fecha Emision*@
                     <div class="form-group">
                         <label for="DatePicker">Fecha Compra</label>
                         <InputDate @bind-Value="compras.FechaDeCompra" id="DatePicker" class="form-control" readonly="true" />

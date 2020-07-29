@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <h5>Atención</h5>
                     <p>Debe iniciar sesion para poder acceder a estas opciones</p>
-                    <a href="MenuRegistros" class="btn btn-primary">Volver al Menú anterior</a>
+                    <a href="LogInPage" class="btn btn-primary">Ir al menu de Log-In</a>
                 </div>
             </div>
         </NotAuthorized>
@@ -24,12 +24,13 @@
     <EditForm Model="productos" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
 
-        <div id="PrincipalContainer" class="card">
+        <div id="MainContainer" class="card">
 
             <div class="card-header">
+
                 <div class="form-group">
-                    <img src="css/Images/ProductsImage.png" title="LogoProductos" alt="Logo del regsitro de productos" />
-                    <h3 id="Titulo">Registro Productos</h3>
+                    <img id="Logo" src="css/Images/ProductsImage.png" title="LogProductos" alt="Logo para el formulario de Productos" />
+                    <h5 id="Titulo">Registró Productos</h5>
                 </div>
             </div>
 
@@ -128,9 +129,9 @@
                         </small>
                     </div>
 
-                    @*CategoriaId*@
+                    @*CategoríaId*@
                     <div class="form-group">
-                        <label for="CategoriaIdSelect">CategoriaId</label>
+                        <label for="CategoriaIdSelect">CategoríaId</label>
                         <InputSelect @bind-Value="@categoriaId" id="CategoriaIdSelect" class="form-control">
                             <option value="0">Elige la categoria</option>
                             @foreach (var item in listaCategorias)
@@ -140,7 +141,7 @@
                         </InputSelect>
                         <ValidationMessage For="(() => productos.CategoriaId)" />
                         <small id="SupplierIdInlineHelper">
-                            Ingresar la categoria del productos
+                            Ingresar la categoría del productos
                         </small>
                     </div>
 

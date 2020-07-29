@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <h5>Atención</h5>
                     <p>Debe iniciar sesion para poder acceder a estas opciones</p>
-                    <a href="MenuRegistros" class="btn btn-primary">Volver al Menú anterior</a>
+                    <a href="LogInPage" class="btn btn-primary">Ir al menu Log-In</a>
                 </div>
             </div>
         </NotAuthorized>
@@ -28,12 +28,12 @@
     <EditForm Model="cliente" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
 
-        <div id="ContenedorPrincipal" class="card">
+        <div id="MainContainer" class="card">
 
             <div id="PrincipalContainer" class="card-header">
                 <div class="form-group">
-                    <img src="css/Images/UserLogo2.png" title="LogoClientes" alt="Logo del regsitro de clientes" />
-                    <h3 id="Titulo">Registro clientes</h3>
+                    <img id="Logo" src="css/Images/UserLogo2.png" title="LogoClientes" alt="Logo para el formulario de clientes" />
+                    <h5 id="Titulo">Registró Clientes</h5>
                 </div>
             </div>
 
@@ -78,11 +78,11 @@
 
                     @*Cédula*@
                     <div class="form-group">
-                        <label for="CedulaTextBox">Cedula</label>
+                        <label for="CedulaTextBox">Cédula</label>
                         <InputText @bind-Value="cliente.Cedula" id="CedulaTextBox" class="form-control" autoComplete="off" />
                         <ValidationMessage For="(() => cliente.Cedula)" />
                         <small id="CedulaInlineHelper">
-                            Ingresar la cedula del cliente
+                            Ingresar la Cédula del cliente
                         </small>
                     </div>
 
@@ -100,13 +100,13 @@
                         </small>
                     </div>
 
-                    @*Telefono*@
+                    @*Teléfono*@
                     <div class="form-group">
-                        <label for="TelefonoTextBox">Telefono</label>
+                        <label for="TelefonoTextBox">Teléfono</label>
                         <InputText @bind-Value="cliente.Telefono" id="TelefonoTextBox" class="form-control" autoComplete="off" />
                         <ValidationMessage For="(() => cliente.Telefono)" />
                         <small id="PhoneInlineHelper">
-                            Ingresar telefono del cliente
+                            Ingresar Teléfono del cliente
                         </small>
                     </div>
 
@@ -122,11 +122,11 @@
 
                     @*Dirección*@
                     <div class="form-group">
-                        <label for="DireccionTextBox">Direccion</label>
+                        <label for="DireccionTextBox">Dirección</label>
                         <InputText @bind-Value="cliente.Direccion" id="DireccionTextBox" class="form-control" autoComplete="off" />
                         <ValidationMessage For="(() => cliente.Direccion)" />
                         <small id="AddressInlineHelper">
-                            Ingresar direccion del cliente
+                            Ingresar Dirección del cliente
                         </small>
                     </div>
 

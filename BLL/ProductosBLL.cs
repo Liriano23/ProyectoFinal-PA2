@@ -146,25 +146,6 @@ namespace ProyectoFinal_PA2.BLL
             return lista;
         }
 
-        public static bool ExistenciaProductos(int id)
-        {
-            bool existe = false;
-            Contexto db = new Contexto();
-            try
-            {
-                existe = db.Productos.Any(x => x.ProductoId == id);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                db.Dispose();
-            }
-            return existe;
-        }
-
         public static bool DisminuirInventario(int id, int cantidad)
         {
             bool paso = false;

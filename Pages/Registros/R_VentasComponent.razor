@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <h5>Atención</h5>
                     <p>Debe iniciar sesion para poder acceder a estas opciones</p>
-                    <a href="MenuRegistros" class="btn btn-primary">Volver al Menú anterior</a>
+                    <a href="LogInPage" class="btn btn-primary">Ir al menu de Log-In</a>
                 </div>
             </div>
         </NotAuthorized>
@@ -26,10 +26,12 @@
     <EditForm Model="ventas" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
 
-        <div id="PrincipalContainer" class="card">
+        <div id="MainContainer" class="card">
             <div class="card-header">
-                <img id="Logo" src="css/Images/ProductsImage.png" title="LogoVentas" alt="Logo para el formulario de ventas" />
-                <h3 id="Titulo">Registro ventas</h3>
+                <div class="form-group">
+                    <img id="Logo" src="css/Images/ProductsImage.png" title="LogoVentas" alt="Logo para el formulario de Ventas" />
+                    <h5 id="Titulo">Registró Ventas</h5>
+                </div>
             </div>
 
             <div class="card-body">

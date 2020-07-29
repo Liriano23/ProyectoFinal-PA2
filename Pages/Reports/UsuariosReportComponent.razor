@@ -1,28 +1,72 @@
 ﻿@page "/UsuariosReporte"
 @inject IJSRuntime js
-<h1>Reporte de Usuarios</h1>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Hacer Click Para Reporte</button>
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Atención</h5>
+                    <p>Debe iniciar sesion para poder acceder a estas opciones</p>
+                    <a href="LogInPage" class="btn btn-primary">Ir a menu Log-in</a>
+                </div>
+                <div class="card-footer text-muted">
+                </div>
+            </div>
+        </NotAuthorized>
 
-@if (Data is { })
+        <Authorized>
+            @if (!TipoUsuario)
+            {
+                <div class="card text-center">
+                    <div class="card-header">
+                        No Autorizado
+                    </div>
+                    <div class="card-body">
+                        <h5>Atención</h5>
+                        <p>Debe tener acceso de administrador para poder acceder a estas opciones.</p>
+                        <a href="/" class="btn btn-primary">Volver al Menú principal</a>
+                    </div>
+                </div>
+            }
+        </Authorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && TipoUsuario)
 {
-    <form style="border:dashed; ">
-        <object data="@pdfContent" width="1000" height="1000"></object>
-    </form>
+    <div style="margin-top:5px;">
+        <h1>Reporte de Usuarios</h1>
+
+        <button class="btn btn-primary" @onclick="ImprimirReportes">Hacer Click Para Reporte</button>
+    </div>
+    @if (Data is { })
+    {
+        <form>
+            <object data="@pdfContent" width="1000" height="1000"></object>
+        </form>
+    }
 }
+<img src="css/Images/Logo1.JPEG " title="LogoEmpresa" alt="Logo del Login" />
 
 @code {
-    private int currentCount = 0;
+    private bool TipoUsuario;
     List<Usuarios> lista = new List<Usuarios>();
 
     byte[] Data;
     string pdfContent = "";
 
-
-
-    private async Task IncrementCount()
+    protected override void OnInitialized()
     {
-        currentCount++;
+        TipoUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador");
+
+    }
+
+    private async Task ImprimirReportes()
+    {
 
         ProyectoFinal_PA2.Reportes.UsuariosReport usu = new Reportes.UsuariosReport();
         lista = UsuariosBLL.GetList(x => true);
@@ -33,5 +77,4 @@
 
 
     }
-
 }

@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Atención</h5>
                     <p>Debe iniciar sesion para poder acceder a estas opciones</p>
-                    <a href="MenuRegistros" class="btn btn-primary">Ir al Menú</a>
+                    <a href="LogInPage" class="btn btn-primary">Ir al Menú de Log-In</a>
                 </div>
                 <div class="card-footer text-muted">
                 </div>
@@ -28,7 +28,7 @@
                     <div class="card-body">
                         <h5>Atención</h5>
                         <p>Debe tener acceso de administrador para poder acceder a estas opciones.</p>
-                        <a href="MenuRegistros" class="btn btn-primary">Volver al Menú anterior</a>
+                        <a href="/" class="btn btn-primary">Volver al Menú Principal</a>
                     </div>
                 </div>
             }
@@ -41,11 +41,11 @@
     <EditForm Model="usuario" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
 
-        <div id="PrincipalContainer" class="card">
+        <div id="MainContainer" class="card">
             <div class="card-header">
                 <div class="form-group">
                     <img id="Logo" src="css/Images/UserLogo2.png" title="LogoUsuario" alt="Logo para el formulario de usuarios" />
-                    <h3 id="Titulo">Registro usuarios</h3>
+                    <h5 id="Titulo">Registró usuarios</h5>
                 </div>
             </div>
 
@@ -55,7 +55,7 @@
                     <div class="form-row align-items-center">
                         <div class="col">
                             <div class="form-group">
-                                <label for="UsuarioIdTextBox">UsuarioId</label>
+                                <label for="UsuarioIdTextBox">Usuario Id</label>
                                 <div class="input-group">
                                     <InputNumber @bind-Value="usuario.UsuarioId" id="UsuarioIdTextBox" class="form-control col-4"></InputNumber>
                                     <div class="input-group-append">
@@ -90,11 +90,11 @@
 
                     @*Cédula*@
                     <div class="form-group">
-                        <label>Cedula</label>
+                        <label>Cédula</label>
                         <InputText @bind-Value="usuario.Cedula" class="form-control" autoComplete="off" />
                         <ValidationMessage For="(() => usuario.Cedula)" />
                         <small id="CedulaInlineHelper">
-                            Ingresar la cedula del usuario
+                            Ingresar la cédula del usuario
                         </small>
                     </div>
 
@@ -114,11 +114,11 @@
 
                     @*Telefono*@
                     <div class="form-group">
-                        <label>Telefono</label>
+                        <label>Teléfono</label>
                         <InputText @bind-Value="usuario.Telefono" class="form-control" autoComplete="off" />
                         <ValidationMessage For="(() => usuario.Telefono)" />
                         <small id="PhoneInlineHelper">
-                            Ingresar telefono del usuario
+                            Ingresar teléfono del usuario
                         </small>
                     </div>
 
@@ -134,11 +134,11 @@
 
                     @*Dirección*@
                     <div class="form-group">
-                        <label>Direccion</label>
+                        <label>Dirección</label>
                         <InputText @bind-Value="usuario.Direccion" class="form-control" autoComplete="off" />
                         <ValidationMessage For="(() => usuario.Direccion)" />
                         <small id="AddressInlineHelper">
-                            Ingresar direccion del usuario
+                            Ingresar Dirección del usuario
                         </small>
                     </div>
 

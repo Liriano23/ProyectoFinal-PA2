@@ -187,17 +187,18 @@ app {
 #Logo {
     height: 120px;
     width: 100px;
-    margin-left: 390px;
+    margin-left: 570px;
+    margin-top:8px;
 }
 
 #Titulo {
-    float: left;
-    margin-left: 350px;
+    
+    margin-left: 550px;
     font-family: "Times New Roman, Arial, sans-serif";
     font-weight: bold;
 }
 
-#PrincipalContainer {
+#MainContainer {
     background-color: rgb(188,191,197);
 }
 
@@ -206,17 +207,16 @@ label {
     font-family: "Times New Roman, Arial, sans-serif";
 }
 
-#PrincipalContainer small {
+#MainContainer small {
     color: rgb(0,0,0);
     font-size: 20px;
     font-family: "Times New Roman, Arial, sans-serif";
 }
 
-#PrincipalContainer #DescuentoContainer, #SubTotalContainer, #TotalContainer {
+#MainContainer #DescuentoContainer, #SubTotalContainer, #TotalContainer {
     float: right;
     margin-top: 2px;
     font-weight: bold;
-    
 }
 
 #Fondo {

@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <h5>Atención</h5>
                     <p>Debe iniciar sesion para poder acceder a estas opciones</p>
-                    <a href="MenuRegistros" class="btn btn-primary">Volver al Menú anterior</a>
+                    <a href="LogInPage" class="btn btn-primary">Ir al menu Log-In </a>
                 </div>
             </div>
         </NotAuthorized>
@@ -24,12 +24,12 @@
     <EditForm Model="categorias" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
 
-        <div id="ContenedorPrincipal" class="card">
+        <div id="MainContainer" class="card">
 
             <div id="PrincipalContainer" class="card-header">
                 <div class="form-group">
-                    <img src="css/Images/ProductsImage.png" title="LogoCategorias" alt="Logo del regsitro de Categorias" />
-                    <h3 id="Titulo">Registro Categorias</h3>
+                    <img id="Logo" src="css/Images/ProductsImage.png" title="LogoCategorías" alt="Logo para el formulario de categorías" />
+                    <h5 id="Titulo">Registró Categorías</h5>
                 </div>
             </div>
             
@@ -39,7 +39,7 @@
                     <div class="form-row aling-items-center">
                         <div class="col">
                             <div class="form-group">
-                                <label for="CategoriasIdPicker">CategoriasId</label>
+                                <label for="CategoriasIdPicker">Categoría Id</label>
                                 <div class="input-group">
                                     <InputNumber @bind-Value="categorias.CategoriaId" autoComplete="off" id="CategoriasIdPicker" class="form-control col-4" />
                                     <div class="form-group-append">

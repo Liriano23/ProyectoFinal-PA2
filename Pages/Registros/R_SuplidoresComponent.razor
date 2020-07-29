@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <h5>Atención</h5>
                     <p>Debe iniciar sesion para poder acceder a estas opciones</p>
-                    <a href="MenuRegistros" class="btn btn-primary">Volver al Menú anterior</a>
+                    <a href="LogInPage" class="btn btn-primary">Ir al menu de Log-In</a>
                 </div>
             </div>
         </NotAuthorized>
@@ -23,12 +23,12 @@
     <EditForm Model="suplidores" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
 
-        <div id="ContenedorPrincipal" class="card">
+        <div id="MainContainer" class="card">
 
             <div id="PrincipalContainer" class="card-header">
                 <div class="form-group">
-                    <img src="css/Images/UserLogo2.png" title="LogoEmpleados" alt="Logo del regsitro de Suplidores" />
-                    <h3 id="Titulo">Registro Suplidores</h3>
+                    <img id="Logo" src="css/Images/UserLogo2.png" title="LogoSuplidores" alt="Logo para el formulario de suplidores" />
+                    <h5 id="Titulo">Registró Suplidores</h5>
                 </div>
             </div>
 
@@ -82,13 +82,13 @@
                     </div>
 
 
-                    @*Telefono*@
+                    @*Teléfono*@
                     <div class="form-group">
-                        <label for="TelefonoTextBox">Telefono</label>
+                        <label for="TelefonoTextBox">Teléfono</label>
                         <InputText @bind-Value="suplidores.Telefono" id="TelefonoTextBox" class="form-control" autoComplete="off" />
                         <ValidationMessage For="(() => suplidores.Telefono)" />
                         <small id="PhoneInlineHelper">
-                            Ingresar telefono del suplidor
+                            Ingresar teléfono del suplidor
                         </small>
                     </div>
 
@@ -104,11 +104,11 @@
 
                     @*Dirección*@
                     <div class="form-group">
-                        <label for="DireccionTextBox">Direccion Compañia </label>
+                        <label for="DireccionTextBox">Dirección Compañia </label>
                         <InputText @bind-Value="suplidores.Direccion" id="DireccionTextBox" class="form-control" autoComplete="off" />
                         <ValidationMessage For="(() => suplidores.Direccion)" />
                         <small id="AddressInlineHelper">
-                            Ingresar Direccion de Compañia
+                            Ingresar dirección de Compañia
                         </small>
                     </div>
 
@@ -157,7 +157,6 @@
                             Ingresar el usuario que esta insertando el suplidor
                         </small>
                     </div>
-
 
                 </form>
 

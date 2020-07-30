@@ -2,6 +2,7 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    
 }
 
 a, .btn-link {
@@ -47,11 +48,13 @@ app {
 }
 
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    background-image: linear-gradient(170deg, rgb(139, 12, 12), #7e2424 50%);
 }
 
     .sidebar .top-row {
-        background-color: rgba(0,0,0,0.4);
+        background-color: rgba(198, 32, 32, 0.72);
+        font-weight: bold;
+        
     }
 
     .sidebar .navbar-brand {
@@ -115,6 +118,7 @@ app {
 
 .validation-message {
     color: red;
+    border-color: rgb(165, 10, 10);
 }
 
 #blazor-error-ui {
@@ -187,19 +191,33 @@ app {
 #Logo {
     height: 120px;
     width: 100px;
-    margin-left: 570px;
-    margin-top:8px;
+    display: block;
+    margin: auto;
+    border-radius: 5px;
 }
 
+#LogoEmpresa {
+    display: block;
+    margin: auto;
+    border-radius: 5px;
+    box-shadow: 5px 5px 0px #ccc;
+    padding: 10px;
+}
 #Titulo {
-    
-    margin-left: 550px;
+    margin-left: 490px;
     font-family: "Times New Roman, Arial, sans-serif";
     font-weight: bold;
 }
 
 #MainContainer {
-    background-color: rgb(188,191,197);
+    background-color: rgba(188, 191, 197, 0.38);
+    border: solid;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    padding: 10px;
+    border-color: crimson;
+    box-shadow: 7px;
+    margin:auto;
 }
 
 label {
@@ -220,7 +238,7 @@ label {
 }
 
 #Fondo {
-    background-color: rgb(188,191,197);
+    background-color: rgba(188, 191, 197, 0.46);
     background-repeat: repeat-y;
     background-position: center top;
     width: 760px;

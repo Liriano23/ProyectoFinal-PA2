@@ -146,33 +146,20 @@ namespace ProyectoFinal_PA2.BLL
             return lista;
         }
 
-        public static bool DisminuirInventario(int id, int cantidad)
+        public static void AumentarInventario(Ventas ventas)
         {
-            bool paso = false;
-            Contexto db = new Contexto();
-            var producto = db.Productos.Find(id);
-
-            if (producto != null)
-            {
-                try
-                {
-                    if (producto.Inventario > 0)
-                        producto.Inventario = (producto.Inventario - cantidad);
-
-                    db.Entry(producto).State = EntityState.Modified;
-                    paso = (db.SaveChanges() > 0);
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-                finally
-                {
-                    db.Dispose();
-                }
-            }
-
-            return paso;
+          try
+          {
+              foreach (var item in ventas.Detalle)
+              {
+                  ProductosBLL.AumentarInventario(item.ProductoId, item.Cantidad);
+              }
+          }
+          catch (Exception)
+          {
+              throw;
+          }
+               
         }
 
         public static bool AumentarInventario(int id, int cantidad)
@@ -186,11 +173,44 @@ namespace ProyectoFinal_PA2.BLL
                 try
                 {
                     if (producto.Inventario > 0)
-                        producto.Inventario = (producto.Inventario + cantidad);
+                        producto.Inventario += cantidad;
+                    Modificar(producto);
 
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    db.Dispose();
+                }
+            }
+            return paso;
+        }
+        
+        public static void DisminuirInventario(Ventas ventas) //Disminuye el inventario en caso de realizar una venta
+        {
+            foreach (var item in ventas.Detalle)
+            {
+                ProductosBLL.DisminuirInventario(item.ProductoId, item.Cantidad);
+            }
+        }
+        
+        public static bool DisminuirInventario(int id, int cantidad)
+        {
+            bool paso = false;
+            Contexto db = new Contexto();
+            var producto = db.Productos.Find(id);
 
-                    db.Entry(producto).State = EntityState.Modified;
-                    paso = (db.SaveChanges() > 0);
+            if (producto != null)
+            {
+                try
+                {
+                    if (producto.Inventario > 0)
+                        producto.Inventario -= cantidad;
+
+                    Modificar(producto);
                 }
                 catch (Exception)
                 {
@@ -204,5 +224,7 @@ namespace ProyectoFinal_PA2.BLL
 
             return paso;
         }
+
+        
     }
 }

@@ -387,7 +387,7 @@
             && ValidarCantidadDetalle())
             {
                 guardo = VentasBLL.Guardar(ventas);
-                
+
             }
             else if (!ValidarCantidadDetalle()) //Mensaje si el detalle esta  vacio
                 toast.ShowError("Debe agregar productos al detalle");
@@ -447,9 +447,7 @@
                 Valor = cantidad * precio
             });
 
-            ProductosBLL.DisminuirInventario(id, cantidad);
             CalcularTotalVenta();
-
         }
         else
             toast.ShowError("No existe este producto en la base de datos. ");
@@ -464,7 +462,6 @@
     {
         try
         {
-            ProductosBLL.AumentarInventario(detalle.ProductoId, detalle.Cantidad);
             ventas.Detalle.Remove(detalle);
             CalcularTotalVenta();
         }
@@ -546,5 +543,4 @@
             ProductosBLL.AumentarInventario(item.ProductoId, item.Cantidad);
         }
     }
-
 }

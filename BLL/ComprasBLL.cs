@@ -45,6 +45,7 @@ namespace ProyectoFinal_PA2.BLL
             try
             {
                 db.Compras.Add(compras);
+                AumentarInventario(compras);
                 paso = (db.SaveChanges() > 0);
             }
             catch (Exception)
@@ -64,12 +65,16 @@ namespace ProyectoFinal_PA2.BLL
             Contexto db = new Contexto();
             try
             {
+                var CompraAnterior = Buscar(compras.CompraId);
+
+                DisminuirInventario(CompraAnterior);
                 db.Database.ExecuteSqlRaw($"Delete From ComprasDetalle where CompraId ={ compras.CompraId}");
                 foreach (var item in compras.Detalle)
                 {
                     db.Entry(item).State = EntityState.Added;
                 }
                 db.Entry(compras).State = EntityState.Modified;
+                AumentarInventario(compras);
                 paso = (db.SaveChanges() > 0);
             }
             catch (Exception)
@@ -150,6 +155,30 @@ namespace ProyectoFinal_PA2.BLL
                 contexto.Dispose();
             }
             return lista;
+        }
+
+        public static void DisminuirInventario(Compras compras)
+        {
+            foreach (var item in compras.Detalle)
+            {
+                ProductosBLL.DisminuirInventario(item.ProductoId, item.Cantidad);
+            }
+        }
+
+        public static void AumentarInventario(Compras compras)
+        {
+            try
+            {
+                foreach (var item in compras.Detalle)
+                {
+                    ProductosBLL.AumentarInventario(item.ProductoId, item.Cantidad);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
     }
 }

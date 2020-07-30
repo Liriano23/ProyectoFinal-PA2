@@ -438,13 +438,10 @@
             Precio = precio,
             Valor = cantidad * precio
         });
-
-        ProductosBLL.AumentarInventario(id, cantidad);
         CalcularTotalCompra();
 
         DetalleId = 0;
         ProductoID = "0";
-        //EmpleadoID = "0";
         cantidad = 0;
         precio = 0;
         Valor = 0;
@@ -454,11 +451,6 @@
     {
         try
         {
-            int productoId = Convert.ToInt32(ProductoID);
-            int prueba = 0;
-
-            prueba += detalle.Cantidad;
-            ProductosBLL.AumentarInventario(detalle.ProductoId, prueba);
             compras.Detalle.Remove(detalle);
             CalcularTotalCompra();
         }

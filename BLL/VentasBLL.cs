@@ -45,6 +45,7 @@ namespace ProyectoFinal_PA2.BLL
             try
             {
                 db.Ventas.Add(ventas);
+                ProductosBLL.DisminuirInventario(ventas);
                 paso = (db.SaveChanges() > 0);
             }
             catch (Exception)
@@ -62,14 +63,22 @@ namespace ProyectoFinal_PA2.BLL
         {
             bool paso = false;
             Contexto db = new Contexto();
+           
             try
             {
+                var ventaAnterior = Buscar(ventas.VentaId);
+
+                ProductosBLL.AumentarInventario(ventaAnterior);
+
                 db.Database.ExecuteSqlRaw($"Delete From VentasDetalle where VentaId ={ ventas.VentaId}");
                 foreach(var item in ventas.Detalle)
                 {
                     db.Entry(item).State = EntityState.Added;
                 }
                 db.Entry(ventas).State = EntityState.Modified;
+                
+                ProductosBLL.DisminuirInventario(ventas);
+
                 paso = (db.SaveChanges() > 0);
             }
             catch (Exception)

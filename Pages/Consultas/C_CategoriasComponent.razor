@@ -93,6 +93,7 @@
             </div>
         </div>
 
+        
         @if (lista == null)
         {
             <h3>No existen usuarios en la base de datos</h3>
@@ -102,6 +103,7 @@
             <table class="table table-dark" style="margin-top: 5px;">
                 <thead>
                     <tr>
+                        <th>No.</th>
                         <th>Categoria Id</th>
                         <th>Nombre Categoria</th>
                         <th>Usuario Id</th>
@@ -112,7 +114,9 @@
                 <tbody>
                     @foreach (var list in lista)
                     {
+                        num++;
                         <tr>
+                            <td>@num</td>
                             <td>@list.CategoriaId</td>
                             <td>@list.NombreCategoria</td>
                             <td>@list.UsuariosId</td>
@@ -138,7 +142,7 @@
 
         @code {
 
-            
+            int num = 0;
             List<Categorias> lista = new List<Categorias>();
             private string opcion = "0";
             private string criterio = "";

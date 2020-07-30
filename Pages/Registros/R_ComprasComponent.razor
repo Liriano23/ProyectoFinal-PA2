@@ -73,24 +73,6 @@
                         </small>
                     </div>
 
-                    @*EmpleadoId*@
-                    @*<div class="form-group">
-                        <label for="EmployeerIdPicker">Empleado Id</label>
-                        <InputNumber @bind-Value="ventas.EmpleadoId" class="form-control" />
-                        <ValidationMessage For="(() => ventas.EmpleadoId)" />
-                        <small id="EmployeerIdLineHelper">
-                            Seleccione el empleado
-                        </small>*@
-
-                    @* <InputSelect @bind-Value="ventas.EmpleadoId" class="form-control">
-                            <option value="0">seleccione empleado</option>
-                            @foreach(var employeer in ListaEmpleados)
-                            {
-                                <option value="@employeer.empleadoID">@employeer.Nombres</option>
-                            }
-                        </InputSelect>*@
-
-
                     @*Fecha Emision*@
                     <div class="form-group">
                         <label for="DatePicker">Fecha Compra</label>
@@ -135,8 +117,8 @@
                         @*Producto Id*@
                         <div class="form-group col">
                             <label>Producto Id</label>
-                            <InputSelect @bind-Value="ProductoID" class="form-control" @onfocusout="DeterminarPrecioProducto">
-                                <option value="0">Elige usuario</option>
+                            <InputSelect @bind-Value="ProductoID" class="form-control" @onfocusout="DeterminarPrecioDeCompraProducto">
+                                <option value="0" disabled>Elige Producto</option>
                                 @foreach (var products in ListaProductos)
                                     {
                                     <option value="@products.ProductoId">@products.NombreProducto</option>
@@ -150,13 +132,13 @@
 
                         @*Precio*@
                         <div class="form-group col">
-                            <label>Precio</label>
+                            <label>Precio de Compra</label>
                             <div class="input-group">
                                 <InputNumber @bind-Value="precio" class="form-control" ReadOnly="true" />
                                 <ValidationMessage For="(() => comprasDetalle.Precio)" />
                             </div>
                             <small id="PriceIdInLineHelper">
-                                Precio del producto
+                                Precio del de compra del producto
                             </small>
                         </div>
 
@@ -261,7 +243,6 @@
     ComprasDetalle comprasDetalle = new ComprasDetalle();
 
     public string SuplidorID = "0";
-    //public string EmpleadoID = "0";
     public string ProductoID = "0";
     public string UsuarioID = "0";
     private bool TipoUsuario;
@@ -273,10 +254,10 @@
     public decimal Valor = 0;
     private Usuarios Usuarios { get; set; }
     private Suplidores Suplidores { get; set; }
+    private Productos Productos { get; set; } //Validar la existencia para agregar al detalle
 
 
     public List<Suplidores> ListaSuplidores { get; set; }
-    //public List<Empleados> ListaEmpleados { get; set; }
     public List<Productos> ListaProductos { get; set; }
     public List<Usuarios> ListaUsuarios { get; set; }
 
@@ -305,7 +286,6 @@
 
         UsuarioID = "0";
         SuplidorID = "0";
-        //EmpleadoID = "0";
         ProductoID = "0";
         precio = 0;
         Valor = 0;
@@ -324,7 +304,6 @@
                     this.compras = encontrado;
                     UsuarioID = this.compras.UsuariosId.ToString();
                     SuplidorID = this.compras.SuplidorId.ToString();
-                    //ProductosID = this.ventas.ToString();
                     CalcularTotalCompra();
                 }
                 else
@@ -352,7 +331,6 @@
                     this.compras = encontrado;
                     UsuarioID = this.compras.UsuariosId.ToString();
                     SuplidorID = this.compras.SuplidorId.ToString();
-                    //ProductosID = this.ventas.ToString();
                     CalcularTotalCompra();
                 }
                 else
@@ -381,12 +359,14 @@
 
             if (VerificarExistenciaBLL.VerificarExistencia(Usuarios, compras.UsuariosId)
             && VerificarExistenciaBLL.VerificarExistencia(Suplidores, compras.SuplidorId)
-            )
+            && ValidarCantidadDetalle())
             {
                 guardo = ComprasBLL.Guardar(compras);
             }
+            else if (!ValidarCantidadDetalle()) //Mensaje si el detalle esta  vacio
+                toast.ShowError("Debe agregar productos al detalle");
             else
-                toast.ShowError("Ha ocurrido un error. Verifique que el Usuario, Cliente o Empleado Id sean correctos");
+                toast.ShowError("Ha ocurrido un error. Verifique que el Suplidor Id, Producto Id sean correctos");
 
 
             if (guardo)
@@ -408,11 +388,13 @@
         try
         {
             bool elimino;
+
             elimino = ComprasBLL.Eliminar(compras.CompraId);
 
             if (elimino)
             {
                 Nuevo();
+                DisminuirInventario(compras);
                 toast.ShowSuccess("Elimino Correctamente");
             }
             else
@@ -428,17 +410,24 @@
     private void AgregarAlDetalle()
     {
         int id = Convert.ToInt32(ProductoID);
+        Productos = ProductosBLL.Buscar(id);
 
-        compras.Detalle.Add(new ComprasDetalle
+        if (VerificarExistenciaBLL.VerificarExistencia(Productos, id))
         {
-            Id = 0,
-            ProductoId = Convert.ToInt32(ProductoID),
-            ComprasId = compras.CompraId,
-            Cantidad = cantidad,
-            Precio = precio,
-            Valor = cantidad * precio
-        });
-        CalcularTotalCompra();
+            compras.Detalle.Add(new ComprasDetalle
+            {
+                Id = 0,
+                ProductoId = Convert.ToInt32(ProductoID),
+                ComprasId = compras.CompraId,
+                Cantidad = cantidad,
+                Precio = precio,
+                Valor = cantidad * precio
+            });
+            CalcularTotalCompra();
+        }
+        else
+            toast.ShowError("No existe este producto en la base de datos. ");
+
 
         DetalleId = 0;
         ProductoID = "0";
@@ -452,6 +441,7 @@
         try
         {
             compras.Detalle.Remove(detalle);
+            DisminuirInventario(compras);
             CalcularTotalCompra();
         }
         catch (Exception e)
@@ -483,7 +473,7 @@
         }
     }
 
-    private void DeterminarPrecioProducto()
+    private void DeterminarPrecioDeCompraProducto()
     {
         try
         {
@@ -492,7 +482,7 @@
             if (ProductosBLL.Existe(id))
             {
                 var productos = ProductosBLL.Buscar(id);
-                precio = productos.PrecioDeVenta;
+                precio = productos.PrecioDeCompra;
             }
             else
                 toast.ShowWarning("El producto no exite");
@@ -500,6 +490,23 @@
         catch (Exception e)
         {
             toast.ShowError($"Ha ocurrido un error {e.Message}, Intetelo nuevamente");
+        }
+    }
+
+    private bool ValidarCantidadDetalle()
+    {
+        bool paso = false;
+        if (compras.Detalle.Count > 0)
+            paso = true;
+
+        return paso;
+    }
+
+    private void DisminuirInventario(Compras compras) //Disminuye el inventario en caso de eliminar una venta
+    {
+        foreach (var item in compras.Detalle)
+        {
+            ProductosBLL.DisminuirInventario(item.ProductoId, item.Cantidad);
         }
     }
 

@@ -78,6 +78,7 @@
             <table class="table table-dark" style="margin-top: 5px;">
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>ProductoId</th>
                         <th>Nombre Producto</th>
                         <th>Marca Productos</th>
@@ -94,18 +95,20 @@
                 <tbody>
                     @foreach (var list in lista)
                     {
-                    <tr>
-                        <td>@list.ProductoId </td>
-                        <td>@list.NombreProducto </td>
-                        <td>@list.MarcaProducto </td>
-                        <td>@list.Inventario </td>
-                        <td>@list.PrecioDeCompra.ToString("N2") </td>
-                        <td>@list.PrecioDeVenta.ToString("N2") </td>
-                        <td>@list.FechaIngreso</td>
-                        <td>@list.CategoriaId</td>
-                        <td>@list.SuplidorId</td>
-                        <td>@list.UsuariosId</td>
-                    </tr>
+                        num++;
+                        <tr>
+                            <td>@num </td>
+                            <td>@list.ProductoId </td>
+                            <td>@list.NombreProducto </td>
+                            <td>@list.MarcaProducto </td>
+                            <td>@list.Inventario </td>
+                            <td>@list.PrecioDeCompra.ToString("N2") </td>
+                            <td>@list.PrecioDeVenta.ToString("N2") </td>
+                            <td>@list.FechaIngreso</td>
+                            <td>@list.CategoriaId</td>
+                            <td>@list.SuplidorId</td>
+                            <td>@list.UsuariosId</td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -124,13 +127,13 @@
         }
 
         @code {
-
+            int num = 0;
             List<Productos> lista = new List<Productos>();
-    private string opcion = "0";
-        private string criterio = "";
-        private bool TipoUsuario;
-        private DateTime Desde = DateTime.Now;
-        private DateTime Hasta = DateTime.Now;
+            private string opcion = "0";
+            private string criterio = "";
+            private bool TipoUsuario;
+            private DateTime Desde = DateTime.Now;
+            private DateTime Hasta = DateTime.Now;
 
         @*Paginado*@
         public int I { get; set; }
@@ -144,7 +147,7 @@
         {
             lista = ProductosBLL.GetList(x => true);
             TipoUsuario = GetAuthorization();
-            conteo = contexto.Categorias.Count();
+            conteo = contexto.Productos.Count();
             totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
             this.lista = contexto.Productos.Take(paginacion.CantidadMostrar).ToList();
         }

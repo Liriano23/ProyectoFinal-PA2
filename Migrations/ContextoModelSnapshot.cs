@@ -50,7 +50,6 @@ namespace ProyectoFinal_PA2.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Cedula")
-                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(11);
 
@@ -390,7 +389,7 @@ namespace ProyectoFinal_PA2.Migrations
                             Contrasena = "Admin",
                             Direccion = "SFM",
                             Email = "admin123@gmail.com",
-                            FechaIngreso = new DateTime(2020, 7, 19, 15, 33, 43, 915, DateTimeKind.Local).AddTicks(9759),
+                            FechaIngreso = new DateTime(2020, 7, 30, 19, 34, 15, 80, DateTimeKind.Local).AddTicks(7275),
                             NombreUsuario = "Admin",
                             Nombres = "Admin",
                             Sexo = "Femenino",

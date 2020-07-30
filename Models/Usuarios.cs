@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace ProyectoFinal_PA2.Models
 {
@@ -79,6 +80,33 @@ namespace ProyectoFinal_PA2.Models
             TipoUsuario = string.Empty;
             NombreUsuario = string.Empty;
             Contrasena = string.Empty;
+        }
+
+        public static string Encriptar(string cadenaEncriptada)
+        {
+            if (!string.IsNullOrEmpty(cadenaEncriptada))
+            {
+                string resultado = string.Empty;
+                byte[] encryted = Encoding.Unicode.GetBytes(cadenaEncriptada);
+                resultado = Convert.ToBase64String(encryted);
+
+                return resultado;
+            }
+            return string.Empty;
+        }
+
+        public static string DesEncriptar(string cadenaDesencriptada)
+        {
+            if (!string.IsNullOrEmpty(cadenaDesencriptada))
+            {
+                string resultado = string.Empty;
+                byte[] decryted = Convert.FromBase64String(cadenaDesencriptada);
+                resultado = System.Text.Encoding.Unicode.GetString(decryted);
+
+                return resultado;
+            }
+
+            return string.Empty;
         }
     }
 }

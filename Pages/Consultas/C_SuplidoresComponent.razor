@@ -100,6 +100,7 @@
             <table class="table table-dark" style="margin-top: 5px;">
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>Suplidor Id</th>
                         <th>Nombres Suplidor</th>
                         <th>Apellidos</th>
@@ -117,7 +118,9 @@
                 <tbody>
                     @foreach (var list in lista)
                     {
+                        num++;
                         <tr>
+                            <td>@num</td>
                             <td>@list.SuplidorId</td>
                             <td>@list.NombreSuplidor</td>
                             <td>@list.Apellidos</td>
@@ -149,12 +152,13 @@
 
         @code {
 
+            int num = 0;
             List<Suplidores> lista = new List<Suplidores>();
-    private string opcion = "0";
-        private string criterio = "";
-        private bool TipoUsuario;
-        private DateTime Desde = DateTime.Now;
-        private DateTime Hasta = DateTime.Now;
+            private string opcion = "0";
+            private string criterio = "";
+            private bool TipoUsuario;
+            private DateTime Desde = DateTime.Now;
+            private DateTime Hasta = DateTime.Now;
 
         @*Paginado*@
         public int I { get; set; }

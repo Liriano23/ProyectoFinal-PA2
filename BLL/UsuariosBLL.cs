@@ -46,6 +46,7 @@ namespace ProyectoFinal_PA2.BLL
             
             try
             {
+                usuarios.Contrasena = Usuarios.Encriptar(usuarios.Contrasena);
                 db.Usuarios.Add(usuarios);
                 paso = (db.SaveChanges() > 0);
             }
@@ -68,6 +69,7 @@ namespace ProyectoFinal_PA2.BLL
 
             try
             {
+                usuarios.Contrasena = Usuarios.Encriptar(usuarios.Contrasena);
                 db.Entry(usuarios).State = EntityState.Modified;
                 paso = (db.SaveChanges() > 0);
             }
@@ -117,6 +119,7 @@ namespace ProyectoFinal_PA2.BLL
             try
             {
                 usuarios = db.Usuarios.Find(id);
+                usuarios.Contrasena = Usuarios.DesEncriptar(usuarios.Contrasena);
             }
             catch (Exception)
             {
@@ -158,7 +161,7 @@ namespace ProyectoFinal_PA2.BLL
 
             try
             {
-                paso = db.Usuarios.Any(A => A.NombreUsuario == NombreUsuario && A.Contrasena == clave);
+                paso = db.Usuarios.Any(A => A.NombreUsuario == NombreUsuario && A.Contrasena == Usuarios.Encriptar(clave));
             }
             catch (Exception)
             {

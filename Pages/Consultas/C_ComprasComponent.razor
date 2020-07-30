@@ -76,6 +76,7 @@
         <table class="table table-dark" style="margin-top: 5px;">
             <thead>
                 <tr>
+                    <th>No</th>
                     <th>Compra Id</th>
                     <th>Suplidor Id</th>
                     <th>Fecha De Compra</th>
@@ -90,7 +91,9 @@
             <tbody>
                 @foreach (var list in lista)
                 {
+                    num++;
                     <tr>
+                        <td>@num</td>
                         <td>@list.CompraId </td>
                         <td>@list.SuplidorId </td>
                         <td>@list.FechaDeCompra</td>
@@ -120,6 +123,7 @@
 
 @code {
 
+    int num = 0;
     List<Compras> lista = new List<Compras>();
     private string opcion = "0";
     private string criterio = "";

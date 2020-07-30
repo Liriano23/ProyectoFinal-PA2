@@ -76,30 +76,30 @@
                     @*Inventario*@
                     <div class="form-group">
                         <label for="InventoryTextBox">Inventario</label>
-                        <InputNumber @bind-Value="productos.Inventario" id="InventoryTextBox" class="form-control" autoComplete="off" />
+                        <InputNumber @bind-Value="productos.Inventario" id="InventoryTextBox" class="form-control" autoComplete="off" readOnly="true"/>
                         <ValidationMessage For="(() => productos.Inventario)" />
                         <small id="InventoryInlineHelper">
                             Ingresar la cantidad del producto en inventario
                         </small>
                     </div>
 
-                    @*Precio Venta*@
-                    <div class="form-group">
-                        <label>Precio de venta</label>
-                        <InputNumber @bind-Value="@productos.PrecioDeVenta" class="form-control" />
-                        <ValidationMessage For="(() => productos.PrecioDeVenta)" />
-                        <small id="SellPriceInlineHelper">
-                            Ingrese el precio de venta del producto
-                        </small>
-                    </div>
-
                     @*Precio Compra*@
                     <div class="form-group">
                         <label>Precio de compra</label>
-                        <InputNumber @bind-Value="@productos.PrecioDeCompra" class="form-control" />
+                        <InputNumber @bind-Value="@productos.PrecioDeCompra" class="form-control" @onfocusout="ValidaPrecio" />
                         <ValidationMessage For="(() => productos.PrecioDeCompra)" />
                         <small id="SellPriceInlineHelper">
                             Ingrese el precio de compra del producto
+                        </small>
+                    </div>
+
+                    @*Precio Venta*@
+                    <div class="form-group">
+                        <label>Precio de venta</label>
+                        <InputNumber @bind-Value="@productos.PrecioDeVenta" class="form-control" @onfocusout="ValidaPrecio"/>
+                        <ValidationMessage For="(() => productos.PrecioDeVenta)" />
+                        <small id="SellPriceInlineHelper">
+                            Ingrese el precio de venta del producto
                         </small>
                     </div>
 
@@ -198,6 +198,8 @@
     private string usuarioId;
     private string suplidorId;
     private string categoriaId;
+    bool precioValido = false;
+
     private Usuarios Usuarios { get; set; }
     private Categorias Categorias { get; set; }
     private Suplidores Suplidores { get; set; }
@@ -250,17 +252,16 @@
 
         try
         {
-
-
+            
             if (VerificarExistenciaBLL.VerificarExistencia(Usuarios, productos.UsuariosId)
                 && VerificarExistenciaBLL.VerificarExistencia(Categorias, productos.CategoriaId)
                 && VerificarExistenciaBLL.VerificarExistencia(Suplidores, productos.SuplidorId)
-                )
+                && precioValido)
             {
                 guardo = ProductosBLL.Guardar(productos);
             }
             else
-                toast.ShowError("Ha ocurrido un error. Verifique que el Usuario, Categoria o Suplidor Id sean correctos");
+                toast.ShowError("Ha ocurrido un error. Verifique que el Usuario, Categoria, Suplidor Id  o Precio de venta sean correctos");
 
             if (guardo)
             {
@@ -363,6 +364,26 @@
             acceso = false;
 
         return acceso;
+    }
+
+    private void ValidaPrecio()
+    {
+
+        if(productos.PrecioDeVenta <=0)
+        {
+            precioValido = false;
+            toast.ShowWarning("El precio de venta no puede ser menor o igual 0 ");
+        }
+        else if (productos.PrecioDeVenta <= productos.PrecioDeCompra)
+        {
+            precioValido = false;
+            toast.ShowWarning("El precio de venta no puede ser menor al precio de compra");
+        }
+        else
+        {
+            precioValido = true;
+        }
+
     }
 
 }

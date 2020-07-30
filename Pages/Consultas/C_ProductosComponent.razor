@@ -94,18 +94,18 @@
                 <tbody>
                     @foreach (var list in lista)
                     {
-                        <tr>
-                            <td>@list.ProductoId </td>
-                            <td>@list.NombreProducto </td>
-                            <td>@list.MarcaProducto </td>
-                            <td>@list.Inventario </td>
-                            <td>@list.PrecioDeCompra </td>
-                            <td>@list.PrecioDeVenta </td>
-                            <td>@list.FechaIngreso</td>
-                            <td>@list.CategoriaId</td>
-                            <td>@list.SuplidorId</td>
-                            <td>@list.UsuariosId</td>
-                        </tr>
+                    <tr>
+                        <td>@list.ProductoId </td>
+                        <td>@list.NombreProducto </td>
+                        <td>@list.MarcaProducto </td>
+                        <td>@list.Inventario </td>
+                        <td>@list.PrecioDeCompra.ToString("N2") </td>
+                        <td>@list.PrecioDeVenta.ToString("N2") </td>
+                        <td>@list.FechaIngreso</td>
+                        <td>@list.CategoriaId</td>
+                        <td>@list.SuplidorId</td>
+                        <td>@list.UsuariosId</td>
+                    </tr>
                     }
                 </tbody>
             </table>

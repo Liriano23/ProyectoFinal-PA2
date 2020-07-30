@@ -2,7 +2,7 @@
 @page "/RegistroVentas/{VentaId:int}"
 
 <CascadingAuthenticationState>
-    
+
     <AuthorizeView>
         <NotAuthorized>
             <div class="card text-center">
@@ -59,9 +59,9 @@
                         <InputSelect @bind-Value="ClienteID" id="ClientIdPicker" class="form-control">
                             <option value="0">Elige usuario</option>
                             @foreach (var clients in ListaClientes)
-                            {
+                                {
                                 <option value="@clients.ClienteId">@clients.Nombres</option>
-                            }
+                                }
                         </InputSelect>
                         <ValidationMessage For="(() => ventas.ClienteId)" />
                         <small id="ClientIdLineHelper">
@@ -75,9 +75,9 @@
                         <InputSelect @bind-Value="EmpleadoID" id="EmployeerIdPicker" class="form-control">
                             <option value="0">Elige usuario</option>
                             @foreach (var employer in ListaEmpleados)
-                             {
+                                {
                                 <option value="@employer.EmpleadoId">@employer.Nombres</option>
-                             }
+                                }
                         </InputSelect>
                         <ValidationMessage For="(() => ventas.ClienteId)" />
                         <small id="EmployeerIdPickerLineHelper">
@@ -101,9 +101,9 @@
                         <InputSelect @bind-Value="@UsuarioID" class="form-control">
                             <option value="0">Elige el usuario</option>
                             @foreach (var item in ListaUsuarios)
-                            {
+                                {
                                 <option value="@item.UsuarioId">@item.Nombres</option>
-                            }
+                                }
                         </InputSelect>
                         <ValidationMessage For="(() => ventas.UsuariosId)" />
                         <small id="UserIdInlineHelper">
@@ -132,9 +132,9 @@
                             <InputSelect @bind-Value="ProductoID" class="form-control" @onfocusout="DeterminarPrecioProducto">
                                 <option value="0">Elige usuario</option>
                                 @foreach (var products in ListaProductos)
-                                {
+                                    {
                                     <option value="@products.ProductoId">@products.NombreProducto</option>
-                                }
+                                    }
                             </InputSelect>
                             <ValidationMessage For="(() => ventasDetalle.ProductoId)" />
                             <small id="ProductsIdLineHelper">
@@ -185,14 +185,13 @@
                         <tbody>
                             @foreach (var item in ventas.Detalle)
                             {
-                            <tr>
-                                <td>@item.ProductoId</td>
-                                <td>@item.VentaId</td>
-                                <td>@item.Cantidad</td>
-                                <td>@item.Precio</td>
-                                <td>@item.Valor</td>
-                                <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
-                            </tr>
+                                <tr>
+                                    <td>@item.ProductoId</td>
+                                    <td>@item.Cantidad</td>
+                                    <td>@item.Precio.ToString("N2")</td>
+                                    <td>@item.Valor.ToString("N2")</td>
+                                    <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -366,6 +365,7 @@
             toast.ShowError($"Ha ocurrido un error {e.Message}, Intentelo nuevamente");
         }
     }
+
     private void Guardar()
     {
         bool guardo = false;
@@ -384,10 +384,13 @@
             if (VerificarExistenciaBLL.VerificarExistencia(Usuarios, ventas.UsuariosId)
             && VerificarExistenciaBLL.VerificarExistencia(Clientes, ventas.ClienteId)
             && VerificarExistenciaBLL.VerificarExistencia(Empleados, ventas.EmpleadoId)
-            )
+            && ValidarCantidadDetalle())
             {
                 guardo = VentasBLL.Guardar(ventas);
+                
             }
+            else if (!ValidarCantidadDetalle()) //Mensaje si el detalle esta  vacio
+                toast.ShowError("Debe agregar productos al detalle");
             else
                 toast.ShowError("Ha ocurrido un error. Verifique que el Usuario, Cliente o Empleado Id sean correctos");
 
@@ -410,6 +413,7 @@
         try
         {
             bool elimino;
+            AumentarInventario(ventas);
             elimino = VentasBLL.Eliminar(ventas.VentaId);
 
             if (elimino)
@@ -433,7 +437,6 @@
 
         if (VerificarExistenciaBLL.VerificarExistencia(Productos, id))
         {
-
             ventas.Detalle.Add(new VentasDetalle
             {
                 Id = 0,
@@ -453,7 +456,6 @@
 
         DetalleId = 0;
         ProductoID = "0";
-        EmpleadoID = "0";
         cantidad = 0;
         precio = 0;
     }
@@ -462,11 +464,7 @@
     {
         try
         {
-            int productoId = Convert.ToInt32(ProductoID);
-            int prueba = 0;
-
-            prueba += detalle.Cantidad;
-            ProductosBLL.AumentarInventario(detalle.ProductoId, prueba);
+            ProductosBLL.AumentarInventario(detalle.ProductoId, detalle.Cantidad);
             ventas.Detalle.Remove(detalle);
             CalcularTotalVenta();
         }
@@ -530,6 +528,23 @@
             acceso = false;
 
         return acceso;
+    }
+
+    private bool ValidarCantidadDetalle()
+    {
+        bool paso = false;
+        if (ventas.Detalle.Count > 0)
+            paso = true;
+
+        return paso;
+    }
+
+    private void AumentarInventario(Ventas ventas) //Aumenta el inventario en caso de eliminar una venta
+    {
+        foreach (var item in ventas.Detalle)
+        {
+            ProductosBLL.AumentarInventario(item.ProductoId, item.Cantidad);
+        }
     }
 
 }

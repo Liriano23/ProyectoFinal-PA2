@@ -93,7 +93,7 @@ namespace ProyectoFinal_PA2.BLL
 
                 if(ventas != null)
                 {
-                    db.Remove(ventas);
+                    db.Ventas.Remove(ventas);
                     paso = (db.SaveChanges() > 0);
                 }
             }

@@ -82,14 +82,14 @@
                             Seleccione el empleado
                         </small>*@
 
-                        @* <InputSelect @bind-Value="ventas.EmpleadoId" class="form-control">
-                                <option value="0">seleccione empleado</option>
-                                @foreach(var employeer in ListaEmpleados)
-                                {
-                                    <option value="@employeer.empleadoID">@employeer.Nombres</option>
-                                }
-                            </InputSelect>*@
-                   
+                    @* <InputSelect @bind-Value="ventas.EmpleadoId" class="form-control">
+                            <option value="0">seleccione empleado</option>
+                            @foreach(var employeer in ListaEmpleados)
+                            {
+                                <option value="@employeer.empleadoID">@employeer.Nombres</option>
+                            }
+                        </InputSelect>*@
+
 
                     @*Fecha Emision*@
                     <div class="form-group">
@@ -192,15 +192,15 @@
                         <tbody>
                             @foreach (var item in compras.Detalle)
                             {
-                            <tr>
-                                
-                                <td>@item.Id</td>
-                                <td>@item.ProductoId</td>
-                                <td>@item.Cantidad</td>
-                                <td>@item.Precio</td>
-                                <td>@item.Valor</td>
-                                <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
-                            </tr>
+                                <tr>
+
+                                    <td>@item.Id</td>
+                                    <td>@item.ProductoId</td>
+                                    <td>@item.Cantidad</td>
+                                    <td>@item.Precio</td>
+                                    <td>@item.Valor</td>
+                                    <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -275,7 +275,7 @@
     private Suplidores Suplidores { get; set; }
 
 
-    public List<Suplidores> ListaSuplidores{ get; set; }
+    public List<Suplidores> ListaSuplidores { get; set; }
     //public List<Empleados> ListaEmpleados { get; set; }
     public List<Productos> ListaProductos { get; set; }
     public List<Usuarios> ListaUsuarios { get; set; }
@@ -292,7 +292,7 @@
 
         TipoUsuario = GetAuthorization();
 
-        ListaSuplidores= SuplidoresBLL.GetList(x => true);
+        ListaSuplidores = SuplidoresBLL.GetList(x => true);
         ListaUsuarios = UsuariosBLL.GetList(x => true);
         ListaProductos = ProductosBLL.GetList(x => true);
     }
@@ -420,6 +420,7 @@
         }
         catch (Exception e)
         {
+            throw;
             toast.ShowError($"Ha ocurrido un error {e.Message}, Intentelo nuevamente");
         }
     }
@@ -436,7 +437,7 @@
             Cantidad = cantidad,
             Precio = precio,
             Valor = cantidad * precio
-        }) ;
+        });
 
         ProductosBLL.AumentarInventario(id, cantidad);
         CalcularTotalCompra();

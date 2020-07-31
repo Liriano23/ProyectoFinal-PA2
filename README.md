@@ -7,6 +7,12 @@ Este es el proyecto final  de Programacion Aplicada II de Juan de Dios Fernandez
 Esta seria la interfaz del Log-in del systema, En esta ventana se lleva acabo el acceso al programa, el usuario debe de completar los datos y seleccionar 
 el boton de Login para poder seguir al menu del programa.
 
+**IMPORTANTE!!!!!!**
+
+**Si clona este repositorio para poder ejecutarlo primero debe de eliminar la carpeta de los Test que le aparezca " (Area de proyecto debe de aparecer) " 
+ya que ocurrio un error al subir los Test y deben de subirse aparte lo cual causa inconvenientes de ejecucion**. 
+
+
 **El usuarios por defecto es: Admin**
 
 **Contraseña: Admin**

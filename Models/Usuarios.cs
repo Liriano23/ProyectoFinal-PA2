@@ -55,7 +55,7 @@ namespace ProyectoFinal_PA2.Models
         public string TipoUsuario { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar la fecha de ingreso del usuario")]
-        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode =true)]
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode =true)]
         public DateTime FechaIngreso { get; set; }
 
         [Required (ErrorMessage = "Debe ingresar el nombre de usuario")]
@@ -68,6 +68,9 @@ namespace ProyectoFinal_PA2.Models
         public ICollection<Productos> Productos { get; set; }
         public ICollection<Ventas> Ventas { get; set; }
         public ICollection<Compras> Compras { get; set; }
+        public ICollection<Categorias> Categorias { get; set; }
+        public ICollection<Empleados> Empleados { get; set; }
+        public ICollection<Suplidores> Suplidores { get; set; }
 
         public Usuarios()
         {

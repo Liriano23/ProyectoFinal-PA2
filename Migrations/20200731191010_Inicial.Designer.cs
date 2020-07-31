@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProyectoFinal_PA2.DAL;
@@ -9,30 +10,33 @@ using ProyectoFinal_PA2.DAL;
 namespace ProyectoFinal_PA2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200731054216_Inicial")]
+    [Migration("20200731191010_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.4");
+                .HasAnnotation("ProductVersion", "3.1.6")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Categorias", b =>
                 {
                     b.Property<int>("CategoriaId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("FechaIngreso")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("NombreCategoria")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UsuariosId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("CategoriaId");
 
@@ -45,48 +49,49 @@ namespace ProyectoFinal_PA2.Migrations
                 {
                     b.Property<int>("ClienteId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Apellidos")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Cedula")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(11)")
                         .HasMaxLength(11);
 
                     b.Property<string>("Celular")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Direccion")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FechaIngreso")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FechaNacimiento")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Nombres")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sexo")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UsuariosId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("ClienteId");
 
@@ -99,35 +104,31 @@ namespace ProyectoFinal_PA2.Migrations
                 {
                     b.Property<int>("CompraId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Descuento")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("FechaDeCompra")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("ITBIS")
-                        .HasColumnType("REAL");
+                        .HasColumnType("float");
 
                     b.Property<decimal>("SubTotal")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("SuplidorId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("SuplidoresSuplidorId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("UsuariosId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("CompraId");
-
-                    b.HasIndex("SuplidoresSuplidorId");
 
                     b.HasIndex("UsuariosId");
 
@@ -138,22 +139,23 @@ namespace ProyectoFinal_PA2.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Cantidad")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int>("CompraId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Precio")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ProductoId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Valor")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -166,52 +168,53 @@ namespace ProyectoFinal_PA2.Migrations
                 {
                     b.Property<int>("EmpleadoId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Apellidos")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Cargo")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Cedula")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(11)")
                         .HasMaxLength(11);
 
                     b.Property<string>("Celular")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Direccion")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FechaIngreso")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FechaNacimiento")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Nombres")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Sueldo")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UsuariosId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("EmpleadoId");
 
@@ -224,42 +227,43 @@ namespace ProyectoFinal_PA2.Migrations
                 {
                     b.Property<int>("ProductoId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CategoriaId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("CategoriasCategoriaId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("FechaIngreso")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Inventario")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("MarcaProducto")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NombreProducto")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PrecioDeCompra")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("PrecioDeVenta")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("SuplidorId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("SuplidoresSuplidorId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int>("UsuariosId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("ProductoId");
 
@@ -276,45 +280,46 @@ namespace ProyectoFinal_PA2.Migrations
                 {
                     b.Property<int>("SuplidorId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Apellidos")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Celular")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Ciudad")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Direccion")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FechaIngreso")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("NombreCompañia")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NombreSuplidor")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UsuariosId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("SuplidorId");
 
@@ -327,57 +332,58 @@ namespace ProyectoFinal_PA2.Migrations
                 {
                     b.Property<int>("UsuarioId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Apellidos")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Cedula")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(11)")
                         .HasMaxLength(11);
 
                     b.Property<string>("Celular")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 
                     b.Property<string>("Contrasena")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Direccion")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FechaIngreso")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("NombreUsuario")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombres")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sexo")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 
                     b.Property<string>("TipoUsuario")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UsuarioId");
 
@@ -393,7 +399,7 @@ namespace ProyectoFinal_PA2.Migrations
                             Contrasena = "QQBkAG0AaQBuAA==",
                             Direccion = "SFM",
                             Email = "admin123@gmail.com",
-                            FechaIngreso = new DateTime(2020, 7, 31, 1, 42, 16, 66, DateTimeKind.Local).AddTicks(7955),
+                            FechaIngreso = new DateTime(2020, 7, 31, 15, 10, 9, 690, DateTimeKind.Local).AddTicks(2517),
                             NombreUsuario = "Admin",
                             Nombres = "Admin",
                             Sexo = "Femenino",
@@ -406,35 +412,34 @@ namespace ProyectoFinal_PA2.Migrations
                 {
                     b.Property<int>("VentaId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ClienteId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Descuento")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("EmpleadoId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("FechaEmision")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("ITBIS")
-                        .HasColumnType("REAL");
+                        .HasColumnType("float");
 
                     b.Property<decimal>("SubTotal")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("UsuariosId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("VentaId");
-
-                    b.HasIndex("EmpleadoId");
 
                     b.HasIndex("UsuariosId");
 
@@ -445,22 +450,23 @@ namespace ProyectoFinal_PA2.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Cantidad")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Precio")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ProductoId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Valor")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("VentaId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -472,7 +478,7 @@ namespace ProyectoFinal_PA2.Migrations
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Categorias", b =>
                 {
                     b.HasOne("ProyectoFinal_PA2.Models.Usuarios", "Usuarios")
-                        .WithMany()
+                        .WithMany("Categorias")
                         .HasForeignKey("UsuariosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -480,7 +486,7 @@ namespace ProyectoFinal_PA2.Migrations
 
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Clientes", b =>
                 {
-                    b.HasOne("ProyectoFinal_PA2.Models.Usuarios", "Usuarios")
+                    b.HasOne("ProyectoFinal_PA2.Models.Usuarios", null)
                         .WithMany("Clientes")
                         .HasForeignKey("UsuariosId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -489,11 +495,7 @@ namespace ProyectoFinal_PA2.Migrations
 
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Compras", b =>
                 {
-                    b.HasOne("ProyectoFinal_PA2.Models.Suplidores", "Suplidores")
-                        .WithMany("Compras")
-                        .HasForeignKey("SuplidoresSuplidorId");
-
-                    b.HasOne("ProyectoFinal_PA2.Models.Usuarios", "Usuarios")
+                    b.HasOne("ProyectoFinal_PA2.Models.Usuarios", null)
                         .WithMany("Compras")
                         .HasForeignKey("UsuariosId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -511,8 +513,8 @@ namespace ProyectoFinal_PA2.Migrations
 
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Empleados", b =>
                 {
-                    b.HasOne("ProyectoFinal_PA2.Models.Usuarios", "Usuarios")
-                        .WithMany()
+                    b.HasOne("ProyectoFinal_PA2.Models.Usuarios", null)
+                        .WithMany("Empleados")
                         .HasForeignKey("UsuariosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -520,15 +522,15 @@ namespace ProyectoFinal_PA2.Migrations
 
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Productos", b =>
                 {
-                    b.HasOne("ProyectoFinal_PA2.Models.Categorias", "Categorias")
+                    b.HasOne("ProyectoFinal_PA2.Models.Categorias", null)
                         .WithMany("Productos")
                         .HasForeignKey("CategoriasCategoriaId");
 
-                    b.HasOne("ProyectoFinal_PA2.Models.Suplidores", "Suplidores")
+                    b.HasOne("ProyectoFinal_PA2.Models.Suplidores", null)
                         .WithMany("Productos")
                         .HasForeignKey("SuplidoresSuplidorId");
 
-                    b.HasOne("ProyectoFinal_PA2.Models.Usuarios", "Usuarios")
+                    b.HasOne("ProyectoFinal_PA2.Models.Usuarios", null)
                         .WithMany("Productos")
                         .HasForeignKey("UsuariosId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -537,8 +539,8 @@ namespace ProyectoFinal_PA2.Migrations
 
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Suplidores", b =>
                 {
-                    b.HasOne("ProyectoFinal_PA2.Models.Usuarios", "Usuarios")
-                        .WithMany()
+                    b.HasOne("ProyectoFinal_PA2.Models.Usuarios", null)
+                        .WithMany("Suplidores")
                         .HasForeignKey("UsuariosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -546,13 +548,7 @@ namespace ProyectoFinal_PA2.Migrations
 
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Ventas", b =>
                 {
-                    b.HasOne("ProyectoFinal_PA2.Models.Empleados", "Empleado")
-                        .WithMany("Ventas")
-                        .HasForeignKey("EmpleadoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ProyectoFinal_PA2.Models.Usuarios", "Usuarios")
+                    b.HasOne("ProyectoFinal_PA2.Models.Usuarios", null)
                         .WithMany("Ventas")
                         .HasForeignKey("UsuariosId")
                         .OnDelete(DeleteBehavior.Cascade)

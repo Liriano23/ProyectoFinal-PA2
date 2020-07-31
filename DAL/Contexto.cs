@@ -21,7 +21,7 @@ namespace ProyectoFinal_PA2.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(@"Data source = Data/RespuestosRafa.db");
+            optionsBuilder.UseSqlServer(@"Server = DESKTOP-ENMANUE; Database = RepuestosRafa; Trusted_Connection = True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

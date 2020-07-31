@@ -16,10 +16,9 @@ namespace ProyectoFinal_PA2.Models
 
         [Required(ErrorMessage = "Debe seleccionaar el Suplidor Id")]
         public int SuplidorId { get; set; }
-        public Suplidores Suplidores { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaDeCompra { get; set; }
 
         [Required(ErrorMessage = "Se debe ingresar el subtotal del de la Compra")]
@@ -40,8 +39,9 @@ namespace ProyectoFinal_PA2.Models
         [ForeignKey("CompraId")]
         public virtual List<ComprasDetalle> Detalle { get; set; }
 
+        [ForeignKey("Usuarios")]
         public int UsuariosId { get; set; }
-        public Usuarios Usuarios { get; set; }
+
 
         public Compras()
         {

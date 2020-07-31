@@ -24,7 +24,7 @@ namespace ProyectoFinal_PA2.Models
                
         [Required(ErrorMessage = "Debe ingresar el usuario que esta agregando al cliente")]
         public int UsuariosId { get; set; }
-        public virtual Usuarios Usuarios { get; set; }
+        public Usuarios Usuarios { get; set; }
 
         public ICollection<Productos> Productos { get; set; }
 

@@ -49,17 +49,17 @@ namespace ProyectoFinal_PA2.Models
 
         [Required(ErrorMessage = "Debe ingresar la fecha de nacimieneto del cliente")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString ="{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaNacimiento { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar la fecha de ingreso del cliente al sistema")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}",ApplyFormatInEditMode =true)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode =true)]
         public DateTime FechaIngreso { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar el usuario que esta agregando al cliente")]
+        [ForeignKey("Usuarios")]
         public int UsuariosId { get; set; }
-        public Usuarios Usuarios { get; set; }
 
         public Clientes()
         {

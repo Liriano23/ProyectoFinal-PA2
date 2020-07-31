@@ -12,7 +12,7 @@ namespace ProyectoFinal_PA2.Migrations
                 columns: table => new
                 {
                     UsuarioId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Nombres = table.Column<string>(nullable: false),
                     Apellidos = table.Column<string>(nullable: false),
                     Cedula = table.Column<string>(maxLength: 11, nullable: false),
@@ -36,7 +36,7 @@ namespace ProyectoFinal_PA2.Migrations
                 columns: table => new
                 {
                     CategoriaId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     NombreCategoria = table.Column<string>(nullable: false),
                     FechaIngreso = table.Column<DateTime>(nullable: false),
                     UsuariosId = table.Column<int>(nullable: false)
@@ -57,7 +57,7 @@ namespace ProyectoFinal_PA2.Migrations
                 columns: table => new
                 {
                     ClienteId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Nombres = table.Column<string>(nullable: false),
                     Apellidos = table.Column<string>(nullable: false),
                     Cedula = table.Column<string>(maxLength: 11, nullable: true),
@@ -82,11 +82,36 @@ namespace ProyectoFinal_PA2.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Compras",
+                columns: table => new
+                {
+                    CompraId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SuplidorId = table.Column<int>(nullable: false),
+                    FechaDeCompra = table.Column<DateTime>(nullable: false),
+                    SubTotal = table.Column<decimal>(nullable: false),
+                    ITBIS = table.Column<double>(nullable: false),
+                    Descuento = table.Column<decimal>(nullable: false),
+                    Total = table.Column<decimal>(nullable: false),
+                    UsuariosId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Compras", x => x.CompraId);
+                    table.ForeignKey(
+                        name: "FK_Compras_Usuarios_UsuariosId",
+                        column: x => x.UsuariosId,
+                        principalTable: "Usuarios",
+                        principalColumn: "UsuarioId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Empleados",
                 columns: table => new
                 {
                     EmpleadoId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Nombres = table.Column<string>(nullable: false),
                     Apellidos = table.Column<string>(nullable: false),
                     Cedula = table.Column<string>(maxLength: 11, nullable: false),
@@ -116,7 +141,7 @@ namespace ProyectoFinal_PA2.Migrations
                 columns: table => new
                 {
                     SuplidorId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     NombreSuplidor = table.Column<string>(nullable: false),
                     Apellidos = table.Column<string>(nullable: false),
                     NombreCompañia = table.Column<string>(nullable: false),
@@ -144,7 +169,7 @@ namespace ProyectoFinal_PA2.Migrations
                 columns: table => new
                 {
                     VentaId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ClienteId = table.Column<int>(nullable: false),
                     EmpleadoId = table.Column<int>(nullable: false),
                     FechaEmision = table.Column<DateTime>(nullable: false),
@@ -158,12 +183,6 @@ namespace ProyectoFinal_PA2.Migrations
                 {
                     table.PrimaryKey("PK_Ventas", x => x.VentaId);
                     table.ForeignKey(
-                        name: "FK_Ventas_Empleados_EmpleadoId",
-                        column: x => x.EmpleadoId,
-                        principalTable: "Empleados",
-                        principalColumn: "EmpleadoId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Ventas_Usuarios_UsuariosId",
                         column: x => x.UsuariosId,
                         principalTable: "Usuarios",
@@ -172,34 +191,25 @@ namespace ProyectoFinal_PA2.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Compras",
+                name: "ComprasDetalle",
                 columns: table => new
                 {
-                    CompraId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    SuplidorId = table.Column<int>(nullable: false),
-                    SuplidoresSuplidorId = table.Column<int>(nullable: true),
-                    FechaDeCompra = table.Column<DateTime>(nullable: false),
-                    SubTotal = table.Column<decimal>(nullable: false),
-                    ITBIS = table.Column<double>(nullable: false),
-                    Descuento = table.Column<decimal>(nullable: false),
-                    Total = table.Column<decimal>(nullable: false),
-                    UsuariosId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductoId = table.Column<int>(nullable: false),
+                    CompraId = table.Column<int>(nullable: false),
+                    Cantidad = table.Column<int>(nullable: false),
+                    Precio = table.Column<decimal>(nullable: false),
+                    Valor = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Compras", x => x.CompraId);
+                    table.PrimaryKey("PK_ComprasDetalle", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Compras_Suplidores_SuplidoresSuplidorId",
-                        column: x => x.SuplidoresSuplidorId,
-                        principalTable: "Suplidores",
-                        principalColumn: "SuplidorId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Compras_Usuarios_UsuariosId",
-                        column: x => x.UsuariosId,
-                        principalTable: "Usuarios",
-                        principalColumn: "UsuarioId",
+                        name: "FK_ComprasDetalle_Compras_CompraId",
+                        column: x => x.CompraId,
+                        principalTable: "Compras",
+                        principalColumn: "CompraId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -208,7 +218,7 @@ namespace ProyectoFinal_PA2.Migrations
                 columns: table => new
                 {
                     ProductoId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     NombreProducto = table.Column<string>(nullable: false),
                     MarcaProducto = table.Column<string>(nullable: false),
                     Inventario = table.Column<int>(nullable: false),
@@ -216,10 +226,10 @@ namespace ProyectoFinal_PA2.Migrations
                     PrecioDeCompra = table.Column<decimal>(nullable: false),
                     FechaIngreso = table.Column<DateTime>(nullable: false),
                     SuplidorId = table.Column<int>(nullable: false),
-                    SuplidoresSuplidorId = table.Column<int>(nullable: true),
                     CategoriaId = table.Column<int>(nullable: false),
+                    UsuariosId = table.Column<int>(nullable: false),
                     CategoriasCategoriaId = table.Column<int>(nullable: true),
-                    UsuariosId = table.Column<int>(nullable: false)
+                    SuplidoresSuplidorId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -249,7 +259,7 @@ namespace ProyectoFinal_PA2.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductoId = table.Column<int>(nullable: false),
                     VentaId = table.Column<int>(nullable: false),
                     Cantidad = table.Column<int>(nullable: false),
@@ -267,33 +277,10 @@ namespace ProyectoFinal_PA2.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ComprasDetalle",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ProductoId = table.Column<int>(nullable: false),
-                    CompraId = table.Column<int>(nullable: false),
-                    Cantidad = table.Column<int>(nullable: false),
-                    Precio = table.Column<decimal>(nullable: false),
-                    Valor = table.Column<decimal>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ComprasDetalle", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ComprasDetalle_Compras_CompraId",
-                        column: x => x.CompraId,
-                        principalTable: "Compras",
-                        principalColumn: "CompraId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "Apellidos", "Cedula", "Celular", "Contrasena", "Direccion", "Email", "FechaIngreso", "NombreUsuario", "Nombres", "Sexo", "Telefono", "TipoUsuario" },
-                values: new object[] { 1, "Admin", "88888888888", "8888888888", "QQBkAG0AaQBuAA==", "SFM", "admin123@gmail.com", new DateTime(2020, 7, 31, 1, 42, 16, 66, DateTimeKind.Local).AddTicks(7955), "Admin", "Admin", "Femenino", "8888888888", "Administrador" });
+                values: new object[] { 1, "Admin", "88888888888", "8888888888", "QQBkAG0AaQBuAA==", "SFM", "admin123@gmail.com", new DateTime(2020, 7, 31, 15, 10, 9, 690, DateTimeKind.Local).AddTicks(2517), "Admin", "Admin", "Femenino", "8888888888", "Administrador" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categorias_UsuariosId",
@@ -304,11 +291,6 @@ namespace ProyectoFinal_PA2.Migrations
                 name: "IX_Clientes_UsuariosId",
                 table: "Clientes",
                 column: "UsuariosId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Compras_SuplidoresSuplidorId",
-                table: "Compras",
-                column: "SuplidoresSuplidorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Compras_UsuariosId",
@@ -346,11 +328,6 @@ namespace ProyectoFinal_PA2.Migrations
                 column: "UsuariosId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ventas_EmpleadoId",
-                table: "Ventas",
-                column: "EmpleadoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Ventas_UsuariosId",
                 table: "Ventas",
                 column: "UsuariosId");
@@ -370,6 +347,9 @@ namespace ProyectoFinal_PA2.Migrations
                 name: "ComprasDetalle");
 
             migrationBuilder.DropTable(
+                name: "Empleados");
+
+            migrationBuilder.DropTable(
                 name: "Productos");
 
             migrationBuilder.DropTable(
@@ -382,13 +362,10 @@ namespace ProyectoFinal_PA2.Migrations
                 name: "Categorias");
 
             migrationBuilder.DropTable(
-                name: "Ventas");
-
-            migrationBuilder.DropTable(
                 name: "Suplidores");
 
             migrationBuilder.DropTable(
-                name: "Empleados");
+                name: "Ventas");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");

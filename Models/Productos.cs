@@ -35,21 +35,21 @@ namespace ProyectoFinal_PA2.Models
         public decimal PrecioDeCompra { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar la fecha de ingreso del producto")]
-        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode =true)]
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode =true)]
         public DateTime FechaIngreso { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el suplidor del producto")]
+        [ForeignKey("Suplidores")]
         public int SuplidorId { get; set; }
-        public virtual Suplidores Suplidores { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar la categoria que pertence el producto")]
+        [ForeignKey("Categorias")]
         public int CategoriaId { get; set; }
-        public virtual Categorias Categorias { get; set; }
 
 
         [Required(ErrorMessage = "Debe ingresar el usuario que esta agregando el producto")]
+        [ForeignKey("Usuarios")]
         public int UsuariosId { get; set; }
-        public virtual Usuarios Usuarios { get; set; }
 
         public Productos()
         {

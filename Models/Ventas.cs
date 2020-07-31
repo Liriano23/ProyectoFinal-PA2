@@ -16,8 +16,8 @@ namespace ProyectoFinal_PA2.Models
         public int ClienteId { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar el Id del empleado")]
+        [ForeignKey("Empleados")]
         public int EmpleadoId { get; set; }
-        public Empleados Empleado { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
@@ -42,9 +42,8 @@ namespace ProyectoFinal_PA2.Models
         [ForeignKey("VentaId")]
         public virtual List<VentasDetalle> Detalle { get; set; }
 
+        [ForeignKey("Usuarios")]
         public int UsuariosId { get; set; }
-        public Usuarios Usuarios { get; set; }
-
 
         public Ventas()
         {

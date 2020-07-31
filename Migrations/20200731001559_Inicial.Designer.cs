@@ -9,8 +9,8 @@ using ProyectoFinal_PA2.DAL;
 namespace ProyectoFinal_PA2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200730233415_inicial")]
-    partial class inicial
+    [Migration("20200731001559_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -388,10 +388,10 @@ namespace ProyectoFinal_PA2.Migrations
                             Apellidos = "Admin",
                             Cedula = "88888888888",
                             Celular = "8888888888",
-                            Contrasena = "Admin",
+                            Contrasena = "QQBkAG0AaQBuAA==",
                             Direccion = "SFM",
                             Email = "admin123@gmail.com",
-                            FechaIngreso = new DateTime(2020, 7, 30, 19, 34, 15, 80, DateTimeKind.Local).AddTicks(7275),
+                            FechaIngreso = new DateTime(2020, 7, 30, 20, 15, 58, 207, DateTimeKind.Local).AddTicks(8421),
                             NombreUsuario = "Admin",
                             Nombres = "Admin",
                             Sexo = "Femenino",

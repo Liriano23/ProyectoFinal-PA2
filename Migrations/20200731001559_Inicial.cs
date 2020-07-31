@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProyectoFinal_PA2.Migrations
 {
-    public partial class inicial : Migration
+    public partial class Inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -287,7 +287,7 @@ namespace ProyectoFinal_PA2.Migrations
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "Apellidos", "Cedula", "Celular", "Contrasena", "Direccion", "Email", "FechaIngreso", "NombreUsuario", "Nombres", "Sexo", "Telefono", "TipoUsuario" },
-                values: new object[] { 1, "Admin", "88888888888", "8888888888", "Admin", "SFM", "admin123@gmail.com", new DateTime(2020, 7, 30, 19, 34, 15, 80, DateTimeKind.Local).AddTicks(7275), "Admin", "Admin", "Femenino", "8888888888", "Administrador" });
+                values: new object[] { 1, "Admin", "88888888888", "8888888888", "QQBkAG0AaQBuAA==", "SFM", "admin123@gmail.com", new DateTime(2020, 7, 30, 20, 15, 58, 207, DateTimeKind.Local).AddTicks(8421), "Admin", "Admin", "Femenino", "8888888888", "Administrador" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categorias_UsuariosId",

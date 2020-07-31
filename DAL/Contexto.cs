@@ -41,7 +41,7 @@ namespace ProyectoFinal_PA2.DAL
                 TipoUsuario = "Administrador",
                 FechaIngreso = DateTime.Now,
                 NombreUsuario = "Admin",
-                Contrasena = "Admin"
+                Contrasena = Models.Usuarios.Encriptar("Admin")
             });
         }
     }

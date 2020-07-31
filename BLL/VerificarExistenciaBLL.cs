@@ -9,6 +9,7 @@ namespace ProyectoFinal_PA2.BLL
 {
     public class VerificarExistenciaBLL
     {
+ 
 
         public static bool VerificarExistencia(object obj, int id)
         {

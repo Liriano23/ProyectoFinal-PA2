@@ -6,6 +6,8 @@ Este es el proyecto final  de Programacion Aplicada II de Juan de Dios Fernandez
 
 Esta seria la interfaz del Log-in del systema, En esta ventana se lleva acabo el acceso al programa, el usuario debe de completar los datos y seleccionar 
 el boton de Login para poder seguir al menu del programa.
+**El usuarios por defecto es: Admin
+Contraseña: Admin **
 ![FotoLogin](https://user-images.githubusercontent.com/59903517/88987795-0c898f80-d2a5-11ea-8c0c-525a8692f570.PNG)
 
 **Menu**

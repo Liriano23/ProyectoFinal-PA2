@@ -7,7 +7,7 @@ Este es el proyecto final  de Programacion Aplicada II de Juan de Dios Fernandez
 Esta seria la interfaz del Log-in del systema, En esta ventana se lleva acabo el acceso al programa, el usuario debe de completar los datos y seleccionar 
 el boton de Login para poder seguir al menu del programa.
 **El usuarios por defecto es: Admin
-Contraseña: Admin **
+Contraseña: Admin**
 ![FotoLogin](https://user-images.githubusercontent.com/59903517/88987795-0c898f80-d2a5-11ea-8c0c-525a8692f570.PNG)
 
 **Menu**
@@ -65,6 +65,10 @@ Todas las consultas tienen este estilo por esto solo muestro esta aqui.
 
 **Consulta Catgeorias** 
 ![ConsultaCategorias](https://user-images.githubusercontent.com/59903517/88988522-1f04c880-d2a7-11ea-9cc9-376023c41de9.PNG)
+
+# Reportes 
+Todas los reported tienen este estilo por esto solo muestro esta aqui.
+![ReportesUsuarios](https://user-images.githubusercontent.com/59903517/88987471-fe873f00-d2a3-11ea-901a-0d0b6431fd82.PNG)
 
 # Construccion 
 **C#, Blazor Server side.**

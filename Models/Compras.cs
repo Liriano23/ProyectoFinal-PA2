@@ -14,8 +14,8 @@ namespace ProyectoFinal_PA2.Models
 
         [Required(ErrorMessage = "Debe seleccionaar el Suplidor Id")]
         public int SuplidorId { get; set; }
+        public Suplidores Suplidores { get; set; }
 
-        
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaDeCompra { get; set; }

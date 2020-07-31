@@ -119,7 +119,8 @@ namespace ProyectoFinal_PA2.BLL
             try
             {
                 usuarios = db.Usuarios.Find(id);
-                usuarios.Contrasena = Usuarios.DesEncriptar(usuarios.Contrasena);
+                if(usuarios!= null)
+                    usuarios.Contrasena = Usuarios.DesEncriptar(usuarios.Contrasena);
             }
             catch (Exception)
             {

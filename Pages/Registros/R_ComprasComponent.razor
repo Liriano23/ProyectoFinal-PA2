@@ -158,8 +158,6 @@
                         </div>
                     </div>
 
-
-
                     @*Detallle*@
                     <table class="table" style="border-bottom: 1px groove;">
                         <thead class="thead-dark">
@@ -387,14 +385,13 @@
     {
         try
         {
-            bool elimino;
-
+            bool elimino = false;
+            DisminuirInventario(compras);
             elimino = ComprasBLL.Eliminar(compras.CompraId);
 
             if (elimino)
             {
                 Nuevo();
-                DisminuirInventario(compras);
                 toast.ShowSuccess("Elimino Correctamente");
             }
             else
@@ -412,7 +409,7 @@
         int id = Convert.ToInt32(ProductoID);
         Productos = ProductosBLL.Buscar(id);
 
-        if (VerificarExistenciaBLL.VerificarExistencia(Productos, id))
+        if (VerificarExistenciaBLL.VerificarExistencia(Productos, id) && cantidad > 0)
         {
             compras.Detalle.Add(new ComprasDetalle
             {
@@ -425,6 +422,9 @@
             });
             CalcularTotalCompra();
         }
+        else if(cantidad<=0)
+            toast.ShowError("La cantidad debe ser mayor que 0");
+
         else
             toast.ShowError("No existe este producto en la base de datos. ");
 
@@ -441,7 +441,6 @@
         try
         {
             compras.Detalle.Remove(detalle);
-            DisminuirInventario(compras);
             CalcularTotalCompra();
         }
         catch (Exception e)

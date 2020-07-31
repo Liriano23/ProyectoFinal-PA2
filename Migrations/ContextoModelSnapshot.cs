@@ -114,6 +114,9 @@ namespace ProyectoFinal_PA2.Migrations
                     b.Property<int>("SuplidorId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("SuplidoresSuplidorId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal>("Total")
                         .HasColumnType("TEXT");
 
@@ -121,6 +124,8 @@ namespace ProyectoFinal_PA2.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("CompraId");
+
+                    b.HasIndex("SuplidoresSuplidorId");
 
                     b.HasIndex("UsuariosId");
 
@@ -389,7 +394,7 @@ namespace ProyectoFinal_PA2.Migrations
                             Contrasena = "QQBkAG0AaQBuAA==",
                             Direccion = "SFM",
                             Email = "admin123@gmail.com",
-                            FechaIngreso = new DateTime(2020, 7, 30, 20, 15, 58, 207, DateTimeKind.Local).AddTicks(8421),
+                            FechaIngreso = new DateTime(2020, 7, 30, 21, 34, 37, 713, DateTimeKind.Local).AddTicks(7152),
                             NombreUsuario = "Admin",
                             Nombres = "Admin",
                             Sexo = "Femenino",
@@ -485,6 +490,10 @@ namespace ProyectoFinal_PA2.Migrations
 
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Compras", b =>
                 {
+                    b.HasOne("ProyectoFinal_PA2.Models.Suplidores", "Suplidores")
+                        .WithMany()
+                        .HasForeignKey("SuplidoresSuplidorId");
+
                     b.HasOne("ProyectoFinal_PA2.Models.Usuarios", "Usuarios")
                         .WithMany()
                         .HasForeignKey("UsuariosId")

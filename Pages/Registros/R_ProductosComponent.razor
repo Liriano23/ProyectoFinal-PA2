@@ -76,7 +76,7 @@
                     @*Inventario*@
                     <div class="form-group">
                         <label for="InventoryTextBox">Inventario</label>
-                        <InputNumber @bind-Value="productos.Inventario" id="InventoryTextBox" class="form-control" autoComplete="off" readOnly="true"/>
+                        <InputNumber @bind-Value="productos.Inventario" id="InventoryTextBox" class="form-control" autoComplete="off"/>
                         <ValidationMessage For="(() => productos.Inventario)" />
                         <small id="InventoryInlineHelper">
                             Ingresar la cantidad del producto en inventario

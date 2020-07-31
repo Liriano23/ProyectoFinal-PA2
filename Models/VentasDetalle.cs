@@ -6,6 +6,7 @@ namespace ProyectoFinal_PA2.Models
     {
         [Key]
         [Required]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar el id del producto")]
@@ -15,6 +16,7 @@ namespace ProyectoFinal_PA2.Models
         public int VentaId { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar la cantidad del producto")]
+        [Range(0,1000000, ErrorMessage = "Ingrese una cantidad valida")]
         public int Cantidad { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el precio producto")]

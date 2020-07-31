@@ -10,6 +10,8 @@ namespace ProyectoFinal_PA2.Models
     public class Suplidores
     {
         [Key]
+        [Required]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int SuplidorId { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el nombre del Empleado")]
@@ -42,11 +44,9 @@ namespace ProyectoFinal_PA2.Models
         [EmailAddress]
         public string Email { get; set; }
 
-
-
         [Required(ErrorMessage = "Debe ingresar la fecha de ingreso del Suplidor al sistema")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaIngreso { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar el usuario que esta agregando el Suplidor")]
@@ -54,6 +54,7 @@ namespace ProyectoFinal_PA2.Models
         public Usuarios Usuarios { get; set; }
 
         public ICollection<Productos> Productos { get; set; }
+        public ICollection<Compras> Compras { get; set; }
 
         public Suplidores()
         {

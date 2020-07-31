@@ -82,10 +82,10 @@
                         <th>Empleado Id</th>
                         <th>Fecha Emision</th>
                         <th>Usuario Id</th>
-                        <th>Sub Total/</th>
-                        <th>Descuento/</th>
-                        <th>ITBIS/</th>
-                        <th>Total/</th>
+                        <th>Sub Total</th>
+                        <th>Descuento</th>
+                        <th>ITBIS</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
 
@@ -98,7 +98,7 @@
                             <td>@list.VentaId </td>
                             <td>@list.ClienteId </td>
                             <td>@list.EmpleadoId </td>
-                            <td>@list.FechaEmision</td>
+                            <td>@list.FechaEmision.ToShortDateString()</td>
                             <td>@list.UsuariosId</td>
                             <td>@list.SubTotal.ToString("N2")</td>
                             <td>@list.Descuento.ToString("N2")</td>

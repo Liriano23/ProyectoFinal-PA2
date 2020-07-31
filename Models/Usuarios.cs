@@ -4,12 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ProyectoFinal_PA2.Models
 {
     public class Usuarios
     {
         [Key]
+        [Required]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int UsuarioId { get; set; }
 
         [Required (ErrorMessage = "Debe ingresar el nombre del usuario.")]
@@ -52,7 +55,7 @@ namespace ProyectoFinal_PA2.Models
         public string TipoUsuario { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar la fecha de ingreso del usuario")]
-        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode =true)]
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode =true)]
         public DateTime FechaIngreso { get; set; }
 
         [Required (ErrorMessage = "Debe ingresar el nombre de usuario")]
@@ -64,6 +67,7 @@ namespace ProyectoFinal_PA2.Models
         public ICollection<Clientes> Clientes { get; set; }
         public ICollection<Productos> Productos { get; set; }
         public ICollection<Ventas> Ventas { get; set; }
+        public ICollection<Compras> Compras { get; set; }
 
         public Usuarios()
         {

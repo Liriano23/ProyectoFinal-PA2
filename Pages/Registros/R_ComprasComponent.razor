@@ -400,7 +400,7 @@
         catch (Exception e)
         {
             throw;
-            toast.ShowError($"Ha ocurrido un error {e.Message}, Intentelo nuevamente");
+            //toast.ShowError($"Ha ocurrido un error {e.Message}, Intentelo nuevamente");
         }
     }
 
@@ -415,7 +415,7 @@
             {
                 Id = 0,
                 ProductoId = Convert.ToInt32(ProductoID),
-                ComprasId = compras.CompraId,
+                CompraId = compras.CompraId,
                 Cantidad = cantidad,
                 Precio = precio,
                 Valor = cantidad * precio

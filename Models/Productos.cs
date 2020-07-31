@@ -10,6 +10,8 @@ namespace ProyectoFinal_PA2.Models
     public class Productos
     {
         [Key]
+        [Required]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int ProductoId { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el nombre del producto")]
@@ -25,12 +27,15 @@ namespace ProyectoFinal_PA2.Models
         public int Inventario { get; set; }
 
         [Required(ErrorMessage="Debe ingresar el precio de venta del producto")]
+        [Range(0, 10000000, ErrorMessage = "Ingrese una cantidad valida")]
         public decimal PrecioDeVenta { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el precio de compra del producto")]
+        [Range(0, 10000000, ErrorMessage = "Ingrese una cantidad valida")]
         public decimal PrecioDeCompra { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar la fecha de ingreso del producto")]
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode =true)]
         public DateTime FechaIngreso { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el suplidor del producto")]

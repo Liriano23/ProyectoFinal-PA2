@@ -8,6 +8,8 @@ namespace ProyectoFinal_PA2.Models
     public class Ventas
     {
         [Key]
+        [Required]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int VentaId { get; set; }
 
         [Required (ErrorMessage ="Debe seleccionaar el cliente Id")]
@@ -25,11 +27,16 @@ namespace ProyectoFinal_PA2.Models
         [Required(ErrorMessage = "Se debe ingresar el subtotal del de la venta")]
         public decimal SubTotal { get; set; }
 
+        [Required (ErrorMessage ="Debe ingresar el ITBIS sino aplica es 0")]
+        [Range(0,10000, ErrorMessage = "Ingrese una cantidad valida")]
         public double ITBIS { get; set; }
 
+        [Required(ErrorMessage = "Debe ingresar el Descuento sino aplica es 0")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese una cantidad valida")]
         public decimal Descuento { get; set; }
 
         [Required(ErrorMessage = "Se debe ingresar el valor total de la venta")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese una cantidad valida")]
         public decimal Total { get; set; }
 
         [ForeignKey("VentaId")]

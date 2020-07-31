@@ -274,11 +274,10 @@ namespace ProyectoFinal_PA2.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ProductoId = table.Column<int>(nullable: false),
-                    ComprasId = table.Column<int>(nullable: false),
+                    CompraId = table.Column<int>(nullable: false),
                     Cantidad = table.Column<int>(nullable: false),
                     Precio = table.Column<decimal>(nullable: false),
-                    Valor = table.Column<decimal>(nullable: false),
-                    CompraId = table.Column<int>(nullable: true)
+                    Valor = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -288,13 +287,13 @@ namespace ProyectoFinal_PA2.Migrations
                         column: x => x.CompraId,
                         principalTable: "Compras",
                         principalColumn: "CompraId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "Apellidos", "Cedula", "Celular", "Contrasena", "Direccion", "Email", "FechaIngreso", "NombreUsuario", "Nombres", "Sexo", "Telefono", "TipoUsuario" },
-                values: new object[] { 1, "Admin", "88888888888", "8888888888", "QQBkAG0AaQBuAA==", "SFM", "admin123@gmail.com", new DateTime(2020, 7, 30, 21, 34, 37, 713, DateTimeKind.Local).AddTicks(7152), "Admin", "Admin", "Femenino", "8888888888", "Administrador" });
+                values: new object[] { 1, "Admin", "88888888888", "8888888888", "QQBkAG0AaQBuAA==", "SFM", "admin123@gmail.com", new DateTime(2020, 7, 31, 1, 42, 16, 66, DateTimeKind.Local).AddTicks(7955), "Admin", "Admin", "Femenino", "8888888888", "Administrador" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categorias_UsuariosId",

@@ -141,10 +141,7 @@ namespace ProyectoFinal_PA2.Migrations
                     b.Property<int>("Cantidad")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CompraId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ComprasId")
+                    b.Property<int>("CompraId")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Precio")
@@ -394,7 +391,7 @@ namespace ProyectoFinal_PA2.Migrations
                             Contrasena = "QQBkAG0AaQBuAA==",
                             Direccion = "SFM",
                             Email = "admin123@gmail.com",
-                            FechaIngreso = new DateTime(2020, 7, 30, 21, 34, 37, 713, DateTimeKind.Local).AddTicks(7152),
+                            FechaIngreso = new DateTime(2020, 7, 31, 1, 42, 16, 66, DateTimeKind.Local).AddTicks(7955),
                             NombreUsuario = "Admin",
                             Nombres = "Admin",
                             Sexo = "Femenino",
@@ -491,11 +488,11 @@ namespace ProyectoFinal_PA2.Migrations
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Compras", b =>
                 {
                     b.HasOne("ProyectoFinal_PA2.Models.Suplidores", "Suplidores")
-                        .WithMany()
+                        .WithMany("Compras")
                         .HasForeignKey("SuplidoresSuplidorId");
 
                     b.HasOne("ProyectoFinal_PA2.Models.Usuarios", "Usuarios")
-                        .WithMany()
+                        .WithMany("Compras")
                         .HasForeignKey("UsuariosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -505,7 +502,9 @@ namespace ProyectoFinal_PA2.Migrations
                 {
                     b.HasOne("ProyectoFinal_PA2.Models.Compras", null)
                         .WithMany("Detalle")
-                        .HasForeignKey("CompraId");
+                        .HasForeignKey("CompraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ProyectoFinal_PA2.Models.Empleados", b =>

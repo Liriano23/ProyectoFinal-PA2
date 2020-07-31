@@ -10,6 +10,8 @@ namespace ProyectoFinal_PA2.Models
     public class Categorias
     {
         [Key]
+        [Required]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int CategoriaId { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el nombre del producto")]
@@ -17,6 +19,7 @@ namespace ProyectoFinal_PA2.Models
         public string NombreCategoria { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar la fecha de ingreso del producto")]
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode =true)]
         public DateTime FechaIngreso { get; set; }
                
         [Required(ErrorMessage = "Debe ingresar el usuario que esta agregando al cliente")]

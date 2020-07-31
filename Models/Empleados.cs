@@ -10,6 +10,8 @@ namespace ProyectoFinal_PA2.Models
     public class Empleados
     {
         [Key]
+        [Required]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int EmpleadoId { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el nombre del Empleado")]
@@ -46,16 +48,17 @@ namespace ProyectoFinal_PA2.Models
         public string Cargo { get; set; }
 
         [Required(ErrorMessage = "Se debe ingresar el Sueldo del empleado")]
+        [Range(0, 10000000, ErrorMessage = "Ingrese una cantidad valida")]
         public decimal Sueldo { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar la fecha de nacimieneto del Empleado")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaNacimiento { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar la fecha de ingreso del Empleado al sistema")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaIngreso { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar el usuario que esta agregando el empleado")]

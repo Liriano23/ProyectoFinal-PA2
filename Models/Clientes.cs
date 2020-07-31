@@ -10,6 +10,8 @@ namespace ProyectoFinal_PA2.Models
     public class Clientes
     {
         [Key]
+        [Required]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int ClienteId { get; set; }
 
         [Required (ErrorMessage = "Debe ingresar el nombre del cliente")]
@@ -47,12 +49,12 @@ namespace ProyectoFinal_PA2.Models
 
         [Required(ErrorMessage = "Debe ingresar la fecha de nacimieneto del cliente")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString ="{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString ="{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaNacimiento { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar la fecha de ingreso del cliente al sistema")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}",ApplyFormatInEditMode =true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}",ApplyFormatInEditMode =true)]
         public DateTime FechaIngreso { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar el usuario que esta agregando al cliente")]

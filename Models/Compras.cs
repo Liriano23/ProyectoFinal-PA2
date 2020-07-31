@@ -10,6 +10,8 @@ namespace ProyectoFinal_PA2.Models
     public class Compras
     {
         [Key]
+        [Required]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int CompraId { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionaar el Suplidor Id")]
@@ -17,17 +19,22 @@ namespace ProyectoFinal_PA2.Models
         public Suplidores Suplidores { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaDeCompra { get; set; }
 
         [Required(ErrorMessage = "Se debe ingresar el subtotal del de la Compra")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese una cantidad valida")]
         public decimal SubTotal { get; set; }
 
+        [Required(ErrorMessage = "Debe ingresar el ITBIS sino aplica es 0")]
         public double ITBIS { get; set; }
 
+        [Required(ErrorMessage = "Debe ingresar el Descuento sino aplica es 0")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese una cantidad valida")]
         public decimal Descuento { get; set; }
 
         [Required(ErrorMessage = "Se debe ingresar el valor total de la Compra")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese una cantidad valida")]
         public decimal Total { get; set; }
 
         [ForeignKey("CompraId")]

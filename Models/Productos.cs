@@ -40,6 +40,7 @@ namespace ProyectoFinal_PA2.Models
 
         [Required(ErrorMessage = "Debe ingresar el suplidor del producto")]
         [ForeignKey("Suplidores")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int SuplidorId { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar la categoria que pertence el producto")]
@@ -49,6 +50,7 @@ namespace ProyectoFinal_PA2.Models
 
         [Required(ErrorMessage = "Debe ingresar el usuario que esta agregando el producto")]
         [ForeignKey("Usuarios")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int UsuariosId { get; set; }
 
         public Productos()

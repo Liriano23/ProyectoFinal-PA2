@@ -26,6 +26,7 @@ namespace ProyectoFinal_PA2.Models
         public decimal SubTotal { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el ITBIS sino aplica es 0")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un TIBIS valido")]
         public double ITBIS { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el Descuento sino aplica es 0")]
@@ -40,6 +41,7 @@ namespace ProyectoFinal_PA2.Models
         public virtual List<ComprasDetalle> Detalle { get; set; }
 
         [ForeignKey("Usuarios")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int UsuariosId { get; set; }
 
 

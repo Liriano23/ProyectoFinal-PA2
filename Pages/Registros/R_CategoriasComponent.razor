@@ -145,9 +145,17 @@
 
     private void Nuevo()
     {
-        categorias = new Categorias();
-        listaUsuarios = UsuariosBLL.GetList(x => true);
-        usuarioId = "0";
+        try
+        {
+            categorias = new Categorias();
+            listaUsuarios = UsuariosBLL.GetList(x => true);
+            usuarioId = "0";
+        }
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
+        }
     }
 
     private void Guardar()
@@ -157,64 +165,96 @@
 
         Usuarios = UsuariosBLL.Buscar(categorias.UsuariosId);
 
-        if (VerificarExistenciaBLL.VerificarExistencia(Usuarios, categorias.UsuariosId))
+        try
         {
-            guardo = CategoriasBLL.Guardar(categorias);
-        }
-        else
-            toast.ShowError("El id del usuario que acaba de ingresar no existe.");
+            if (VerificarExistenciaBLL.VerificarExistencia(Usuarios, categorias.UsuariosId))
+            {
+                guardo = CategoriasBLL.Guardar(categorias);
+            }
+            else
+                toast.ShowError("El id del usuario que acaba de ingresar no existe.");
 
-        if (guardo)
-        {
-            Nuevo();
-            toast.ShowSuccess("Guardado correctamente");
+            if (guardo)
+            {
+                Nuevo();
+                toast.ShowSuccess("Guardado correctamente");
+            }
+            else
+                toast.ShowError("No guardo");
         }
-        else
-            toast.ShowError("No guardo");
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
+        }
     }
 
     private void Buscar()
     {
-        if (categorias.CategoriaId > 0)
+        try
         {
-
-            var encontrado = CategoriasBLL.Buscar(categorias.CategoriaId);
-            if (encontrado != null)
+            if (categorias.CategoriaId > 0)
             {
-                this.categorias = encontrado;
-                usuarioId = this.categorias.UsuariosId.ToString();
+
+                var encontrado = CategoriasBLL.Buscar(categorias.CategoriaId);
+                if (encontrado != null)
+                {
+                    this.categorias = encontrado;
+                    usuarioId = this.categorias.UsuariosId.ToString();
+                }
+                else
+                    toast.ShowWarning("No se encontrado");
             }
-            else
-                toast.ShowWarning("No se encontrado");
+        }
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
         }
     }
 
     private void Buscar(int id)
     {
-        if (CategoriaId > 0)
+        try
         {
-
-            var encontrado = CategoriasBLL.Buscar(id);
-            if (encontrado != null)
+            if (CategoriaId > 0)
             {
-                this.categorias = encontrado;
-                usuarioId = this.categorias.UsuariosId.ToString();
+
+                var encontrado = CategoriasBLL.Buscar(id);
+                if (encontrado != null)
+                {
+                    this.categorias = encontrado;
+                    usuarioId = this.categorias.UsuariosId.ToString();
+                }
+                else
+                    toast.ShowWarning("No se encontrado");
             }
-            else
-                toast.ShowWarning("No se encontrado");
+        }
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
         }
     }
     private void ELiminar()
     {
         bool elimino;
         elimino = CategoriasBLL.Eliminar(categorias.CategoriaId);
-        if (elimino)
+        try
         {
-            Nuevo();
-            toast.ShowSuccess("Elimino Correctamente");
+            if (elimino)
+            {
+                Nuevo();
+                toast.ShowSuccess("Elimino Correctamente");
+            }
+            else
+                toast.ShowError("No elimino");
         }
-        else
-            toast.ShowError("No elimino");
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
+        }
     }
 
     private bool GetAuthorization()

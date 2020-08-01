@@ -229,14 +229,22 @@
 
     private void Nuevo()
     {
-        productos = new Productos();
-        listaUsuarios = UsuariosBLL.GetList(x => true);
-        listaCategorias = CategoriasBLL.GetList(x => true);
-        listaSuplidores = SuplidoresBLL.GetList(x => true);
+        try
+        {
+            productos = new Productos();
+            listaUsuarios = UsuariosBLL.GetList(x => true);
+            listaCategorias = CategoriasBLL.GetList(x => true);
+            listaSuplidores = SuplidoresBLL.GetList(x => true);
 
-        usuarioId = "0";
-        suplidorId = "0";
-        categoriaId = "0";
+            usuarioId = "0";
+            suplidorId = "0";
+            categoriaId = "0";
+        }
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
+        }
     }
 
     private void Guardar()
@@ -252,7 +260,7 @@
 
         try
         {
-            
+
             if (VerificarExistenciaBLL.VerificarExistencia(Usuarios, productos.UsuariosId)
                 && VerificarExistenciaBLL.VerificarExistencia(Categorias, productos.CategoriaId)
                 && VerificarExistenciaBLL.VerificarExistencia(Suplidores, productos.SuplidorId)
@@ -368,20 +376,27 @@
 
     private void ValidaPrecio()
     {
+        try
+        {
+            if(productos.PrecioDeVenta <=0)
+            {
+                precioValido = false;
+                toast.ShowWarning("El precio de venta no puede ser menor o igual 0 ");
+            }
+            else if (productos.PrecioDeVenta <= productos.PrecioDeCompra)
+            {
+                precioValido = false;
+                toast.ShowWarning("El precio de venta no puede ser menor al precio de compra");
+            }
+            else
+            {
+                precioValido = true;
+            }
+        }
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
 
-        if(productos.PrecioDeVenta <=0)
-        {
-            precioValido = false;
-            toast.ShowWarning("El precio de venta no puede ser menor o igual 0 ");
-        }
-        else if (productos.PrecioDeVenta <= productos.PrecioDeCompra)
-        {
-            precioValido = false;
-            toast.ShowWarning("El precio de venta no puede ser menor al precio de compra");
-        }
-        else
-        {
-            precioValido = true;
         }
 
     }

@@ -23,6 +23,7 @@ namespace ProyectoFinal_PA2.Models
         public DateTime FechaIngreso { get; set; }
                
         [Required(ErrorMessage = "Debe ingresar el usuario que esta agregando al cliente")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int UsuariosId { get; set; }
         public Usuarios Usuarios { get; set; }
 

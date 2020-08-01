@@ -239,32 +239,56 @@
 
     private void Nuevo()
     {
-        usuario = new Usuarios();
+        try
+        {
+            usuario = new Usuarios();
+        }
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
+        }
     }
 
     private void Buscar()
     {
-        if (usuario.UsuarioId > 0)
+        try
         {
-            var encontrado = UsuariosBLL.Buscar(usuario.UsuarioId);
+            if (usuario.UsuarioId > 0)
+            {
+                var encontrado = UsuariosBLL.Buscar(usuario.UsuarioId);
 
-            if (encontrado != null)
-                this.usuario = encontrado;
-            else
-                toast.ShowWarning("Usuario no encontrado");
+                if (encontrado != null)
+                    this.usuario = encontrado;
+                else
+                    toast.ShowWarning("Usuario no encontrado");
+            }
+        }
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
         }
     }
 
     private void Buscar(int id)
     {
-        if (UsuarioId> 0)
+        try
         {
-            var encontrado = UsuariosBLL.Buscar(id);
+            if (UsuarioId> 0)
+            {
+                var encontrado = UsuariosBLL.Buscar(id);
 
-            if (encontrado != null)
-                this.usuario = encontrado;
-            else
-                toast.ShowWarning("Usuario no encontrado");
+                if (encontrado != null)
+                    this.usuario = encontrado;
+                else
+                    toast.ShowWarning("Usuario no encontrado");
+            }
+        }
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
         }
     }
 
@@ -272,14 +296,21 @@
     {
         bool guardo;
         guardo = UsuariosBLL.Guardar(usuario);
-
-        if (guardo)
+        try
         {
-            Nuevo();
-            toast.ShowSuccess("Guardado correctamente");
+            if (guardo)
+            {
+                Nuevo();
+                toast.ShowSuccess("Guardado correctamente");
+            }
+            else
+                toast.ShowError("no fue posible guardar");
         }
-        else
-            toast.ShowError("no fue posible guardar");
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
+        }
     }
 
     private void Eliminar()

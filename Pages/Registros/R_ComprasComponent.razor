@@ -278,15 +278,23 @@
 
     private void Nuevo()
     {
-        compras = new Compras();
-        ListaUsuarios = UsuariosBLL.GetList(x => true);
-        ListaProductos = ProductosBLL.GetList(x => true);
+        try
+        {
+            compras = new Compras();
+            ListaUsuarios = UsuariosBLL.GetList(x => true);
+            ListaProductos = ProductosBLL.GetList(x => true);
 
-        UsuarioID = "0";
-        SuplidorID = "0";
-        ProductoID = "0";
-        precio = 0;
-        Valor = 0;
+            UsuarioID = "0";
+            SuplidorID = "0";
+            ProductoID = "0";
+            precio = 0;
+            Valor = 0;
+        }
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
+        }
     }
 
     private void Buscar()
@@ -408,32 +416,40 @@
     {
         int id = Convert.ToInt32(ProductoID);
         Productos = ProductosBLL.Buscar(id);
-
-        if (VerificarExistenciaBLL.VerificarExistencia(Productos, id) && cantidad > 0)
+        try
         {
-            compras.Detalle.Add(new ComprasDetalle
+
+            if (VerificarExistenciaBLL.VerificarExistencia(Productos, id) && cantidad > 0)
             {
-                Id = 0,
-                ProductoId = Convert.ToInt32(ProductoID),
-                CompraId = compras.CompraId,
-                Cantidad = cantidad,
-                Precio = precio,
-                Valor = cantidad * precio
-            });
-            CalcularTotalCompra();
+                compras.Detalle.Add(new ComprasDetalle
+                {
+                    Id = 0,
+                    ProductoId = Convert.ToInt32(ProductoID),
+                    CompraId = compras.CompraId,
+                    Cantidad = cantidad,
+                    Precio = precio,
+                    Valor = cantidad * precio
+                });
+                CalcularTotalCompra();
+            }
+            else if(cantidad<=0)
+                toast.ShowError("La cantidad debe ser mayor que 0");
+
+            else
+                toast.ShowError("No existe este producto en la base de datos. ");
+
+
+            DetalleId = 0;
+            ProductoID = "0";
+            cantidad = 0;
+            precio = 0;
+            Valor = 0;
         }
-        else if(cantidad<=0)
-            toast.ShowError("La cantidad debe ser mayor que 0");
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
 
-        else
-            toast.ShowError("No existe este producto en la base de datos. ");
-
-
-        DetalleId = 0;
-        ProductoID = "0";
-        cantidad = 0;
-        precio = 0;
-        Valor = 0;
+        }
     }
 
     private void EliminarDetalle(ComprasDetalle detalle)

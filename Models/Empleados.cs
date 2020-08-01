@@ -64,6 +64,7 @@ namespace ProyectoFinal_PA2.Models
 
         [Required(ErrorMessage = "Debe seleccionar el usuario que esta agregando el empleado")]
         [ForeignKey("Usuarios")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int UsuariosId { get; set; }
 
         public Empleados()

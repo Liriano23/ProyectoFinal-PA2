@@ -231,9 +231,17 @@
 
     private void Nuevo()
     {
-        empleados = new Empleados();
-        listaUsuarios = UsuariosBLL.GetList(x => true);
-        usuarioId = "";
+        try
+        {
+            empleados = new Empleados();
+            listaUsuarios = UsuariosBLL.GetList(x => true);
+            usuarioId = "";
+        }
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
+        }
     }
 
     private void Guardar()
@@ -242,64 +250,97 @@
         empleados.UsuariosId = Convert.ToInt32(usuarioId);
         Usuarios = UsuariosBLL.Buscar(empleados.UsuariosId);
 
-        if (VerificarExistenciaBLL.VerificarExistencia(Usuarios, empleados.UsuariosId))
+        try
         {
-            guardo = EmpleadosBLL.Guardar(empleados);
-        }
-        else
-            toast.ShowError("El id del usuario que acaba de ingresar no existe.");
+            if (VerificarExistenciaBLL.VerificarExistencia(Usuarios, empleados.UsuariosId))
+            {
+                guardo = EmpleadosBLL.Guardar(empleados);
+            }
+            else
+                toast.ShowError("El id del usuario que acaba de ingresar no existe.");
 
-        if (guardo)
-        {
-            Nuevo();
-            toast.ShowSuccess("Guardado correctamente");
+            if (guardo)
+            {
+                Nuevo();
+                toast.ShowSuccess("Guardado correctamente");
+            }
+            else
+                toast.ShowError("No guardo");
         }
-        else
-            toast.ShowError("No guardo");
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
+        }
     }
+
 
     private void Buscar()
     {
-        if (empleados.EmpleadoId> 0)
+        try
         {
-
-            var encontrado = EmpleadosBLL.Buscar(empleados.EmpleadoId);
-            if (encontrado != null)
+            if (empleados.EmpleadoId> 0)
             {
-                this.empleados = encontrado;
-                usuarioId = this.empleados.UsuariosId.ToString();
+
+                var encontrado = EmpleadosBLL.Buscar(empleados.EmpleadoId);
+                if (encontrado != null)
+                {
+                    this.empleados = encontrado;
+                    usuarioId = this.empleados.UsuariosId.ToString();
+                }
+                else
+                    toast.ShowWarning("No se encontrado");
             }
-            else
-                toast.ShowWarning("No se encontrado");
+        }
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
         }
     }
 
     private void Buscar(int id)
     {
-        if (EmpleadoId> 0)
+        try
         {
-
-            var encontrado = EmpleadosBLL.Buscar(id);
-            if (encontrado != null)
+            if (EmpleadoId> 0)
             {
-                this.empleados = encontrado;
-                usuarioId = this.empleados.UsuariosId.ToString();
+
+                var encontrado = EmpleadosBLL.Buscar(id);
+                if (encontrado != null)
+                {
+                    this.empleados = encontrado;
+                    usuarioId = this.empleados.UsuariosId.ToString();
+                }
+                else
+                    toast.ShowWarning("No se encontrado");
             }
-            else
-                toast.ShowWarning("No se encontrado");
+        }
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
         }
     }
     private void ELiminar()
     {
         bool elimino;
         elimino = EmpleadosBLL.Eliminar(empleados.EmpleadoId);
-        if (elimino)
+        try
         {
-            Nuevo();
-            toast.ShowSuccess("Elimino Correctamente");
+            if (elimino)
+            {
+                Nuevo();
+                toast.ShowSuccess("Elimino Correctamente");
+            }
+            else
+                toast.ShowError("No elimino");
         }
-        else
-            toast.ShowError("No elimino");
+        catch
+        {
+            toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
+
+        }
     }
 
     private bool GetAuthorization()

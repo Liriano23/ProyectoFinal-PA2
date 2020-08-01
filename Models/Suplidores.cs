@@ -52,6 +52,7 @@ namespace ProyectoFinal_PA2.Models
 
         [Required(ErrorMessage = "Debe seleccionar el usuario que esta agregando el Suplidor")]
         [ForeignKey("Usuarios")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int UsuariosId { get; set; }
 
         public ICollection<Productos> Productos { get; set; }

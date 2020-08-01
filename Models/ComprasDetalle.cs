@@ -15,9 +15,11 @@ namespace ProyectoFinal_PA2.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el Id del Producto")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int ProductoId { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el Id de la compra")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int CompraId { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar la cantidad Producto")]
@@ -25,6 +27,7 @@ namespace ProyectoFinal_PA2.Models
         public int Cantidad { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el precio del Producto")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Precio valido")]
         public decimal Precio { get; set; }
 
         [Required(ErrorMessage = "Ingrese valor del producto")]

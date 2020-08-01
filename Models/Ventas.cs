@@ -13,10 +13,12 @@ namespace ProyectoFinal_PA2.Models
         public int VentaId { get; set; }
 
         [Required (ErrorMessage ="Debe seleccionaar el cliente Id")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int ClienteId { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar el Id del empleado")]
         [ForeignKey("Empleados")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int EmpleadoId { get; set; }
 
         [Required]
@@ -25,6 +27,7 @@ namespace ProyectoFinal_PA2.Models
         public DateTime FechaEmision { get; set; }
 
         [Required(ErrorMessage = "Se debe ingresar el subtotal del de la venta")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public decimal SubTotal { get; set; }
 
         [Required (ErrorMessage ="Debe ingresar el ITBIS sino aplica es 0")]
@@ -43,6 +46,7 @@ namespace ProyectoFinal_PA2.Models
         public virtual List<VentasDetalle> Detalle { get; set; }
 
         [ForeignKey("Usuarios")]
+        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int UsuariosId { get; set; }
 
         public Ventas()

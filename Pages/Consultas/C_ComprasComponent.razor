@@ -36,34 +36,43 @@
                 <label>Hasta</label>
                 <input type="date" class="form-control" @bind="Hasta" />
             </div>
-
-
+            @*Filtrar por fecha*@
             <div class="form-group col-2">
-                <label>Filtro</label>
-                <select @bind="opcion" class="form-control">
-                    <option value="0" disabled>Elija una opcion</option>
-                    <option value="1">TODO</option>
-                    <option value="2">Compra Id</option>
-                    <option value="3">Suplidor Id</option>
-                    <option value="4">Fecha de Compra</option>
-                    <option value="5">Usuario Id</option>
-                    <option value="6">Total</option>
-                </select>
+                <label>Filtar por fecha</label>
+                <input type="checkbox" class="form-control col-1" @bind="isChecked" />
             </div>
 
+            @*Filtros*@
+        <div class="form-group col-2">
+            <label>Filtro</label>
+            <select @bind="opcion" class="form-control">
+                <option value="0" disabled>Elija una opcion</option>
+                <option value="1">TODO</option>
+                <option value="2">Compra Id</option>
+                <option value="3">Suplidor Id</option>
+                <option value="4">Fecha de Compra</option>
+                <option value="5">Usuario Id</option>
+                <option value="6">Total</option>
+            </select>
+        </div>
+
+            @*Criterio*@
             <div class="form-group col-2">
                 <label>Criterio</label>
                 <input type="text" @bind="criterio" class="form-control" />
             </div>
 
+            @*Boton consultar*@
             <div class="form-group col-2">
-                <button class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
+                <button style="margin-top:35px;" class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
             </div>
+        </div>
 
+        @*Boton ir a reportes*@
+        <div class="row">
             <div class="form-group col-2">
                 <a class="btn btn-primary" href="/ComprasReporte">Ir a reporte</a>
             </div>
-
         </div>
     </div>
 
@@ -130,130 +139,131 @@
     private bool TipoUsuario;
     private DateTime Desde = DateTime.Now;
     private DateTime Hasta = DateTime.Now;
+    private bool isChecked;
 
     @*Paginado*@
-public int I { get; set; }
-double conteo = 0;
-double totaldepaginas = 0;
-Paginando paginacion = new Paginando();
-Contexto contexto = new Contexto();
-public int Contador { get; set; }
-
-protected override void OnInitialized()
-{
-    lista = ComprasBLL.GetList(x => true);
-    TipoUsuario = GetAuthorization();
-    conteo = contexto.Categorias.Count();
-    totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-    this.lista = contexto.Compras.Take(paginacion.CantidadMostrar).ToList();
-}
-
-private void Anterior()
-{
-    Contador -= paginacion.Pagina;
-    if (Contador <= totaldepaginas)
-    {
-        Contador = 0;
-    }
-
-    lista = contexto.Compras
-    .Skip(Contador * paginacion.CantidadMostrar)
-    .Take(paginacion.CantidadMostrar)
-    .ToList();
-}
-
-private void Saltar()
-{
-    Contador += paginacion.Pagina;
-    if (Contador >= totaldepaginas)
-    {
-        Contador = 0;
-    }
-
-    lista = contexto.Compras
-    .Skip(Contador * paginacion.CantidadMostrar)
-    .Take(paginacion.CantidadMostrar)
-    .ToList();
-}
-
-private void MostrarDatos()
-{
-    int elegido = Convert.ToInt32(opcion);
-
-    if (string.IsNullOrWhiteSpace(criterio))
+    public int I { get; set; }
+    double conteo = 0;
+    double totaldepaginas = 0;
+    Paginando paginacion = new Paginando();
+    Contexto contexto = new Contexto();
+    public int Contador { get; set; }
+    
+    protected override void OnInitialized()
     {
         lista = ComprasBLL.GetList(x => true);
+        TipoUsuario = GetAuthorization();
+        conteo = contexto.Categorias.Count();
+        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
+        this.lista = contexto.Compras.Take(paginacion.CantidadMostrar).ToList();
     }
-    else
+    
+    private void Anterior()
     {
-        switch (elegido)
+        Contador -= paginacion.Pagina;
+        if (Contador <= totaldepaginas)
         {
-            case 0:
-                {
-                    toast.ShowError("¡Opcion incorrecta!");
-                    break;
-                }
-
-            case 1:
-                {
-                    lista = ComprasBLL.GetList(x => true);
-                }
-                break;
-
-            case 2:
-                {
-                    int id;
-                    id = Convert.ToInt32(criterio);
-                    lista = ComprasBLL.GetList(x => x.CompraId == id);
-                }
-                break;
-
-            case 3:
-                {
-                    int id;
-                    id = Convert.ToInt32(criterio);
-                    lista = ComprasBLL.GetList(x => x.SuplidorId == id);
-                }
-                break;
-
-            case 4:
-                {
-                    lista = ComprasBLL.GetList(c => c.FechaDeCompra.Date >= Desde.Date && c.FechaDeCompra.Date <= Hasta.Date).ToList();
-                }
-                break;
-
-            case 5:
-                {
-                    int id;
-                    id = Convert.ToInt32(criterio);
-                    lista = ComprasBLL.GetList(x => x.UsuariosId == id);
-                }
-                break;
-
-            case 6:
-                {
-
-                    decimal total;
-                    total = Convert.ToDecimal(criterio);
-                    lista = ComprasBLL.GetList(x => x.Total == total);
-                }
-                break;
+            Contador = 0;
         }
-        lista = lista.Where(c => c.FechaDeCompra.Date >= Desde.Date && c.FechaDeCompra.Date <= Hasta.Date).ToList();
+    
+        lista = contexto.Compras
+        .Skip(Contador * paginacion.CantidadMostrar)
+        .Take(paginacion.CantidadMostrar)
+        .ToList();
     }
-}
-
-private bool GetAuthorization()
-{
-    bool acceso;
-
-    if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
-        || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
-        acceso = true;
-    else
-        acceso = false;
-
-    return acceso;
-}
-
+    
+    private void Saltar()
+    {
+        Contador += paginacion.Pagina;
+        if (Contador >= totaldepaginas)
+        {
+            Contador = 0;
+        }
+    
+        lista = contexto.Compras
+        .Skip(Contador * paginacion.CantidadMostrar)
+        .Take(paginacion.CantidadMostrar)
+        .ToList();
+    }
+    
+    private void MostrarDatos()
+    {
+        int elegido = Convert.ToInt32(opcion);
+    
+        if (string.IsNullOrWhiteSpace(criterio))
+        {
+            lista = ComprasBLL.GetList(x => true);
+        }
+        else
+        {
+            switch (elegido)
+            {
+                case 0:
+                    {
+                        toast.ShowError("¡Opcion incorrecta!");
+                        break;
+                    }
+    
+                case 1:
+                    {
+                        lista = ComprasBLL.GetList(x => true);
+                    }
+                    break;
+    
+                case 2:
+                    {
+                        int id;
+                        id = Convert.ToInt32(criterio);
+                        lista = ComprasBLL.GetList(x => x.CompraId == id);
+                    }
+                    break;
+    
+                case 3:
+                    {
+                        int id;
+                        id = Convert.ToInt32(criterio);
+                        lista = ComprasBLL.GetList(x => x.SuplidorId == id);
+                    }
+                    break;
+    
+                case 4:
+                    {
+                        lista = ComprasBLL.GetList(c => c.FechaDeCompra.Date >= Desde.Date && c.FechaDeCompra.Date <= Hasta.Date).ToList();
+                    }
+                    break;
+    
+                case 5:
+                    {
+                        int id;
+                        id = Convert.ToInt32(criterio);
+                        lista = ComprasBLL.GetList(x => x.UsuariosId == id);
+                    }
+                    break;
+    
+                case 6:
+                    {
+    
+                        decimal total;
+                        total = Convert.ToDecimal(criterio);
+                        lista = ComprasBLL.GetList(x => x.Total == total);
+                    }
+                    break;
+            }
+        if(isChecked)
+            lista = lista.Where(c => c.FechaDeCompra.Date >= Desde.Date && c.FechaDeCompra.Date <= Hasta.Date).ToList();
+        }
+    }
+    
+    private bool GetAuthorization()
+    {
+        bool acceso;
+    
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
+            || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
+            acceso = true;
+        else
+            acceso = false;
+    
+        return acceso;
+    }
 }

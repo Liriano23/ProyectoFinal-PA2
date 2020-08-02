@@ -397,7 +397,7 @@ namespace ProyectoFinal_PA2.Migrations
                             Contrasena = "QQBkAG0AaQBuAA==",
                             Direccion = "SFM",
                             Email = "admin123@gmail.com",
-                            FechaIngreso = new DateTime(2020, 7, 31, 19, 36, 13, 321, DateTimeKind.Local).AddTicks(2510),
+                            FechaIngreso = new DateTime(2020, 8, 1, 21, 0, 57, 767, DateTimeKind.Local).AddTicks(8572),
                             NombreUsuario = "Admin",
                             Nombres = "Admin",
                             Sexo = "Femenino",

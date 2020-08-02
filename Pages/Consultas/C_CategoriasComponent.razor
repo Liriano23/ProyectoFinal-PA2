@@ -41,228 +41,226 @@
     <h3>Consulta Categorias</h3>
 
 
-        <div id="PrincipalContainer" class="card">
+    <div id="PrincipalContainer" class="card">
 
-            <div class="row">
+        <div class="row">
+            @*Desde*@
+            <div class="form-group col-2">
+                <label>Desde</label>
+                <input type="date" class="form-control" @bind="Desde" />
+            </div>
 
-                @*Desde*@
-                <div class="form-group col-2">
-                    <div class="form-group">
-                        <label>Desde</label>
-                        <input type="date" class="form-control" @bind="Desde" />
-                    </div>
-                </div>
+            @*Hasta*@
+            <div class="form-group col-2">
+                <label>Hasta</label>
+                <input type="date" class="form-control" @bind="Hasta" />
+            </div>
 
+            <div class="form-group col-2">
+                <label>Filtar por fecha</label>
+                <input type="checkbox" class="form-control col-1" @bind="isChecked" />
+            </div>
 
+            <div class="form-group col-2">
+                <label>Filtro</label>
+                <select @bind="opcion" class="form-control">
+                    <option value="0" disabled>Elija una opcion</option>
+                    <option value="1">Todo</option>
+                    <option value="2">Categoria Id</option>
+                    <option value="3">Usuario Id</option>
+                    <option value="4">Nombre Categoria</option>
+                    <option value="5">Fecha de Ingreso</option>
+                </select>
+            </div>
 
-                @*Hasta*@
-                <div class="form-group col-2">
-                    <label>Hasta</label>
-                    <input type="date" class="form-control" @bind="Hasta" />
-                </div>
+            <div class="form-group col-2">
+                <label>Criterio</label>
+                <input type="text" @bind="criterio" class="form-control" />
+            </div>
 
-
-
-                <div class="form-group col-2">
-                    <label>Filtro</label>
-                    <select @bind="opcion" class="form-control">
-                        <option value="0" disabled>Elija una opcion</option>
-                        <option value="1">Todo</option>
-                        <option value="2">Categoria Id</option>
-                        <option value="3">Usuario Id</option>
-                        <option value="4">Nombre Categoria</option>
-                        <option value="5">Fecha de Ingreso</option>
-                    </select>
-                </div>
-
-                <div class="form-group col-2">
-                    <label>Criterio</label>
-                    <input type="text" @bind="criterio" class="form-control" />
-
-                </div>
-
-                <div class="form-group col-2">
-                    <button class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
-                </div>
-
-                <div class="form-group col-2">
-                    <a class="btn btn-primary" href="/CategoriaReporte">Ir a reporte</a>
-                </div>
-
-
+            <div class="form-group col-2">
+                <button style="margin-top:35px;" class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
             </div>
         </div>
 
-        
-        @if (lista == null)
+        <div class="row">
+            <div class="form-group col-2">
+                <a class="btn btn-primary" href="/CategoriaReporte">Ir a reporte</a>
+            </div>
+        </div>
+    </div>
+
+    @if (lista == null)
+    {
+        <h3>No existen usuarios en la base de datos</h3>
+    }
+    else
+    {
+        <table class="table table-dark" style="margin-top: 5px;">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Categoria Id</th>
+                    <th>Nombre Categoria</th>
+                    <th>Usuario Id</th>
+                    <th>Fecha de Ingreso</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var list in lista)
+                {
+                    num++;
+                    <tr>
+                        <td>@num</td>
+                        <td>@list.CategoriaId</td>
+                        <td>@list.NombreCategoria</td>
+                        <td>@list.UsuariosId</td>
+                        <td>@list.FechaIngreso.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <nav aria-label="...">
+        <ul class="pagination pagination-lg">
+
+            <li class="page-item Azul"><a class="page-link Azul" @onclick="Anterior"> ◄ </a></li>
+            @for (int i = 1; i <= totaldepaginas; i++)
+            {
+                <li class="page-item Azul"><a class="page-link Azul" @onclick="OnInitialized" href="ConsultaCategorias/@i">@i</a></li>
+            }
+            <li class="page-item Azul"><a class="page-link Azul" @onclick="Saltar"> ► </a></li>
+        </ul>
+    </nav>
+}
+
+@code {
+
+    int num = 0;
+    List<Categorias> lista = new List<Categorias>();
+    private string opcion = "0";
+    private string criterio = "";
+    private bool TipoUsuario;
+    private DateTime Desde = DateTime.Now;
+    private DateTime Hasta = DateTime.Now;
+    private bool isChecked;
+
+    @*Paginado*@
+    public int I { get; set; }
+    double conteo = 0;
+    double totaldepaginas = 0;
+    Paginando paginacion = new Paginando();
+    Contexto contexto = new Contexto();
+    public int Contador { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        lista = CategoriasBLL.GetList(x => true);
+        TipoUsuario = GetAuthorization();
+        conteo = contexto.Categorias.Count();
+        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
+        this.lista = contexto.Categorias.Take(paginacion.CantidadMostrar).ToList();
+    }
+
+    private void Anterior()
+    {
+        Contador -= paginacion.Pagina;
+        if (Contador <= totaldepaginas)
         {
-            <h3>No existen usuarios en la base de datos</h3>
+            Contador = 0;
+        }
+
+        lista = contexto.Categorias
+        .Skip(Contador * paginacion.CantidadMostrar)
+        .Take(paginacion.CantidadMostrar)
+        .ToList();
+    }
+
+    private void Saltar()
+    {
+        Contador += paginacion.Pagina;
+        if (Contador >= totaldepaginas)
+        {
+            Contador = 0;
+        }
+
+        lista = contexto.Categorias
+        .Skip(Contador * paginacion.CantidadMostrar)
+        .Take(paginacion.CantidadMostrar)
+        .ToList();
+    }
+
+    private void MostrarDatos()
+    {
+        int elegido = Convert.ToInt32(opcion);
+
+        if (string.IsNullOrWhiteSpace(criterio))
+        {
+            lista = CategoriasBLL.GetList(x => true);
         }
         else
         {
-            <table class="table table-dark" style="margin-top: 5px;">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Categoria Id</th>
-                        <th>Nombre Categoria</th>
-                        <th>Usuario Id</th>
-                        <th>Fecha de Ingreso</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach (var list in lista)
+            switch (elegido)
+            {
+                case 0:
                     {
-                        num++;
-                        <tr>
-                            <td>@num</td>
-                            <td>@list.CategoriaId</td>
-                            <td>@list.NombreCategoria</td>
-                            <td>@list.UsuariosId</td>
-                            <td>@list.FechaIngreso.ToShortDateString()</td>
-                        </tr>
+                        toast.ShowError("¡Opcion incorrecta!");
+                        break;
                     }
-                </tbody>
-            </table>
-        }
 
-        <nav aria-label="...">
-            <ul class="pagination pagination-lg">
+                case 1:
+                    {
+                        lista = CategoriasBLL.GetList(x => true);
+                    }
+                    break;
 
-                <li class="page-item Azul"><a class="page-link Azul" @onclick="Anterior"> ◄ </a></li>
-                @for (int i = 1; i <= totaldepaginas; i++)
-                {
-                    <li class="page-item Azul"><a class="page-link Azul" @onclick="OnInitialized" href="ConsultaCategorias/@i">@i</a></li>
-                }
-                <li class="page-item Azul"><a class="page-link Azul" @onclick="Saltar"> ► </a></li>
-            </ul>
-        </nav>
-        }
+                case 2:
+                    {
+                        int id;
+                        id = Convert.ToInt32(criterio);
+                        lista = CategoriasBLL.GetList(x => x.CategoriaId == id);
+                    }
+                    break;
 
-        @code {
+                case 3:
+                    {
+                        int id;
+                        id = Convert.ToInt32(criterio);
+                        lista = CategoriasBLL.GetList(x => x.UsuariosId == id);
+                    }
+                    break;
+                case 4:
+                    {
+                        lista = CategoriasBLL.GetList(x => x.NombreCategoria == criterio);
+                    }
+                    break;
 
-            int num = 0;
-            List<Categorias> lista = new List<Categorias>();
-            private string opcion = "0";
-            private string criterio = "";
-            private bool TipoUsuario;
-            private DateTime Desde = DateTime.Now;
-            private DateTime Hasta = DateTime.Now;
-
-        @*Paginado*@
-        public int I { get; set; }
-        double conteo = 0;
-        double totaldepaginas = 0;
-        Paginando paginacion = new Paginando();
-        Contexto contexto = new Contexto();
-        public int Contador { get; set; }
-
-
-        protected override void OnInitialized()
-        {
-            lista = CategoriasBLL.GetList(x => true);
-            TipoUsuario = GetAuthorization();
-            conteo = contexto.Categorias.Count();
-            totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-            this.lista = contexto.Categorias.Take(paginacion.CantidadMostrar).ToList();
-        }
-
-        private void Anterior()
-        {
-            Contador -= paginacion.Pagina;
-            if (Contador <= totaldepaginas)
-            {
-                Contador = 0;
+                case 5:
+                    {
+                        lista = CategoriasBLL.GetList(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
+                    }
+                    break;
             }
-
-            lista = contexto.Categorias
-            .Skip(Contador * paginacion.CantidadMostrar)
-            .Take(paginacion.CantidadMostrar)
-            .ToList();
+        if(isChecked)
+            lista = lista.Where(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
         }
 
-        private void Saltar()
-        {
-            Contador += paginacion.Pagina;
-            if (Contador >= totaldepaginas)
-            {
-                Contador = 0;
-            }
+    }
 
-            lista = contexto.Categorias
-            .Skip(Contador * paginacion.CantidadMostrar)
-            .Take(paginacion.CantidadMostrar)
-            .ToList();
-        }
+    private bool GetAuthorization()
+    {
+        bool acceso;
 
-        private void MostrarDatos()
-        {
-            int elegido = Convert.ToInt32(opcion);
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
+            || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
+            acceso = true;
+        else
+            acceso = false;
 
-            if (string.IsNullOrWhiteSpace(criterio))
-            {
-                lista = CategoriasBLL.GetList(x => true);
-            }
-            else
-            {
-                switch (elegido)
-                {
-                    case 0:
-                        {
-                            toast.ShowError("¡Opcion incorrecta!");
-                            break;
-                        }
+        return acceso;
+    }
 
-                    case 1:
-                        {
-                            lista = CategoriasBLL.GetList(x => true);
-                        }
-                        break;
-
-                    case 2:
-                        {
-                            int id;
-                            id = Convert.ToInt32(criterio);
-                            lista = CategoriasBLL.GetList(x => x.CategoriaId == id);
-                        }
-                        break;
-
-                    case 3:
-                        {
-                            int id;
-                            id = Convert.ToInt32(criterio);
-                            lista = CategoriasBLL.GetList(x => x.UsuariosId == id);
-                        }
-                        break;
-                    case 4:
-                        {
-                            lista = CategoriasBLL.GetList(x => x.NombreCategoria == criterio);
-                        }
-                        break;
-
-                    case 5:
-                        {
-                            lista = CategoriasBLL.GetList(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
-                        }
-                        break;
-                }
-                lista = lista.Where(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
-            }
-
-        }
-
-        private bool GetAuthorization()
-        {
-            bool acceso;
-
-            if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
-                || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
-                acceso = true;
-            else
-                acceso = false;
-
-            return acceso;
-        }
-
-        }
+}

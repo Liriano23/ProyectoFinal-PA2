@@ -40,9 +40,7 @@
     <h3>Consulta Clientes</h3>
 
     <div id="PrincipalContainer" class="card">
-
         <div class="row">
-
             @*Desde*@
             <div class="form-group col-2">
                 <label>Desde</label>
@@ -54,7 +52,13 @@
                 <label>Hasta</label>
                 <input type="date" class="form-control" @bind="Hasta" />
             </div>
+            @*Filtrar por fecha*@
+            <div class="form-group col-2">
+                <label>Filtar por fecha</label>
+                <input type="checkbox" class="form-control col-1" @bind="isChecked" />
+            </div>
 
+            @*Filtros*@
             <div class="form-group col-2">
                 <label>Filtro</label>
                 <select @bind="opcion" class="form-control">
@@ -74,21 +78,25 @@
                     <option value="13">Usuario Id</option>
                 </select>
             </div>
-
-
+            @*Criterio*@
             <div class="form-group col-2">
                 <label>Criterio</label>
                 <input type="text" @bind="criterio" class="form-control" />
             </div>
 
+            @*Boton consultar*@
             <div class="form-group col-2">
-                <button class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
+                <button style="margin-top:35px;" class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
             </div>
+        </div>
 
+        @*Boton ir a reportes*@
+        <div class="row">
             <div class="form-group col-2">
                 <a class="btn btn-primary" href="/ClienteReporte">Ir a reporte</a>
             </div>
         </div>
+
     </div>
 
         @if (lista == null)
@@ -153,174 +161,176 @@
         </nav>
         }
 
-        @code {
-            int num = 0;
-            List<Clientes> lista = new List<Clientes>();
-            private string opcion = "0";
-            private string criterio = "";
-            private bool TipoUsuario;
-            private DateTime Desde = DateTime.Now;
-            private DateTime Hasta = DateTime.Now;
+@code {
+    int num = 0;
+    List<Clientes> lista = new List<Clientes>();
+    private string opcion = "0";
+    private string criterio = "";
+    private bool TipoUsuario;
+    private DateTime Desde = DateTime.Now;
+    private DateTime Hasta = DateTime.Now;
+    private bool isChecked;
 
-        @*Paginado*@
-        public int I { get; set; }
-        double conteo = 0;
-        double totaldepaginas = 0;
-        Paginando paginacion = new Paginando();
-        Contexto contexto = new Contexto();
-        public int Contador { get; set; }
+     @*Paginado*@
+     public int I { get; set; }
+     double conteo = 0;
+     double totaldepaginas = 0;
+     Paginando paginacion = new Paginando();
+     Contexto contexto = new Contexto();
+     public int Contador { get; set; }
 
-        protected override void OnInitialized()
-        {
-            lista = ClientesBLL.GetList(x => true);
-            TipoUsuario = GetAuthorization();
-            conteo = contexto.Categorias.Count();
-            totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-            this.lista = contexto.Clientes.Take(paginacion.CantidadMostrar).ToList();
-        }
+     protected override void OnInitialized()
+     {
+         lista = ClientesBLL.GetList(x => true);
+         TipoUsuario = GetAuthorization();
+         conteo = contexto.Categorias.Count();
+         totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
+         this.lista = contexto.Clientes.Take(paginacion.CantidadMostrar).ToList();
+     }
 
-        private void Anterior()
-        {
-            Contador -= paginacion.Pagina;
-            if (Contador <= totaldepaginas)
-            {
-                Contador = 0;
-            }
+     private void Anterior()
+     {
+         Contador -= paginacion.Pagina;
+         if (Contador <= totaldepaginas)
+         {
+             Contador = 0;
+         }
 
-            lista = contexto.Clientes
-            .Skip(Contador * paginacion.CantidadMostrar)
-            .Take(paginacion.CantidadMostrar)
-            .ToList();
-        }
+         lista = contexto.Clientes
+         .Skip(Contador * paginacion.CantidadMostrar)
+         .Take(paginacion.CantidadMostrar)
+         .ToList();
+     }
 
-        private void Saltar()
-        {
-            Contador += paginacion.Pagina;
-            if (Contador >= totaldepaginas)
-            {
-                Contador = 0;
-            }
+     private void Saltar()
+     {
+         Contador += paginacion.Pagina;
+         if (Contador >= totaldepaginas)
+         {
+             Contador = 0;
+         }
 
-            lista = contexto.Clientes
-            .Skip(Contador * paginacion.CantidadMostrar)
-            .Take(paginacion.CantidadMostrar)
-            .ToList();
-        }
+         lista = contexto.Clientes
+         .Skip(Contador * paginacion.CantidadMostrar)
+         .Take(paginacion.CantidadMostrar)
+         .ToList();
+     }
 
-        private void MostrarDatos()
-        {
-            int elegido = Convert.ToInt32(opcion);
+     private void MostrarDatos()
+     {
+         int elegido = Convert.ToInt32(opcion);
 
-            if (string.IsNullOrWhiteSpace(criterio))
-            {
-                lista = ClientesBLL.GetList(x => true);
-            }
-            else
-            {
-                switch (elegido)
-                {
-                    case 0:
-                        {
-                            toast.ShowError("¡Opcion incorrecta!");
-                            break;
-                        }
+         if (string.IsNullOrWhiteSpace(criterio))
+         {
+             lista = ClientesBLL.GetList(x => true);
+         }
+         else
+         {
+             switch (elegido)
+             {
+                 case 0:
+                     {
+                         toast.ShowError("¡Opcion incorrecta!");
+                         break;
+                     }
 
-                    case 1:
-                        {
-                            lista = ClientesBLL.GetList(x => true);
-                        }
-                        break;
+                 case 1:
+                     {
+                         lista = ClientesBLL.GetList(x => true);
+                     }
+                     break;
 
-                    case 2:
-                        {
-                            int id;
-                            id = Convert.ToInt32(criterio);
-                            lista = ClientesBLL.GetList(x => x.ClienteId == id);
-                        }
-                        break;
+                 case 2:
+                     {
+                         int id;
+                         id = Convert.ToInt32(criterio);
+                         lista = ClientesBLL.GetList(x => x.ClienteId == id);
+                     }
+                     break;
 
-                    case 3:
-                        {
-                            lista = ClientesBLL.GetList(x => x.Nombres == criterio);
-                        }
-                        break;
+                 case 3:
+                     {
+                         lista = ClientesBLL.GetList(x => x.Nombres == criterio);
+                     }
+                     break;
 
-                    case 4:
-                        {
-                            lista = ClientesBLL.GetList(x => x.Apellidos == criterio);
-                        }
-                        break;
+                 case 4:
+                     {
+                         lista = ClientesBLL.GetList(x => x.Apellidos == criterio);
+                     }
+                     break;
 
-                    case 5:
-                        {
-                            lista = ClientesBLL.GetList(x => x.Cedula == criterio);
-                        }
-                        break;
+                 case 5:
+                     {
+                         lista = ClientesBLL.GetList(x => x.Cedula == criterio);
+                     }
+                     break;
 
-                    case 6:
-                        {
-                            lista = ClientesBLL.GetList(x => x.Sexo == criterio);
-                        }
-                        break;
+                 case 6:
+                     {
+                         lista = ClientesBLL.GetList(x => x.Sexo == criterio);
+                     }
+                     break;
 
-                    case 7:
-                        {
-                            lista = ClientesBLL.GetList(x => x.Direccion == criterio);
-                        }
-                        break;
+                 case 7:
+                     {
+                         lista = ClientesBLL.GetList(x => x.Direccion == criterio);
+                     }
+                     break;
 
-                    case 8:
-                        {
-                            lista = ClientesBLL.GetList(x => x.Telefono == criterio);
-                        }
-                        break;
+                 case 8:
+                     {
+                         lista = ClientesBLL.GetList(x => x.Telefono == criterio);
+                     }
+                     break;
 
-                    case 9:
-                        {
-                            lista = ClientesBLL.GetList(x => x.Celular == criterio);
-                        }
-                        break;
+                 case 9:
+                     {
+                         lista = ClientesBLL.GetList(x => x.Celular == criterio);
+                     }
+                     break;
 
-                    case 10:
-                        {
-                            lista = ClientesBLL.GetList(x => x.Email == criterio);
-                        }
-                        break;
+                 case 10:
+                     {
+                         lista = ClientesBLL.GetList(x => x.Email == criterio);
+                     }
+                     break;
 
-                    case 11:
-                        {
-                            lista = ClientesBLL.GetList(c => c.FechaNacimiento.Date >= Desde.Date && c.FechaNacimiento.Date <= Hasta.Date).ToList();
-                        }
-                        break;
+                 case 11:
+                     {
+                         lista = ClientesBLL.GetList(c => c.FechaNacimiento.Date >= Desde.Date && c.FechaNacimiento.Date <= Hasta.Date).ToList();
+                     }
+                     break;
 
-                    case 12:
-                        {
-                            lista = ClientesBLL.GetList(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
-                        }
-                        break;
+                 case 12:
+                     {
+                         lista = ClientesBLL.GetList(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
+                     }
+                     break;
 
-                    case 13:
-                        {
-                            int id;
-                            id = Convert.ToInt32(criterio);
-                            lista = ClientesBLL.GetList(x => x.UsuariosId == id);
-                        }
-                        break;
-                }
-                lista = lista.Where(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
-            }
-        }
+                 case 13:
+                     {
+                         int id;
+                         id = Convert.ToInt32(criterio);
+                         lista = ClientesBLL.GetList(x => x.UsuariosId == id);
+                     }
+                     break;
+             }
+        if(isChecked)
+             lista = lista.Where(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
+         }
+     }
 
-        private bool GetAuthorization()
-        {
-            bool acceso;
+     private bool GetAuthorization()
+     {
+         bool acceso;
 
-            if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
-                || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
-                acceso = true;
-            else
-                acceso = false;
+         if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
+             || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
+             acceso = true;
+         else
+             acceso = false;
 
-            return acceso;
-        }
+         return acceso;
+     }
 }

@@ -59,35 +59,52 @@ namespace ProyectoFinal_PA2.BLL
             return paso;
         }
 
-        public static bool Modificar(Ventas ventas)
+        private static bool Modificar(Ventas ventas)
         {
             bool paso = false;
             Contexto db = new Contexto();
            
             try
             {
-                var ventaAnterior = Buscar(ventas.VentaId);
+                Ventas anterior = Buscar(ventas.VentaId);
 
-                ProductosBLL.AumentarInventario(ventaAnterior);
-
-                db.Database.ExecuteSqlRaw($"Delete From VentasDetalle where VentaId ={ ventas.VentaId}");
-                foreach(var item in ventas.Detalle)
+                foreach (var item in anterior.Detalle)
                 {
-                    db.Entry(item).State = EntityState.Added;
+                    var temp = ProductosBLL.Buscar(item.ProductoId);
+                    temp.Inventario += item.Cantidad;
+                    ProductosBLL.Guardar(temp);
                 }
-                db.Entry(ventas).State = EntityState.Modified;
-                
-                ProductosBLL.DisminuirInventario(ventas);
 
-                paso = (db.SaveChanges() > 0);
+                foreach (var item in ventas.Detalle)
+                {
+                    if (item.Id == 0)
+                    {
+                        db.Entry(item).State = EntityState.Added;
+                    }
+                }
+
+                foreach (var item in anterior.Detalle)
+                {
+                    if (!ventas. Detalle.Any(A => A.Id == item.Id))
+                    {
+                        db.Entry(item).State = EntityState.Deleted;
+                    }
+                }
+
+                db.Entry(ventas).State = EntityState.Modified;
+                paso = db.SaveChanges() > 0;
+
+                
+                foreach (var item in ventas.Detalle)
+                {
+                    var temp = ProductosBLL.Buscar(item.ProductoId);
+                    temp.Inventario -= item.Cantidad;
+                    ProductosBLL.Guardar(temp);
+                }
             }
             catch (Exception)
             {
                 throw;
-            }
-            finally
-            {
-                db.Dispose();
             }
             return paso;
         }

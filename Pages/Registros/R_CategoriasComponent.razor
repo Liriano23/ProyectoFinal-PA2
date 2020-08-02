@@ -88,8 +88,6 @@
                             Ingresar el usuario que esta insertando la categoria
                         </small>
                     </div>
-
-
                 </form>
 
             </div>
@@ -131,7 +129,6 @@
     protected override void OnInitialized()
     {
         Nuevo();
-        Buscar();
         if (CategoriaId > 0)
             Buscar(CategoriaId);
 
@@ -149,7 +146,7 @@
         {
             categorias = new Categorias();
             listaUsuarios = UsuariosBLL.GetList(x => true);
-            usuarioId = "0";
+            usuarioId = "";
         }
         catch
         {

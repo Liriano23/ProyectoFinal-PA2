@@ -59,31 +59,51 @@ namespace ProyectoFinal_PA2.BLL
             return paso;
         }
 
-        public static bool Modificar(Compras compras)
+        private static bool Modificar(Compras compras)
         {
             bool paso = false;
             Contexto db = new Contexto();
+
             try
             {
-                var CompraAnterior = Buscar(compras.CompraId);
+                Compras anterior = Buscar(compras.CompraId);
 
-                DisminuirInventario(CompraAnterior);
-                db.Database.ExecuteSqlRaw($"Delete From ComprasDetalle where CompraId ={ compras.CompraId}");
+                foreach (var item in anterior.Detalle)
+                {
+                    var temp = ProductosBLL.Buscar(item.ProductoId);
+                    temp.Inventario -= item.Cantidad;
+                    ProductosBLL.Guardar(temp);
+                }
+
                 foreach (var item in compras.Detalle)
                 {
-                    db.Entry(item).State = EntityState.Added;
+                    if (item.Id == 0)
+                    {
+                        db.Entry(item).State = EntityState.Added;
+                    }
                 }
+
+                foreach (var item in anterior.Detalle)
+                {
+                    if (!compras.Detalle.Any(A => A.Id == item.Id))
+                    {
+                        db.Entry(item).State = EntityState.Deleted;
+                    }
+                }
+
                 db.Entry(compras).State = EntityState.Modified;
-                AumentarInventario(compras);
-                paso = (db.SaveChanges() > 0);
+                paso = db.SaveChanges() > 0;
+
+                foreach (var item in  compras.Detalle)
+                {
+                    var temp = ProductosBLL.Buscar(item.ProductoId);
+                    temp.Inventario += item.Cantidad;
+                    ProductosBLL.Guardar(temp);
+                }
             }
             catch (Exception)
             {
                 throw;
-            }
-            finally
-            {
-                db.Dispose();
             }
             return paso;
         }
@@ -155,14 +175,6 @@ namespace ProyectoFinal_PA2.BLL
                 contexto.Dispose();
             }
             return lista;
-        }
-
-        public static void DisminuirInventario(Compras compras)
-        {
-            foreach (var item in compras.Detalle)
-            {
-                ProductosBLL.DisminuirInventario(item.ProductoId, item.Cantidad);
-            }
         }
 
         public static void AumentarInventario(Compras compras)

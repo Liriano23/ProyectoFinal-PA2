@@ -183,13 +183,13 @@
                         <tbody>
                             @foreach (var item in ventas.Detalle)
                             {
-                                <tr>
-                                    <td>@item.ProductoId</td>
-                                    <td>@item.Cantidad</td>
-                                    <td>@item.Precio.ToString("N2")</td>
-                                    <td>@item.Valor.ToString("N2")</td>
-                                    <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
-                                </tr>
+                            <tr>
+                                <td>@item.ProductoId</td>
+                                <td>@item.Cantidad</td>
+                                <td>@item.Precio.ToString("N2")</td>
+                                <td>@item.Valor.ToString("N2")</td>
+                                <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
+                            </tr>
                             }
                         </tbody>
                     </table>
@@ -443,7 +443,7 @@
 
         try
         {
-            if (VerificarExistenciaBLL.VerificarExistencia(Productos, id) && cantidad > 0)
+            if (VerificarExistenciaBLL.VerificarExistencia(Productos, id) && cantidad > 0 && ventas.ITBIS >=0)
             {
                 ventas.Detalle.Add(new VentasDetalle
                 {
@@ -453,17 +453,17 @@
                     Cantidad = cantidad,
                     Precio = precio,
                     Valor = cantidad * precio
-                });
+                }) ;
 
                 CalcularTotalVenta();
             }
-            else if(cantidad <=0)
+            else if (cantidad <= 0)
                 toast.ShowError("La cantidad debe ser mayor que 0");
-
+            else if (ventas.ITBIS < 0)
+                toast.ShowError("El itbis a aplicar debe ser acorde a la ley 18%.");
             else
                 toast.ShowError("No existe este producto en la base de datos. ");
 
-            DetalleId = 0;
             ProductoID = "0";
             cantidad = 0;
             precio = 0;
@@ -471,7 +471,6 @@
         catch
         {
             toast.ShowError($"Ha ocurrido un error, Intentelo nuevamente");
-
         }
     }
 
@@ -501,8 +500,11 @@
             }
 
             ventas.SubTotal = subtotal;
-            itbis = ((ventas.ITBIS / 100) * Convert.ToDouble(subtotal));
 
+            if(ventas.ITBIS < 0)
+                itbis = ((0 / 100) * Convert.ToDouble(subtotal));
+            else
+                itbis = ((ventas.ITBIS / 100) * Convert.ToDouble(subtotal));
             ventas.Total = ((subtotal + Convert.ToDecimal(itbis)) - (ventas.Descuento));
         }
         catch (Exception e)

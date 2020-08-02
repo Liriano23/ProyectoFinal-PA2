@@ -43,7 +43,6 @@
     <div id="PrincipalContainer" class="card">
 
         <div class="row">
-
             @*Desde*@
             <div class="form-group col-2">
                 <label>Desde</label>
@@ -54,6 +53,11 @@
             <div class="form-group col-2">
                 <label>Hasta</label>
                 <input type="date" class="form-control" @bind="Hasta" />
+            </div>
+
+            <div class="form-group col-2">
+                <label>Filtar por fecha</label>
+                <input type="checkbox" class="form-control col-1" @bind="isChecked" />
             </div>
 
             <div class="form-group col-2">
@@ -76,24 +80,22 @@
                 </select>
             </div>
 
-
             <div class="form-group col-2">
                 <label>Criterio</label>
                 <input type="text" @bind="criterio" class="form-control" />
             </div>
 
             <div class="form-group col-2">
-                <button class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
-            </div>
-
-            <div class="form-group col-2">
-                <a class="btn btn-primary" href="/UsuariosReporte">Ir a reporte</a>
+                <button style="margin-top:35px;" class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
             </div>
         </div>
-    </div>
 
-
-
+        <div class="row">
+                <div class="form-group col-2">
+                    <a class="btn btn-primary" href="/UsuariosReporte">Ir a reporte</a>
+                </div>
+            </div>
+        </div>
 
         @if (lista == null)
         {
@@ -155,16 +157,16 @@
             </ul>
         </nav>
         }
-
         @code {
+
             int num = 0;
             List<Usuarios> lista = new List<Usuarios>();
-            private string opcion = "0";
-            private string criterio = "";
-            private bool TipoUsuario;
-            private DateTime Desde = DateTime.Now;
-            private DateTime Hasta = DateTime.Now;
-
+    private string opcion = "0";
+        private string criterio = "";
+        private bool TipoUsuario;
+        private DateTime Desde = DateTime.Now;
+        private DateTime Hasta = DateTime.Now;
+        private bool isChecked;
 
         @*Paginado*@
         public int I { get; set; }
@@ -308,7 +310,8 @@
                         }
                         break;
                 }
-                lista = lista.Where(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
+                if (isChecked)
+                    lista = lista.Where(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
             }
         }
         }

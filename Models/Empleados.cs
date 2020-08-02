@@ -49,7 +49,7 @@ namespace ProyectoFinal_PA2.Models
         public string Cargo { get; set; }
 
         [Required(ErrorMessage = "Se debe ingresar el Sueldo del empleado")]
-        [Range(0, 10000000, ErrorMessage = "Ingrese una cantidad valida")]
+        [Range(1, 10000000, ErrorMessage = "Ingrese una cantidad valida")]
         public decimal Sueldo { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar la fecha de nacimieneto del Empleado")]

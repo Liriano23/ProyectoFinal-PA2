@@ -5,8 +5,6 @@ namespace ProyectoFinal_PA2.Models
     public class VentasDetalle
     {
         [Key]
-        [Required]
-        [Range(0, 1000000, ErrorMessage = "Ingrese un Id valido")]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar el id del producto")]

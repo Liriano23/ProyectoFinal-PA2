@@ -36,33 +36,42 @@
                 <label>Hasta</label>
                 <input type="date" class="form-control" @bind="Hasta" />
             </div>
-
-
+            @*Filtrar por fecha*@
             <div class="form-group col-2">
-                <label>Filtro</label>
-                <select @bind="opcion" class="form-control">
-                    <option value="0" disabled>Elija una opcion</option>
-                    <option value="1">TODO</option>
-                    <option value="2">ProductoId  </option>
-                    <option value="3">Nombre Productos </option>
-                    <option value="4">Marca Productos </option>
-                    <option value="5">Fecha Ingreso </option>
-                    <option value="6">Categoria Id</option>
-                    <option value="7">Suplidor Id</option>
-                    <option value="8">Usuario Id</option>
-                </select>
+                <label>Filtar por fecha</label>
+                <input type="checkbox" class="form-control col-1" @bind="isChecked" />
             </div>
 
+            @*Filtros*@
+        <div class="form-group col-2">
+            <label>Filtro</label>
+            <select @bind="opcion" class="form-control">
+                <option value="0" disabled>Elija una opcion</option>
+                <option value="1">TODO</option>
+                <option value="2">ProductoId  </option>
+                <option value="3">Nombre Productos </option>
+                <option value="4">Marca Productos </option>
+                <option value="5">Fecha Ingreso </option>
+                <option value="6">Categoria Id</option>
+                <option value="7">Suplidor Id</option>
+                <option value="8">Usuario Id</option>
+            </select>
+        </div>
 
+            @*Criterio*@
             <div class="form-group col-2">
                 <label>Criterio</label>
                 <input type="text" @bind="criterio" class="form-control" />
             </div>
 
+            @*Boton consultar*@
             <div class="form-group col-2">
-                <button class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
+                <button style="margin-top:35px;" class="btn btn-primary" @onclick="MostrarDatos">Consultar</button>
             </div>
+        </div>
 
+        @*Boton ir a reportes*@
+        <div class="row">
             <div class="form-group col-2">
                 <a class="btn btn-primary" href="/ProductosReporte">Ir a reporte</a>
             </div>
@@ -126,14 +135,15 @@
         </nav>
         }
 
-        @code {
-            int num = 0;
-            List<Productos> lista = new List<Productos>();
-            private string opcion = "0";
-            private string criterio = "";
-            private bool TipoUsuario;
-            private DateTime Desde = DateTime.Now;
-            private DateTime Hasta = DateTime.Now;
+ @code {
+     int num = 0;
+     List<Productos> lista = new List<Productos>();
+     private string opcion = "0";
+     private string criterio = "";
+     private bool TipoUsuario;
+     private DateTime Desde = DateTime.Now;
+     private DateTime Hasta = DateTime.Now;
+     private bool isChecked;
 
         @*Paginado*@
         public int I { get; set; }
@@ -142,7 +152,7 @@
         Paginando paginacion = new Paginando();
         Contexto contexto = new Contexto();
         public int Contador { get; set; }
-
+    
         protected override void OnInitialized()
         {
             lista = ProductosBLL.GetList(x => true);
@@ -151,7 +161,7 @@
             totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
             this.lista = contexto.Productos.Take(paginacion.CantidadMostrar).ToList();
         }
-
+    
         private void Anterior()
         {
             Contador -= paginacion.Pagina;
@@ -159,13 +169,13 @@
             {
                 Contador = 0;
             }
-
+    
             lista = contexto.Productos
             .Skip(Contador * paginacion.CantidadMostrar)
             .Take(paginacion.CantidadMostrar)
             .ToList();
         }
-
+    
         private void Saltar()
         {
             Contador += paginacion.Pagina;
@@ -173,17 +183,17 @@
             {
                 Contador = 0;
             }
-
+    
             lista = contexto.Productos
             .Skip(Contador * paginacion.CantidadMostrar)
             .Take(paginacion.CantidadMostrar)
             .ToList();
         }
-
+    
         private void MostrarDatos()
         {
             int elegido = Convert.ToInt32(opcion);
-
+    
             if (string.IsNullOrWhiteSpace(criterio))
             {
                 lista = ProductosBLL.GetList(x => true);
@@ -202,7 +212,7 @@
                             lista = ProductosBLL.GetList(x => true);
                         }
                         break;
-
+    
                     case 2:
                         {
                             int id;
@@ -210,25 +220,25 @@
                             lista = ProductosBLL.GetList(x => x.ProductoId == id);
                         }
                         break;
-
+    
                     case 3:
                         {
                             lista = ProductosBLL.GetList(x => x.NombreProducto == criterio);
                         }
                         break;
-
+    
                     case 4:
                         {
                             lista = ProductosBLL.GetList(x => x.MarcaProducto == criterio);
                         }
                         break;
-
+    
                     case 5:
                         {
                             lista = ProductosBLL.GetList(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
                         }
                         break;
-
+    
                     case 6:
                         {
                             int id;
@@ -236,16 +246,16 @@
                             lista = ProductosBLL.GetList(x => x.CategoriaId == id);
                         }
                         break;
-
+    
                     case 7:
                         {
-
+    
                             int id;
                             id = Convert.ToInt32(criterio);
                             lista = ProductosBLL.GetList(x => x.SuplidorId == id);
                         }
                         break;
-
+    
                     case 8:
                         {
                             int id;
@@ -254,21 +264,21 @@
                         }
                         break;
                 }
-                lista = lista.Where(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
+                if(isChecked)
+                    lista = lista.Where(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
             }
         }
-
+    
         private bool GetAuthorization()
         {
             bool acceso;
-
+    
             if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador")
                 || AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Empleado"))
                 acceso = true;
             else
                 acceso = false;
-
+    
             return acceso;
         }
-
-        }
+}

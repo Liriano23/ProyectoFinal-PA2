@@ -106,7 +106,7 @@
                     @*Fecha ingreso*@
                     <div class="form-group">
                         <label for="FechaIngresoDatePicker">Fecha ingreso</label>
-                        <InputDate @bind-Value="productos.FechaIngreso" id="FechaIngresoDatePicker" class="form-control" />
+                        <InputDate @bind-Value="productos.FechaIngreso" id="FechaIngresoDatePicker" ReadOnly class="form-control" />
                         <ValidationMessage For="(() => productos.FechaIngreso)" />
                         <small id="EntryDateInlineHelper">
                             Ingresar fecha de ingreso del producto
@@ -195,10 +195,10 @@
     Productos productos = new Productos();
 
     private bool TipoUsuario;
-    private string usuarioId;
-    private string suplidorId;
-    private string categoriaId;
-    bool precioValido = false;
+    private string usuarioId = "0";
+    private string suplidorId = "0";
+    private string categoriaId = "0";
+    bool precioValido;
 
     private Usuarios Usuarios { get; set; }
     private Categorias Categorias { get; set; }
@@ -222,9 +222,6 @@
         listaCategorias = CategoriasBLL.GetList(x => true);
         listaSuplidores = SuplidoresBLL.GetList(x => true);
 
-        usuarioId = "0";
-        suplidorId = "0";
-        categoriaId = "0";
     }
 
     private void Nuevo()
@@ -297,7 +294,7 @@
                 if (encontrado != null)
                 {
                     this.productos = encontrado;
-
+                    ValidaPrecio();
                     categoriaId = this.productos.CategoriaId.ToString();
                     suplidorId = this.productos.SuplidorId.ToString();
                     usuarioId = this.productos.UsuariosId.ToString();
@@ -325,6 +322,7 @@
                 if (encontrado != null)
                 {
                     this.productos = encontrado;
+                    ValidaPrecio();
 
                     categoriaId = this.productos.CategoriaId.ToString();
                     suplidorId = this.productos.SuplidorId.ToString();

@@ -81,7 +81,7 @@ Todas los reported tienen este estilo por esto solo muestro esta aqui.
 # Construccion 
 **C#, Blazor Server side.**
 
-**SqLite**
+**SQL Server**
 
 #Auditoria
 **Juan de Dios Fernandez Camilo**

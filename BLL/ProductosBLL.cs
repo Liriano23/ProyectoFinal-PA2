@@ -225,6 +225,31 @@ namespace ProyectoFinal_PA2.BLL
             return paso;
         }
 
+        public static int CantidadEnInventario(int id)
+        {
+            Contexto db = new Contexto();
+            int cantidad = 0;
+            var productos = db.Productos.Find(id);
+
+            try
+            {
+                if(productos != null)
+                {
+                    cantidad = productos.Inventario;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+            return cantidad;
+        }
+
         
     }
 }

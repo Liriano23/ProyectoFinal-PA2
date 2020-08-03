@@ -167,7 +167,7 @@
                     @*Fecha ingreso*@
                     <div class="form-group">
                         <label>Fecha ingreso</label>
-                        <InputDate @bind-Value="usuario.FechaIngreso" class="form-control"  />
+                        <InputDate @bind-Value="usuario.FechaIngreso" class="form-control"  ReadOnly/>
                         <ValidationMessage For="(() => usuario.FechaIngreso)" />
                         <small id="EntryDateInlineHelper">
                             Ingresar fecha de ingreso del usuario
@@ -315,7 +315,7 @@
 
     private void Eliminar()
     {
-        bool eliminar;
+        bool eliminar = false;
 
         try
         {
@@ -334,5 +334,4 @@
         }
 
     }
-
-    }
+}

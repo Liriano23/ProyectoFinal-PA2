@@ -204,9 +204,10 @@ app {
     padding: 10px;
 }
 #Titulo {
-    margin-left: 490px;
+    /*margin-left: 490px;*/
     font-family: "Times New Roman, Arial, sans-serif";
     font-weight: bold;
+    text-align:center;
 }
 
 #MainContainer {

@@ -64,7 +64,7 @@
             <select @bind="opcion" class="form-control">
                 <option value="0" disabled>Elija una opcion</option>
                 <option value="1">Todo</option>
-                <option value="2">Clientes Id</option>
+                <option value="2">Empleado Id</option>
                 <option value="3">Nombres</option>
                 <option value="4">Apellido</option>
                 <option value="5">Cedula</option>
@@ -110,7 +110,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Cliente Id</th>
+                        <th>Empleado Id</th>
                         <th>Nombres</th>
                         <th>Apellidos</th>
                         <th>Cedula</th>
@@ -326,6 +326,7 @@
                     }
                     break;
             }
+         if(isChecked)
             lista = lista.Where(c => c.FechaIngreso.Date >= Desde.Date && c.FechaIngreso.Date <= Hasta.Date).ToList();
         }
     }

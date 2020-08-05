@@ -83,7 +83,7 @@ Todas los reported tienen este estilo por esto solo muestro esta aqui.
 
 **SQL Server**
 
-#Auditoria
+# Auditoria
 **Juan de Dios Fernandez Camilo**
 **Enmanuel Gonzalez Liriano**
 

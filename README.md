@@ -27,25 +27,25 @@ Este es el menu principal mediante el cual se puede acceder a todos los registr�
 A continuacion puede visualizar las interfaces para lo diferentes registros
 
 **Usuarios**
-![RegistroUsuarios](https://user-images.githubusercontent.com/59903517/88987452-f3ccaa00-d2a3-11ea-8950-114e8dd2d6aa.PNG)
+![RegistroUsuarios](https://user-images.githubusercontent.com/59903517/89423109-20e5e600-d704-11ea-874f-48c8798d8930.PNG)
 
 **Clientes**
-![RegistroClientes](https://user-images.githubusercontent.com/59903517/88987410-d8619f00-d2a3-11ea-8352-3cc340b00de0.PNG)
+![RegistroClientes](https://user-images.githubusercontent.com/59903517/89423081-1b889b80-d704-11ea-8e27-dd365a036145.PNG)
 
 **Empleados**
-![RegistroEmpleados](https://user-images.githubusercontent.com/59903517/88987420-dc8dbc80-d2a3-11ea-8f36-3c95e5eea32f.PNG)
+![RegistroEmpleados](https://user-images.githubusercontent.com/59903517/89423100-1fb4b900-d704-11ea-921e-e60a52a11259.PNG)
 
 **Suplidores**
-![RegistroSuplidores](https://user-images.githubusercontent.com/59903517/88987442-ed3e3280-d2a3-11ea-89fa-2ba6b955c3da.PNG)
+![RegistroSuplidores](https://user-images.githubusercontent.com/59903517/89423106-204d4f80-d704-11ea-99d0-89a06886fcc6.PNG)
 
 **Productos**
-![RegistroProductos](https://user-images.githubusercontent.com/59903517/88987436-ea434200-d2a3-11ea-87ec-7d3ccfc4a09e.PNG)
+![RegistroProductos](https://user-images.githubusercontent.com/59903517/89423101-204d4f80-d704-11ea-8eee-8e4cccc0f472.PNG)
 
 **Categoria**
-![RegistroCategorias](https://user-images.githubusercontent.com/59903517/88987404-d4ce1800-d2a3-11ea-8df3-c7a4ca0761cf.PNG)
+![RegistroCategorias](https://user-images.githubusercontent.com/59903517/89423076-19bed800-d704-11ea-918f-f7be3919e94c.PNG)
 
 **Ventas**
-![RegistroVentas](https://user-images.githubusercontent.com/59903517/88987458-f62f0400-d2a3-11ea-926d-230a5fd4aa6a.PNG)
+![RegistroVentas](https://user-images.githubusercontent.com/59903517/89423096-1fb4b900-d704-11ea-8030-acc24a6dca24.PNG)
 
 Este es el registro de Ventas, Debe completar cada uno de los campos, El campo VentaId debe ser igual a 0 para agregar una nueva venta, El campo Descuentos  puede ser igual a 0 y el campo ITBIS = 18 el sistema se encarga de realizar los calculos correspondientes.
 Los campos que aparecne sombreados en rojo es para informar al usuario que debe completarlos, luego ingresa el Id del producto deseado, precio y cantidad luego se presiona la opcion agregar y se presentara los datos anteriormente añadidos en un DataGrid, para actulizar el Subtotal y el Total presione los campos y luego presione la tecla espacio  ambos campos.
@@ -56,7 +56,7 @@ En Caso que quiera Eliminar una venta ingrese el ID de la venta ya existente pre
 En Caso que quiera Eliminar una venta del grid busque la venta, seleccione el elemento deseado y luego presione la opcion "Remover Venta". 
 
 **Compras**
-![RegistroCompras](https://user-images.githubusercontent.com/59903517/88987415-da2b6280-d2a3-11ea-9922-f4e3d6c1588e.PNG)
+![RegistroCompras](https://user-images.githubusercontent.com/59903517/89423099-1fb4b900-d704-11ea-85e0-e079c7a42b67.PNG)
 
 Este es el registro de Compras, Debe completar cada uno de los campos, El campo CompraId debe ser igual a 0 para agregar una nueva compra el sistema.
 Los campos que aparecen sombreados en rojo es para informar al usuario que debe completarlos, luego ingresa el Id del producto deseado, precio y cantidad luego se presiona la opcion agregar y se presentara los datos anteriormente añadidos en un DataGrid, para actulizar el Subtotal y el Total presione los campos y luego presione la tecla espacio  ambos campos.

@@ -71,7 +71,7 @@
         @*Boton ir a reportes*@
         <div class="row">
             <div class="form-group col-2">
-                <a class="btn btn-primary" href="/ComprasReporte">Ir a reporte</a>
+                <a style="margin-top:35px;" class="btn btn-warning" href="ComprasReporte">Imprimir</a>
             </div>
         </div>
     </div>
@@ -133,7 +133,7 @@
 @code {
 
     int num = 0;
-    List<Compras> lista = new List<Compras>();
+    public static List<Compras> lista = new List<Compras>();
     private string opcion = "0";
     private string criterio = "";
     private bool TipoUsuario;
@@ -155,7 +155,7 @@
         TipoUsuario = GetAuthorization();
         conteo = contexto.Categorias.Count();
         totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-        this.lista = contexto.Compras.Take(paginacion.CantidadMostrar).ToList();
+        lista = contexto.Compras.Take(paginacion.CantidadMostrar).ToList();
     }
     
     private void Anterior()

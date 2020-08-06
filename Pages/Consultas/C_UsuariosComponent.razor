@@ -92,7 +92,7 @@
 
         <div class="row">
                 <div class="form-group col-2">
-                    <a class="btn btn-primary" href="/UsuariosReporte">Ir a reporte</a>
+                    <a style="margin-top:35px;" class="btn btn-warning" href="UsuariosReporte">Imprimir</a>
                 </div>
             </div>
         </div>
@@ -160,13 +160,13 @@
         @code {
 
             int num = 0;
-            List<Usuarios> lista = new List<Usuarios>();
-    private string opcion = "0";
-        private string criterio = "";
-        private bool TipoUsuario;
-        private DateTime Desde = DateTime.Now;
-        private DateTime Hasta = DateTime.Now;
-        private bool isChecked;
+            public static List<Usuarios> lista = new List<Usuarios>();
+            private string opcion = "0";
+            private string criterio = "";
+            private bool TipoUsuario;
+            private DateTime Desde = DateTime.Now;
+            private DateTime Hasta = DateTime.Now;
+            private bool isChecked;
 
         @*Paginado*@
         public int I { get; set; }
@@ -182,7 +182,7 @@
             TipoUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador");
             conteo = contexto.Categorias.Count();
             totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-            this.lista = contexto.Usuarios.Take(paginacion.CantidadMostrar).ToList();
+            lista = contexto.Usuarios.Take(paginacion.CantidadMostrar).ToList();
         }
 
         private void Anterior()

@@ -71,7 +71,7 @@
         @*Boton ir a reportes*@
         <div class="row">
             <div class="form-group col-2">
-                <a class="btn btn-primary" href="/VentasReporte">Ir a reporte</a>
+                <a style="margin-top:35px;" class="btn btn-warning" href="VentasReporte">Imprimir</a>
             </div>
         </div>
     </div>
@@ -131,15 +131,15 @@
         </nav>
         }
 @code {
-     
+
     int num = 0;
-     List<Ventas> lista = new List<Ventas>();
-     private string opcion = "0";
-     private string criterio = "";
-     private bool TipoUsuario;
-     private DateTime Desde = DateTime.Now;
-     private DateTime Hasta = DateTime.Now;
-     private bool isChecked;
+    public static List<Ventas> lista = new List<Ventas>();
+    private string opcion = "0";
+    private string criterio = "";
+    private bool TipoUsuario;
+    private DateTime Desde = DateTime.Now;
+    private DateTime Hasta = DateTime.Now;
+    private bool isChecked;
 
      @*Paginado*@
      public int I { get; set; }
@@ -155,7 +155,7 @@
          TipoUsuario = GetAuthorization();
          conteo = contexto.Categorias.Count();
          totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-         this.lista = contexto.Ventas.Take(paginacion.CantidadMostrar).ToList();
+         lista = contexto.Ventas.Take(paginacion.CantidadMostrar).ToList();
      }
 
      private void Anterior()

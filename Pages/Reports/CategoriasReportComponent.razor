@@ -1,5 +1,6 @@
 ﻿@page "/CategoriaReporte"
 @inject IJSRuntime js
+@using ProyectoFinal_PA2.Pages.Consultas; 
 
 <CascadingAuthenticationState>
     <AuthorizeView>
@@ -40,8 +41,7 @@
 {
     <div style="margin-top:5px;">
         <h1>Reporte de Categorias</h1>
-
-        <button class="btn btn-primary" @onclick="ImprimirReportes">Hacer Click Para Reporte</button>
+        <a class="btn btn-primary" href="ConsultaCategoiras">Volver a Consulta Categorias</a>
      </div>
 
      @if (Data is { })
@@ -64,13 +64,12 @@
     protected override void OnInitialized()
     {
         TipoUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador");
-
+        ImprimirReportes(C_CategoriasComponent.lista);
     }
 
-    private async Task ImprimirReportes()
+    private async Task ImprimirReportes(List<Categorias> lista)
     {
         ProyectoFinal_PA2.Reportes.CategoriasReport cat = new Reportes.CategoriasReport();
-        lista = CategoriasBLL.GetList(x => true);
         Data = cat.Reporte(lista);
 
         pdfContent = "data:application/pdf;base64,";

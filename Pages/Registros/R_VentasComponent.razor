@@ -174,7 +174,6 @@
                     <table class="table" style="border-bottom: 1px groove;">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col">ProductoId</th>
                                 <th scope="col">Cantidad</th>
                                 <th scope="col">Precio</th>
                                 <th scope="col">valor</th>
@@ -183,13 +182,12 @@
                         <tbody>
                             @foreach (var item in ventas.Detalle)
                             {
-                            <tr>
-                                <td>@item.ProductoId</td>
-                                <td>@item.Cantidad</td>
-                                <td>@item.Precio.ToString("N2")</td>
-                                <td>@item.Valor.ToString("N2")</td>
-                                <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
-                            </tr>
+                                <tr>
+                                    <td>@item.Cantidad</td>
+                                    <td>@item.Precio.ToString("N2")</td>
+                                    <td>@item.Valor.ToString("N2")</td>
+                                    <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
+                                </tr>
                             }
                         </tbody>
                     </table>
